@@ -10,7 +10,8 @@ from library.ddt import ddt, data
 test_config = R_r_config.ConfigData()
 
 file_path = DATA_DIR + r"/TestData.xlsx"
-sheet_name = 'Login'
+# TODO 使用CSV
+sheet_name = 'Login1'
 wb = ReadExcel(file_path, sheet_name)
 cases = wb.read_data_obj()
 
@@ -34,13 +35,15 @@ class TestLoginPage(TestBase):
             login_page.get_screenshots_as_file(extra=case.testNo)
             raise e
 
-    def testcase_clickRiskBook(self):
+    # def testcase_clickRiskBook(self):
+    def estcase_clickRiskBook(self):
         login_page = LoginPage(self.driver)
         login_page.gotoLoginPage()
         login_page._click(login_page.risk_book)
         assert login_page._check_element_exist(login_page.login_submit) is False
 
-    def testcase_clickBackwards(self):
+    # def testcase_clickBackwards(self):
+    def estcase_clickBackwards(self):
         login_page = LoginPage(self.driver)
         login_page.gotoLoginPage()
         login_page._click(login_page.return_button)
@@ -50,7 +53,8 @@ class TestLoginPage(TestBase):
             login_page.get_screenshots_as_file()
             raise e
 
-    def testcase_clickPwdInput(self):
+    # def testcase_clickPwdInput(self):
+    def estcase_clickPwdInput(self):
         login_page = LoginPage(self.driver)
         login_page.gotoLoginPage()
         login_page._click(login_page.login_pwd)

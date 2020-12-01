@@ -286,6 +286,7 @@ table       { font-size: 100%; }
 .heading {
     margin-top: 0ex;
     margin-bottom: 1ex;
+    float: left;
 }
 .heading .description {
     margin-top: 4ex;
@@ -298,6 +299,12 @@ table       { font-size: 100%; }
 .errorCase  { color: #f0ad4e; font-weight: bold; }
 .hiddenRow  { display: none; }
 .testcase   { margin-left: 2em; }
+
+#container_tu {
+    height: 150px;
+    width: 100%;
+    float: right;
+}
 </style>
 """
 
@@ -305,11 +312,12 @@ table       { font-size: 100%; }
     # Heading
     #
 
-    HEADING_TMPL = """<div class='heading'>
-<h1 style="font-family: Microsoft YaHei">%(title)s</h1>
-%(parameters)s
-<p class='description'>%(description)s</p>
-</div>
+    HEADING_TMPL = """
+    <div class='heading'>
+        <h1 style="font-family: Microsoft YaHei">%(title)s</h1>%(parameters)s
+        <p class='description'>%(description)s</p>
+    </div>
+
 """  # variables: (title, parameters, description)
 
     HEADING_ATTRIBUTE_TMPL = """<p class='attribute'><strong>%(name)s : </strong> %(value)s</p>
@@ -320,7 +328,8 @@ table       { font-size: 100%; }
     #
     # 汉化,加美化效果 --Findyou
     REPORT_TMPL = """
-<p id='show_detail_line'>
+    <div id='container_tu' style="height: 300px;width: 50%%;float: center;"></div>
+<p id='show_detail_line' style="width: 100%%;display: inline-block;">
 <a class="btn btn-primary" href='javascript:showCase(0)'>概要{ %(passrate)s }</a>
 <a class="btn btn-danger" href='javascript:showCase(1)'>失败{ %(fail)s }</a>
 <a class="btn btn-success" href='javascript:showCase(2)'>通过{ %(Pass)s }</a>
@@ -353,6 +362,77 @@ table       { font-size: 100%; }
     <td>通过率：%(passrate)s</td>
 </tr>
 </table>
+
+<!-- /*自己新增部分Start*/ -->
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+        var dom = document.getElementById("container_tu");
+        var myChart = echarts.init(dom);
+        var app = {};
+
+        app.title = '环形图';
+
+        var option = {
+            tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%%)"
+                },
+            color:['red','#c60','#6c6','#bbe2e8'],
+            legend: {
+                orient: 'horizontal',
+                x: 'center',
+                data: ['失败', '未通过', '通过', '总用例']
+            },
+            series: [{
+                name: '测试结果',
+                type: 'pie',
+                radius: ['30%%', '70%%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'right'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: [
+
+                    {
+                        value: %(error)s,
+                        name: '失败'
+                    },
+                    {
+                        value: %(fail)s,
+                        name: '未通过'
+                    },
+                    {
+                        value: %(Pass)s,
+                        name: '通过'
+                    },
+                    {
+                        value: %(count)s,
+                        name: '总用例'
+                    }
+                ]
+            }]
+        };
+        if(option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+</script>
+<!-- #/*自己新增部分End*/ -->
+
 """  # variables: (test_list, count, Pass, fail, error ,passrate)
 
     REPORT_CLASS_TMPL = r"""
