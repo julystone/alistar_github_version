@@ -10,9 +10,9 @@ from common.R_r_log import my_log
 
 
 # TODO _find_elements  还没调通
-# TODO check_elements_exist 需要重新整理
-# TODO 截图
-# TODO 日志
+# TODO 截图嵌入报告中
+# TODO 启动Appium
+# TODO 发送邮件模块
 
 class Page:
     def __init__(self, driver):
@@ -22,20 +22,10 @@ class Page:
         self.size = self.driver.get_window_size()
         self.timeout = 30
 
-    def _get_screenshots_as_file(self):
-        # 对PO具体截图
-        png_name = f"{time.strftime('screen_%Y_%m_%d_%H_%M_%S', time.localtime())}.png"
-        self.driver.get_screenshot_as_file(SCREENSHOT_DIR + png_name)
-        my_log.info("[S]正在保存当前截图")
-
-    def try_except(self, func):
-        # 对断言失败的进行截屏保存
-        def wrapper(*args, **kwargs):
-            try:
-                func(*args, **kwargs)
-            except AssertionError:
-                self._get_screenshots_as_file()
-        return wrapper
+    def get_screenshots_as_file(self, extra=""):
+        timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
+        self.driver.get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
+        my_log.info("正在保存当前截图")
 
     def _find_element(self, *loc):
         # 对查找元素做一层封装，对text、partial_text使用XPATH定位
@@ -47,9 +37,8 @@ class Page:
             WebDriverWait(self.driver, 20).until(EC.presence_of_element_located(loc), message="TimeOut")
             return self.driver.find_element(*loc)
         except (TimeoutException, NoSuchElementException) as e:
-            print(f"[F]{loc}元素没有定位到")
-            my_log.error(f"[F]{loc}元素没有定位到")
-            self._get_screenshots_as_file()
+            print(f"{loc}元素没有定位到")
+            my_log.info(f"{loc}元素没有定位到")
             raise e
 
     def _find_elements(self, *loc):
@@ -65,11 +54,11 @@ class Page:
         try:
             self._find_element(*loc)
         except (TimeoutException, NoSuchElementException):
-            print(f"[F]{loc}元素不存在")
-            my_log.info(f"[F]{loc}元素不存在")
+            print(f"{loc}元素不存在")
+            my_log.info(f"{loc}元素不存在")
             return False
-        print(f"[S]{loc}元素存在")
-        my_log.info(f"[S]{loc}元素存在")
+        print(f"{loc}元素存在")
+        my_log.info(f"{loc}元素存在")
         return True
 
     def _input_text(self, loc, text):

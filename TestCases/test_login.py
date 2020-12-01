@@ -18,9 +18,8 @@ cases = wb.read_data_obj()
 # 测试用例 = 测试对象的功能 + 测试数据
 @ddt
 class TestLoginPage(TestBase):
-
     @data(*cases)
-    def estcase_login(self, case):
+    def testcase_login(self, case):
         if not case.ifDDT:
             self.skipTest("NoDDT")
         login_page = LoginPage(self.driver)
@@ -29,7 +28,11 @@ class TestLoginPage(TestBase):
         login_page.input_userNo(case.acc)
         login_page.input_passWord(case.pwd)
         login_page.click_submit()
-        assert login_page._check_element_exist(('part-text', case.checkpoint1)) is True
+        try:
+            assert login_page._check_element_exist(('part-text', case.checkpoint1)) is True
+        except AssertionError as e:
+            login_page.get_screenshots_as_file(extra=case.testNo)
+            raise e
 
     def testcase_clickRiskBook(self):
         login_page = LoginPage(self.driver)
@@ -43,20 +46,21 @@ class TestLoginPage(TestBase):
         login_page._click(login_page.return_button)
         try:
             assert login_page._check_element_exist(login_page.risk_book) is False
-        except AssertionError:
-            login_page._get_screenshots_as_file()
+        except AssertionError as e:
+            login_page.get_screenshots_as_file()
+            raise e
 
     def testcase_clickPwdInput(self):
         login_page = LoginPage(self.driver)
         login_page.gotoLoginPage()
         login_page._click(login_page.login_pwd)
         assert login_page._check_element_exist(login_page.risk_book) is False
-        # assert login_page._check_element_exist(('part-text', '易星安全键盘')) is True
+        # assert login_page._check_element_exist(('part-text', '安全键盘')) is True
 
 
 if __name__ == '__main__':
     # unittest.main()
     test_dir = "./"
-    discover = unittest.defaultTestLoader.discover(test_dir, pattern="testcase_lo*")
+    discover = unittest.defaultTestLoader.discover(test_dir, pattern="testcase_*")
     runner = unittest.TextTestRunner()
     runner.run(discover)

@@ -131,7 +131,7 @@ def mk_test_name(name, value, index=0):
         return "{0}_{1}".format(name, index)
     if isinstance(value, object):
         try:
-            value = value.case_name  # case_name作为value值
+            value = value.TestName  # TestName作为value值
         except:
             return "{0}_{1}".format(name, index)
     try:

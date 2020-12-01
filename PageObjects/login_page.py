@@ -33,9 +33,9 @@ class LoginPage(Page):
     risk_book = (By.ID, r'esunny.test:id/es_activity_login_tv_state_confirm')
 
     # 启明星后台
-    qiMing = ('part-text', '启明星（上海仿真2）')
+    qiMing = ('part-text', '启明星（上海仿真）')
     # 北斗星后台
-    beiDou = ('part-text', '北斗星（上海仿真2）')
+    beiDou = ('part-text', '北斗星（上海仿真）')
 
     def gotoLoginPage(self):
         right_tool_bar = RightToolBar(self.driver)
