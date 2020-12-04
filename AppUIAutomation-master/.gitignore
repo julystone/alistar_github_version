@@ -1,0 +1,13 @@
+screenshot/
+build/
+.idea
+download/
+.DS_Store
+node_modules/*
+*.iml
+logs/
+log/
+target/
+log-stash-conf/
+log-stash-conf-backup/
+

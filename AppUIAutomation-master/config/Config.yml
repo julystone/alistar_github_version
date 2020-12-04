@@ -1,0 +1,52 @@
+# 一些通用设置，通常不需要修改
+GENERAL:
+  DEFAULT_PAGE_FACTORY_WAIT_SEC: 15
+  # 查找元素的最长时延
+  DEFAULT_WAIT_SEC: 15
+  # 每隔多少秒查找一次元素
+  DEFAULT_POLLING_INTERVAL_SEC: 5
+  # 用例运行失败时最多重试运行次数
+  RETRY_COUNT: 0
+
+  # 运行时每隔 SCREENSHOT_INTERVAL 截屏并保存
+  ENABLE_SCREENSHOT: false
+  # 截屏间隔
+  SCREENSHOT_INTERVAL: 3
+
+# 运行用例的默认设备
+DEFAULT_DEVICE:
+  # 是否开启默认设备，false时需要传入相应的task的yml配置
+  # true时只在指定的UDID设备上运行用例
+  DEFAULT_DEVICE_ENABLE: false
+  UDID: SJE0217B29005225
+  APPIUM_PORT: 4723
+  IOS_WDA_PORT: 8001
+
+# 一些运行时需要设置的值
+RUN_TEST_CONIFG:
+  # Android 包名
+  ANDROID_PACKAGE: com.tencent.mm
+  # APK启动时的主活动
+  ANDROID_MAIN_ACTIVITY: com.tencent.mm.ui.LauncherUI
+  # iOS bundle ID
+  IOS_BUNDLE_ID: com.tencent.xin
+  # Appium server 地址
+  APPIUM_SERVER_IP: 0.0.0.0
+  # 一些自定义的额外的设置, 可省略
+  ADDITION_CONIG:
+    - WECLASS_CONIFG
+
+WECLASS_CONIFG:
+  #以分钟为单位
+  WC_PERFORMANCE_TIME: 120
+  WC_PERFORMANCE_CLASSROOM_STAYTIME: 15
+
+#设备相关信息
+SJE0217B29005225:
+  #设备名字
+  DEVICE_NAME: HUAWEI
+
+#设备相关信息
+214be01a3254152a362fb9107ceb2db22ad3d559:
+  #设备名字
+  DEVICE_NAME: iPhone-7-plus
