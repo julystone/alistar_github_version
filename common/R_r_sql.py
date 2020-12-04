@@ -5,7 +5,7 @@
 
 import pymysql
 
-from common.R_r_config import my_config
+from common.ConfigUtil import my_config
 
 """
 输入sql，返回一条或多条
@@ -45,6 +45,8 @@ class Mysql:
             temp = self.cur.fetchall()
         elif resultmode == 2:
             temp = self.cur.fetchmany(size=4)
+        else:
+            temp = None
         return temp
 
     def affect(self, sql):

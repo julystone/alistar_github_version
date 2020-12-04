@@ -1,13 +1,13 @@
 import unittest
 
 from PageObjects.login_page import LoginPage
-from TestCases.Base_Test import TestBase
-from common import R_r_config
-from common.R_r_excel import ReadExcel
+from common.BaseTest import TestBase
+from common import ConfigUtil
+from common.DataUtil import ReadExcel
 from common.R_r_os import DATA_DIR
 from library.ddt import ddt, data
 
-test_config = R_r_config.ConfigData()
+test_config = ConfigUtil.ConfigData()
 
 file_path = DATA_DIR + r"/TestData.xlsx"
 # TODO 使用CSV

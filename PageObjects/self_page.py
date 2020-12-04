@@ -1,7 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from PageObjects.base_page import Page
+from common.BasePage import Page
 
 
 class SelfPage(Page):

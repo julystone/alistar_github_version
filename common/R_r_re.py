@@ -5,7 +5,7 @@
 import configparser
 import re
 
-from common.R_r_config import my_config
+from common.ConfigUtil import my_config
 
 
 class ParmTemp:

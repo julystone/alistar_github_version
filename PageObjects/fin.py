@@ -4,14 +4,12 @@
 # @Date   :   2020/8/4 14:39
 # @Email  :   july401@qq.com
 
-from datetime import datetime
-
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 
-from PageObjects.base_page import Page
+from common.BasePage import Page
 
-from common import R_r_config
+from common import ConfigUtil
 
 
 class LoginPage(Page):
@@ -35,7 +33,7 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    test_phone_config = R_r_config.ConfigData(1)
+    test_phone_config = ConfigUtil.ConfigData(1)
     Desired_Caps = dict(test_phone_config["test_phone"])
     print(Desired_Caps)
     driver = webdriver.Remote('http://localhost:4723/wd/hub', Desired_Caps)

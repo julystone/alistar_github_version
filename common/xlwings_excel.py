@@ -1,6 +1,6 @@
 import xlwings as xw
 
-from common.auto_dict import _AutoDict, dict_to_object
+from utils.auto_dict import _AutoDict, dict_to_object
 
 
 class OperatingExcel:

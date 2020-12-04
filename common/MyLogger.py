@@ -5,7 +5,7 @@
 import logging
 import time
 
-from common.R_r_config import my_config
+from common.ConfigUtil import my_config
 from common.R_r_os import LOG_DIR
 
 

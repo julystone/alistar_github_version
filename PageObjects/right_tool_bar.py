@@ -1,6 +1,7 @@
 from appium.webdriver.common.mobileby import MobileBy as By
 
-from PageObjects.base_page import Page
+from common.BasePage import Page
+from common.Driver import Driver
 
 
 class RightToolBar(Page):
@@ -10,5 +11,6 @@ class RightToolBar(Page):
     login_port = ('text', '交易登录')
 
     def goToLoginPage(self):
-        self._click(self.menu_button)
-        self._click(self.login_port)
+        Driver.click(self.driver, self.menu_button)
+        Driver.click(self.driver, self.login_port)
+        return self
