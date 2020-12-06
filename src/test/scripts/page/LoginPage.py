@@ -5,7 +5,7 @@ from appium.webdriver.common.mobileby import MobileBy as By
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.Interface.right_tool_bar import RightToolBar
+from src.test.scripts.Interface.RightToolBar import RightToolBar
 
 
 class LoginPage(Page):
@@ -16,7 +16,7 @@ class LoginPage(Page):
     # 后台选址
     login_company = (By.ID, 'esunny.test:id/et_login_company')
     # 账号输入
-    login_userno = (By.ID, 'esunny.test:id/et_login_userno')
+    login_userNo = (By.ID, 'esunny.test:id/et_login_userno')
     # 密码输入
     login_pwd = (By.ID, 'esunny.test:id/et_login_pwd')
     # 提交按钮
@@ -40,12 +40,11 @@ class LoginPage(Page):
         Driver.findElement(self.driver, self.login_submit)
 
     def gotoLoginPage(self):
-        right_tool_bar = RightToolBar.verify(self.driver)
-        right_tool_bar.goToLoginPage()
+        RightToolBar.goToLoginPage(self.driver)
         return self
 
     # 选择后台
-    def choose_company(self, text):
+    def chooseCompany(self, text):
         print(f"正在切换{text}后台")
         my_log.info(f"正在切换{text}后台")
         Driver.click(self.driver, self.login_company)
@@ -53,19 +52,19 @@ class LoginPage(Page):
         Driver.click(self.driver, self.qiMing)
         return self
 
-    def input_userNo(self, userNo):
+    def inputUserNo(self, userNo):
         print(f"正在输入userNo{userNo}")
         my_log.info(f"正在输入userNo{userNo}")
-        Driver.input_text(self.driver, self.login_userno, userNo)
+        Driver.input_text(self.driver, self.login_userNo, userNo)
         return self
 
-    def input_passWord(self, pwd):
+    def inputPassWord(self, pwd):
         print(f"正在输入passWord{pwd}")
         my_log.info(f"正在输入passWord{pwd}")
         Driver.input_text(self.driver, self.login_pwd, pwd)
         return self
 
-    def click_submit(self):
+    def clickSubmit(self):
         print("点击登录按钮")
         my_log.info("点击登录按钮")
         Driver.click(self.driver, self.login_submit)
@@ -77,10 +76,10 @@ if __name__ == '__main__':
     log = LoginPage.verify(dd)
     try:
         log.gotoLoginPage(). \
-            choose_company("启明星"). \
-            input_userNo("Q1223871051"). \
-            input_passWord("111111"). \
-            click_submit()
+            chooseCompany("启明星"). \
+            inputUserNo("Q1223871051"). \
+            inputPassWord("111111"). \
+            clickSubmit()
     except Exception as e:
         print(e)
     log.driver.quit()

@@ -25,10 +25,10 @@ class TestLoginPage(TestBase):
             self.skipTest("NoDDT")
         login_page = LoginPage.verify(self.driver)
         login_page.gotoLoginPage()\
-            .choose_company(case.com)\
-            .input_userNo(case.acc)\
-            .input_passWord(case.pwd)\
-            .click_submit()
+            .chooseCompany(case.com)\
+            .inputUserNo(case.acc)\
+            .inputPassWord(case.pwd)\
+            .clickSubmit()
         try:
             assert login_page._check_element_exist(('part-text', case.checkpoint1)) is True
         except AssertionError as e:

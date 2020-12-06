@@ -68,7 +68,6 @@ class Driver:
             my_log.info(f"{loc}元素没有定位到")
         return elem
 
-
     @staticmethod
     def find_elements(driver, loc):
         # 对查找元素返回一整个列表
@@ -81,26 +80,26 @@ class Driver:
 
     @staticmethod
     def check_element_exist(driver, loc):
+        ret = True
         elem = Driver.findElemWithoutException(driver, loc)
         if None is elem:
-            ret =  False
-        ret = True
+            ret = False
         my_log.info(f"{loc} {ret}")
         return ret
 
     @staticmethod
     def input_text(driver, loc, text):
-        elem = Driver.findElement(driver, loc)
+        elem = Driver.findElemWithoutException(driver, loc)
         elem.clear()
         elem.send_keys(text)
 
     @staticmethod
     def click(driver, loc):
-        Driver.findElement(driver, loc).click()
+        Driver.findElemWithoutException(driver, loc).click()
 
     @staticmethod
     def get_text(driver, loc):
-        return Driver.findElement(driver, loc).text
+        return Driver.findElemWithoutException(driver, loc).text
 
     @staticmethod
     def get_toast_message(driver, toast_message):
