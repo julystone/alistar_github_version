@@ -4,10 +4,12 @@
 # @Email  :   july401@qq.com
 
 import os
+from utils.getRootPathUtil import getRootPath
 
 
 class OsRead:
-    def readpath(self, filepattern, ifsymbol='True'):
+    @staticmethod
+    def readPath(filepattern, ifsymbol='True'):
         """
         基于根目录返回响应pattern的目录
         :param filepattern: --->    文件夹名称
@@ -18,21 +20,19 @@ class OsRead:
         return dest_path
 
 
-my_os = OsRead()
+BASE_DIR = getRootPath()
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+CONF_DIR = OsRead.readPath('config')
 
-CONF_DIR = my_os.readpath('config')
+DATA_DIR = OsRead.readPath('tast/data')
 
-DATA_DIR = my_os.readpath('TestCases/data')
+LOG_DIR = OsRead.readPath('result/log')
 
-LOG_DIR = my_os.readpath('result/log')
+REPORT_DIR = OsRead.readPath('result/report')
 
-REPORT_DIR = my_os.readpath('result/report')
+SCREENSHOT_DIR = OsRead.readPath('result/screenshot')
 
-SCREENSHOT_DIR = my_os.readpath('result/screenshot')
-
-CASE_DIR = my_os.readpath('TestCases')
+CASE_DIR = OsRead.readPath('src/test/scripts/testcase')
 
 if __name__ == '__main__':
-    print(LOG_DIR)
+    print(BASE_DIR)

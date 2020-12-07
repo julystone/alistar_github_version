@@ -7,20 +7,16 @@
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 
-from common import Page
 
 from src.test.scripts.framework import ConfigUtil
+from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.Driver import Driver
 
 
 class LoginPage(Page):
     # 用户名输入框
     menu_button = (MobileBy.ID, 'esunny.test:id/rv_favorite_list')  # 完美
-    # text1 = (MobileBy.XPATH, '//*[@resource-id="esunny.test:id/fag_nav"]//*[@text="行情"]')  # 找到了，但是好慢好慢   11
-    # text2 = (MobileBy.XPATH, '//*[@resource-id="esunny.test:id/fag_nav"]//*[contains(@text,"行情")]')  # 找到了，但是好慢好慢   11
-    # text3 = (MobileBy.XPATH, '//*[@text="行情"]')  # 找到了，但是好慢好慢    11
     text3 = ('part-text', '行情')  # 找到了，但是好慢好慢    11
-    # text4 = (MobileBy.XPATH, '//*[contains(@text,"行情")]')  # 找到了，但是好慢好慢    12
-    # text1 = (MobileBy.ID, "esunny.test:id/fag_nav")
     text2 = (MobileBy.LINK_TEXT, "esunny.test:id/fag_nav")
     # 密码输入框
     pass_input = (MobileBy.XPATH, '//div[@class="signInWrap"]//input[@placeholder="密码"]')

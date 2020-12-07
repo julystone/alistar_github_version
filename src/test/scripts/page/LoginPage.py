@@ -35,9 +35,9 @@ class LoginPage(Page):
     # 北斗星后台
     beiDou = ('part-text', '北斗星（上海仿真）')
 
-    def __init__(self, dv):
-        super().__init__(dv)
-        Driver.findElement(self.driver, self.login_submit)
+    def verify(self):
+        Driver.check_element_exist(self.driver, self.risk_book)
+        return self
 
     def gotoLoginPage(self):
         RightToolBar.goToLoginPage(self.driver)
@@ -72,15 +72,17 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver(0)
-    log = LoginPage.verify(dd)
+    dd = Driver(0).driver
+    log = LoginPage(dd)
     try:
         log.gotoLoginPage(). \
+            verify().\
             chooseCompany("启明星"). \
             inputUserNo("Q1223871051"). \
             inputPassWord("111111"). \
             clickSubmit()
     except Exception as e:
         print(e)
-    log.driver.quit()
+    log.quit()
+
 
