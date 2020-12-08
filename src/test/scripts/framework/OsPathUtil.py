@@ -24,7 +24,7 @@ BASE_DIR = getRootPath()
 
 CONF_DIR = OsRead.readPath('config')
 
-DATA_DIR = OsRead.readPath('tast/data')
+DATA_DIR = OsRead.readPath('task/data')
 
 LOG_DIR = OsRead.readPath('result/log')
 

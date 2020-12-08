@@ -11,7 +11,6 @@ from src.test.resources.ddt import ddt, data
 test_config = ConfigUtil.ConfigData()
 
 file_path = DATA_DIR + r"/TestData.xlsx"
-# TODO 使用CSV
 sheet_name = 'Login1'
 wb = ReadExcel(file_path, sheet_name)
 cases = wb.read_data_obj()
