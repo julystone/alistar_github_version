@@ -49,10 +49,16 @@ class Driver:
         return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
     @staticmethod
-    def get_screenshots_as_file(driver, extra=""):
+    def get_screenshot_as_file(driver, extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
-        driver.get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
         my_log.info("正在保存当前截图")
+        driver.get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
+
+    @staticmethod
+    def get_screenshot_as_png(driver):
+        # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
+        my_log.info("正在保存当前截图")
+        return driver.get_screenshot_as_png()
 
     @staticmethod
     def findElement(dv, loc):
@@ -67,7 +73,7 @@ class Driver:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(dv, 20).until(EC.presence_of_element_located(loc), message="TimeOut")
+        WebDriverWait(dv, 5).until(EC.presence_of_element_located(loc), message="TimeOut")
         return dv.find_element(*loc)
 
     @staticmethod

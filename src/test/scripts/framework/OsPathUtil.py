@@ -37,3 +37,4 @@ CASE_DIR = OsRead.readPath('src\\test\\scripts\\testcase')
 if __name__ == '__main__':
     print(BASE_DIR)
     print(REPORT_DIR)
+    print(SCREENSHOT_DIR)
