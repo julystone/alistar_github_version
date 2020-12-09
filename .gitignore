@@ -1,4 +1,5 @@
 result/
-comm_/
-TestCases/data/
+AppUIAutomation-master/
+.pytest_cache
+task/
 .idea/

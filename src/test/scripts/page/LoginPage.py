@@ -10,6 +10,8 @@ from src.test.scripts.Interface.RightToolBar import RightToolBar
 import pytest
 import allure
 
+from src.test.scripts.framework.OsPathUtil import REPORT_DIR
+
 
 class LoginPage(Page):
     # title
@@ -59,15 +61,15 @@ class LoginPage(Page):
 
     @allure.step("输入交易账号")
     def inputUserNo(self, userNo):
-        print(f"正在输入userNo{userNo}")
-        my_log.info(f"正在输入userNo{userNo}")
+        print(f"正在输入userNo {userNo}")
+        my_log.info(f"正在输入userNo {userNo}")
         Driver.input_text(self.driver, self.login_userNo, userNo)
         return self
 
     @allure.step("输入交易密码")
     def inputPassWord(self, pwd):
-        print(f"正在输入passWord{pwd}")
-        my_log.info(f"正在输入passWord{pwd}")
+        print(f"正在输入passWord {pwd}")
+        my_log.info(f"正在输入passWord {pwd}")
         Driver.input_text(self.driver, self.login_pwd, pwd)
         return self
 
@@ -94,9 +96,9 @@ class TestLogin:
                 clickSubmit()
         except Exception as e:
             print(e)
-        # log.quit()
 
 
 if __name__ == '__main__':
-    pytest.main(["-v", "--alluredir", "./report/.allureTemp"])
-    os.system("allure generate ./report/.allureTemp -o ./report/allure --clean")
+    # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
+    os.system(f"pytest LoginPage.py -v --alluredir {REPORT_DIR}/.allureTemp")
+    os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

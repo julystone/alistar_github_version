@@ -1,31 +1,17 @@
 import os
 import shutil
 import time
-import unittest
 
-from src.test.scripts.framework.OsPathUtil import REPORT_DIR, DATA_DIR
-from src.test.resources.HTMLTestRunnerNew import HTMLTestRunner
+import pytest
 
-date2display = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
-date2display_cuted = date2display[:10]
+from src.test.scripts.framework.OsPathUtil import REPORT_DIR, DATA_DIR, CASE_DIR
 
 # 文件备份
-if not os.path.exists(os.path.join(DATA_DIR, f'{date2display_cuted}')):
-    shutil.copytree(DATA_DIR, os.path.join(DATA_DIR, f'{date2display_cuted}'))
+date2display = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
+date2display_cut = date2display[:10]
+if not os.path.exists(os.path.join(DATA_DIR, f'{date2display_cut}')):
+    shutil.copytree(DATA_DIR, os.path.join(DATA_DIR, f'{date2display_cut}'))
 
-# 创建一个测试集合
-suite = unittest.TestSuite()
-
-# 创建一个执行器
-runner = unittest.TextTestRunner()
-loader = unittest.TestLoader()
-
-# 添加测试用例
-suite.addTest(loader.discover('./TestCases', pattern='test_*'))
-
-with open(f'{REPORT_DIR}report_{date2display}.html', 'wb') as fb:
-    test_run = HTMLTestRunner(stream=fb, verbosity=2, title='esunny.test_%s_report' % date2display,
-                              description='易星自动化测试报告', tester='july')
-    test_run.run(suite)
-
-# runner.run(suite)
+shutil.rmtree(f"{REPORT_DIR}\\.allureTemp")
+pytest.main([CASE_DIR, "-sqx", "--ff", "--alluredir", f"{REPORT_DIR}\\.allureTemp"])
+os.system(f"allure generate {REPORT_DIR}\\.allureTemp -o {REPORT_DIR}\\allure --clean")
