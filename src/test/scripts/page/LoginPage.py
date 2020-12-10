@@ -100,5 +100,4 @@ class TestLogin:
 
 if __name__ == '__main__':
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
-    os.system(f"pytest LoginPage.py -v --alluredir {REPORT_DIR}/.allureTemp")
     os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

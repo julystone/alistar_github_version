@@ -57,7 +57,18 @@ class SelfPage(Page):
         print("long_press")
         size = Driver.getWindowSize(self.driver)
         print(size)
-        Driver.long_press(self.driver, x=size["x"] * 0.5, y=size["y"] * 0.5)
+        Driver.long_press(self.driver, y=size["height"] * 0.5, x=size["width"] * 0.5)
+        input("点击继续")
+        return self
+
+    def swipe_up_quote(self):
+        print('swipe up')
+        Driver.swipe(self.driver, 'U')
+        return self
+
+    def swipe_left_quote(self):
+        print('swipe left')
+        Driver.swipe(self.driver, 'L')
         return self
 
 
@@ -67,10 +78,10 @@ if __name__ == '__main__':
     try:
         # log.goToSelfPage(). \
         log.verify(). \
-            goToOneQuote("棉花105").\
-            long_press_quote()
-        print("1111")
-        time.sleep(5)
+            goToOneQuote("棉花105"). \
+            long_press_quote().\
+            swipe_up_quote()
     except Exception as e:
         print(e)
+        raise e
     log.quit()

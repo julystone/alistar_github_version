@@ -34,6 +34,7 @@ class Driver:
                         'platformVersion': test_config.get('test_phone', 'platformVersion'),
                         'appPackage': test_config.get('test_phone', 'appPackage'),
                         'appActivity': test_config.get('test_phone', 'appActivity'),
+                        'automationName': "UiAutomator2",
                         'noReset': test_config.get('test_phone', 'noReset')}
         return webdriver.Remote(f'http://{ip}:{port}/wd/hub', desired_caps)
 
@@ -128,12 +129,31 @@ class Driver:
         return ActionHelpers.tap(driver, [(coordinate['x'], coordinate['y'])])
 
     @staticmethod
-    def long_press(driver, loc=None, x=None, y=None):
-        if loc is not None:
-            elem = Driver.findElemWithoutException(driver, loc)
-            return TouchAction.press(driver, el=elem)
-        elif x is not None and y is not None:
-            return TouchAction.press(driver, x=x, y=y)
+    def long_press(driver, loc=None, x=None, y=None, duration=2000):
+        # touchAction = TouchAction(driver)
+        # if loc is not None:
+        #     elem = Driver.findElemWithoutException(driver, loc)
+        #     return touchAction.long_press(el=elem, duration=2000).perform().wait(3000)
+        # elif x is not None and y is not None:
+        #     return touchAction.long_press(x=x, y=y, duration=2000).perform().wait(3000)
+        ActionHelpers.tap(driver, [(x, y)], 2000)
+
+    @staticmethod
+    def swipe(driver, direction, duration=0):
+        """
+        调用ActionHelpers实现屏幕的滑动操作。4个坐标顺序分别为：
+        :param driver:      Webdriver对象
+        :param direction:   方向，可以填入[“L”, "R", "U", "D"]
+        :param duration:    滑动速度，默认快速滑动，0ms
+        :return:            None
+        """
+        size = list(Driver.getWindowSize(driver).values())
+        pattern = {"L": (3 / 4, 1 / 2, 1 / 4, 1 / 2),
+                   "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
+                   "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
+                   "D": (1 / 2, 1 / 4, 1 / 2, 3 / 4)}
+        params = [pattern[direction][i] * (size+size)[i] for i in range(4)]
+        return ActionHelpers.swipe(driver, *params, duration=duration)
 
     @staticmethod
     def get_text(driver, loc):
