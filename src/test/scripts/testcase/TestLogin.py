@@ -16,23 +16,13 @@ wb = ReadExcel(file_path, sheet_name)
 cases = wb.read_data_obj()
 
 
-def screenshot_allure(func):
-    def get_err_screenshot(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except AssertionError as e:
-            png = Driver.get_screenshot_as_file(kwargs["driver"])
-            allure.attach(png, allure.attachment_type.PNG)
-            raise e
-        return get_err_screenshot
-
-
 # TODO feature、story、step 后续都能写到excel里，隔离开代码
+# TODO 为啥我的feature story不写进allure 报告里  和last failed有关吗？
 
-# 测试用例 = 测试对象的功能 + 测试数据
-@allure.feature("测试登录界面")
+
+@allure.feature("登录模块")
 class TestLoginPage(TestBase):
-    @allure.story("参数化测试多组登录账号")
+    @allure.title("{case.testName}")
     @pytest.mark.parametrize("case", cases)
     def testcase_login(self, case, getDriver):
         if not case.ifDDT:
@@ -45,20 +35,6 @@ class TestLoginPage(TestBase):
             .inputPassWord(case.pwd) \
             .clickSubmit()
         assert Driver.check_element_exist(login_page.driver, ('part-text', case.checkpoint1)) is True
-
-    # @allure.story("参数化测试多组登录账号")
-    # @pytest.mark.parametrize("case", cases)
-    # def testcase_login(self, case, getDriverFactory):
-    #     if not case.ifDDT:
-    #         pytest.skip("No need to DDT")
-    #     login_page = LoginPage(getDriverFactory())
-    #     login_page.gotoLoginPage() \
-    #         .verify() \
-    #         .chooseCompany(case.com) \
-    #         .inputUserNo(case.acc) \
-    #         .inputPassWord(case.pwd) \
-    #         .clickSubmit()
-    #     assert Driver.check_element_exist(login_page.driver, ('part-text', case.checkpoint1)) is True
 
     @allure.story("测试点击风险责任书")
     def estcase_clickRiskBook(self, getDriver):

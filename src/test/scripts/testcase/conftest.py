@@ -1,11 +1,12 @@
+import os
+
 import allure
 import pytest
 
 from src.test.scripts.framework.Driver import Driver
 
-# conftest.py
 
-driver = None
+# conftest.py
 
 
 # TODO 添加失败、成功截图、每次assert进行截图、截图监听器
@@ -32,6 +33,17 @@ def getDriverFactory():  # fixture工厂
         dv.quit()
 
 
+@pytest.fixture()
+def gg():
+    driver = Driver.prepareForAndroidAppium()
+    return driver
+
+
+@pytest.fixture()
+def gd(request):
+    request.param.quit()
+
+
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item):
     outcome = yield
@@ -50,19 +62,7 @@ def pytest_runtest_makereport(item):
                 allure.attach(Driver.get_screenshot_as_png(item.funcargs['getDriver']), "失败截图",
                               allure.attachment_type.PNG)
 
-# @pytest.hookimpl(hookwrapper=True, tryfirst=True)
-# def pytest_runtest_makereport(item, call):
-#     print('------------------------------------')
-#
-#     # 获取钩子方法的调用结果
-#     out = yield
-#     print('用例执行结果', out)
-#
-#     # 3. 从钩子方法的调用结果中获取测试报告
-#     report = out.get_result()
-#
-#     print('测试报告：%s' % report)
-#     print('步骤：%s' % report.when)
-#     print('nodeid：%s' % report.nodeid)
-#     print('description:%s' % str(item.function.__doc__))
-#     print(('运行结果: %s' % report.outcome))
+
+@pytest.fixture(scope='session')
+def rootdir(request):
+    return os.path.join(request.config.rootdir)

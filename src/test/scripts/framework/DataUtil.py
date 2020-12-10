@@ -10,8 +10,10 @@ from openpyxl.styles import Font
 
 
 class Case:
-    # 这个类用来存储用例
-    pass
+    def __repr__(self):
+        string = 'In __repr__：'
+        string += '\n' + repr(self.__dict__)
+        return string
 
 
 class ReadExcel(object):
