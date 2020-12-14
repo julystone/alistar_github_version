@@ -55,8 +55,9 @@ class LoginPage(Page):
         print(f"正在切换{text}后台")
         my_log.info(f"正在切换{text}后台")
         Driver.click(self.driver, self.login_company)
-        time.sleep(2)
+        Driver.scroll_until_elemDisplayed(self.driver, self.qiMing)
         Driver.click(self.driver, self.qiMing)
+        # Driver.click(self.driver, self.qiMing)
         return self
 
     @allure.step("输入交易账号")
@@ -80,24 +81,29 @@ class LoginPage(Page):
         Driver.click(self.driver, self.login_submit)
         return self
 
-
-@allure.feature("登录功能")
-class TestLogin:
-    @allure.story("正常登录")
-    def test_login_success(self):
-        dd = Driver(0).driver
-        log = LoginPage(dd)
-        try:
-            log.gotoLoginPage(). \
-                verify(). \
-                chooseCompany("启明星"). \
-                inputUserNo("Q1223871051"). \
-                inputPassWord("111111"). \
-                clickSubmit()
-        except Exception as e:
-            print(e)
+    @staticmethod
+    def login_common(driver):
+        LoginPage(driver).  verify(). \
+                            chooseCompany("启明星"). \
+                            inputUserNo("Q1223871051"). \
+                            inputPassWord("111111"). \
+                            clickSubmit()
 
 
 if __name__ == '__main__':
+    dd = Driver(0).driver
+    log = LoginPage(dd)
+    try:
+        log.gotoLoginPage(). \
+            verify(). \
+            chooseCompany("启明星"). \
+            inputUserNo("Q1223871051"). \
+            inputPassWord("111111"). \
+            clickSubmit()
+    except Exception as e:
+        print(e)
+        raise e
+    input("点击继续")
+    log.quit()
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
-    os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")
+    # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

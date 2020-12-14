@@ -3,24 +3,24 @@ from src.test.scripts.framework.Driver import Driver
 
 class BottomToolBar:
     # 4功能键 - 自选
-    self_list = ('text', '自选')
+    self_list = ('id', 'esunny.test:id/nav_item_favorite')
     # 4功能键 - 行情
-    quote_list = ('text', '行情')
+    quote_list = ('id', 'esunny.test:id/nav_item_quote')
     # 4功能键 - 交易
-    trade_page = ('text', '交易')
+    trade_page = ('id', 'esunny.test:id/nav_item_trade')
     # 4功能键 - 资讯
-    news_page = ('text', '资讯')
+    news_page = ('id', 'esunny.test:id/nav_item_news')
 
     # 5功能键 - 资讯
-    news_page_5 = ('text', '资讯')
+    news_page_5 = ('id', 'esunny.test:id/es_kline_bottom_knb_news')
     # 5功能键 - 盘口
-    dish_page_5 = ('text', '盘口')
+    dish_page_5 = ('id', 'esunny.test:id/es_kline_bottom_knb_pannel')
     # 5功能键 - 分时
-    time_sharing_5 = ('text', '盘口')
+    time_sharing_5 = ('id', 'esunny.test:id/es_kline_bottom_knb_min')
     # 5功能键 - K线
-    Kline_page_5 = ('text', '盘口')
+    Kline_page_5 = ('id', 'esunny.test:id/es_kline_bottom_knb_klines')
     # 5功能键 - 交易
-    trade_page_5 = ('text', '盘口')
+    trade_page_5 = ('id', 'esunny.test:id/es_kline_bottom_knb_trade')
 
     @staticmethod
     def goToSelfList(driver):

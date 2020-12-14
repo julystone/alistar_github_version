@@ -1,6 +1,5 @@
 import time
 
-import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework.BasePage import Page
@@ -9,10 +8,10 @@ from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.Interface.BottomToolBar import BottomToolBar
 
 
-class SelfPage(Page):
+class QuotePage(Page):
     # title
     title = (By.ID, 'esunny.test:id/toolbar_title')
-    # 左侧进入合约排序
+    # 左侧进入板块选择
     block_change = (By.ID, 'esunny.test:id/toolbar_left_first')
     # 合约名称-合约代码
     first_text = (By.ID, 'esunny.test:id/es_quote_fragment_header_tv_contract_name_double')
@@ -24,16 +23,14 @@ class SelfPage(Page):
     forth_title_switch = (By.ID, 'esunny.test:id/es_quote_fragment_header_tv_position_double')
     # 列表内合约
     quote_in_list = ('resource-id', 'esunny.test:id/item_list_quote_ll_main')
-    # 右侧+搜索合约、持仓导入
-    plus_button = (By.ID, 'esunny.test:id/toolbar_right_second')
 
     def verify(self):
-        # Driver.check_element_exist(self.driver, self.forth_title_switch)
+        Driver.check_element_exist(self.driver, self.forth_title_switch)
         pass
         return self
 
-    def goToSelfPage(self):
-        BottomToolBar.goToSelfList(self.driver)
+    def goToQuotePage(self):
+        BottomToolBar.goToQuoteList(self.driver)
         return self
 
     def switchThirdTitle(self):
@@ -44,10 +41,17 @@ class SelfPage(Page):
         Driver.click(self.driver, self.forth_title_switch)
         return self
 
-    @allure.step("正在进入合约")
+    def chooseBlock(self, block_name='内盘主力'):
+        Driver.click(self.driver, self.block_change)
+        # Driver.scroll_until_elemDisplayed(self.driver, self.block_change)
+        locator = ('part-text', block_name)
+        Driver.click(self.driver, locator)
+        return self
+
     def goToOneQuote(self, quote_name='苹果101'):
         print(f"正在进入{quote_name}合约")
         locator = ('part-text', quote_name)
+        Driver.scroll_until_elemDisplayed(self.driver, locator)
         Driver.click(self.driver, locator)
         return self
 
@@ -68,10 +72,17 @@ class SelfPage(Page):
         Driver.swipe(self.driver, 'L')
         return self
 
+    @staticmethod
+    def goToOneQuote_common(driver, block_name, quoteName):
+        quote = QuotePage(driver)
+        quote.goToQuotePage(). \
+            chooseBlock(block_name). \
+            goToOneQuote(quoteName)
+
 
 if __name__ == '__main__':
     dd = Driver(0).driver
-    log = SelfPage(dd)
+    log = QuotePage(dd)
     try:
         # log.goToSelfPage(). \
         log.verify(). \

@@ -1,3 +1,4 @@
+import os
 import time
 
 from appium import webdriver
@@ -116,30 +117,43 @@ class Driver:
         return ret
 
     @staticmethod
+    def scroll_until_elemDisplayed(driver, loc):
+        # Driver.swipe(driver, direction='U', duration=80)
+        ret = True
+        for _ in range(10):
+            ret = Driver.check_element_exist(driver, loc)
+            if ret:
+                break
+            Driver.swipe(driver, direction='D', duration=300)
+        return ret
+
+    @staticmethod
     def input_text(driver, loc, text):
         elem = Driver.findElemWithoutException(driver, loc)
         elem.clear()
         elem.send_keys(text)
 
     @staticmethod
-    def click(driver, loc):
+    def loc_coord(driver, loc):
         elem = Driver.findElemWithoutException(driver, loc)
-        coordinate = elem.location_in_view
+        return elem.location_in_view
+
+    @staticmethod
+    def click(driver, loc):
+        return Driver.findElement(driver, loc).click()
+        # coordinate = Driver.loc_coord(driver, loc)
         # 解决页面刷新过快，定位到元素后，点击过慢的问题
-        return ActionHelpers.tap(driver, [(coordinate['x'], coordinate['y'])])
+        # return ActionHelpers.tap(driver, [(coordinate['x'], coordinate['y'])])
 
     @staticmethod
-    def long_press(driver, loc=None, x=None, y=None, duration=2000):
-        # touchAction = TouchAction(driver)
-        # if loc is not None:
-        #     elem = Driver.findElemWithoutException(driver, loc)
-        #     return touchAction.long_press(el=elem, duration=2000).perform().wait(3000)
-        # elif x is not None and y is not None:
-        #     return touchAction.long_press(x=x, y=y, duration=2000).perform().wait(3000)
-        ActionHelpers.tap(driver, [(x, y)], 2000)
+    def long_press(driver, loc=None, x=None, y=None, duration=1000):
+        if loc is not None:
+            coordinate = Driver.loc_coord(driver, loc)
+            x, y = coordinate['x'], coordinate['y']
+        os.system(f"adb shell input swipe {x} {y} {x} {y} {duration}")
 
     @staticmethod
-    def swipe(driver, direction, duration=0):
+    def swipe(driver, direction, duration=80):
         """
         调用ActionHelpers实现屏幕的滑动操作。4个坐标顺序分别为：
         :param driver:      Webdriver对象
@@ -153,7 +167,9 @@ class Driver:
                    "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
                    "D": (1 / 2, 1 / 4, 1 / 2, 3 / 4)}
         params = [pattern[direction][i] * (size+size)[i] for i in range(4)]
-        return ActionHelpers.swipe(driver, *params, duration=duration)
+        # return ActionHelpers.swipe(driver, *params, duration=duration)
+        os.system(f"adb shell input swipe {params[0]} {params[1]} {params[2]} {params[3]} {duration}")
+        time.sleep(1)
 
     @staticmethod
     def get_text(driver, loc):
