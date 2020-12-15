@@ -22,6 +22,9 @@ from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 class Driver:
     def __init__(self, configChoice):
         self.driver = self.prepareForAndroidAppium(configChoice)
+        self.size = self.getWindowSize(self.driver)
+        setattr(self.driver, 'width', self.size['width'])
+        setattr(self.driver, 'height', self.size['height'])
 
     @staticmethod
     def getWindowSize(driver):
@@ -140,10 +143,22 @@ class Driver:
 
     @staticmethod
     def click(driver, loc):
-        return Driver.findElement(driver, loc).click()
-        # coordinate = Driver.loc_coord(driver, loc)
-        # 解决页面刷新过快，定位到元素后，点击过慢的问题
-        # return ActionHelpers.tap(driver, [(coordinate['x'], coordinate['y'])])
+        if isinstance(loc, dict):
+            return Driver.click_coordinate(driver, loc=loc)
+        elif isinstance(loc, tuple):
+            return Driver.findElement(driver, loc).click()
+
+    @staticmethod
+    def click_coordinate(driver, loc=None, x=None, y=None):
+        if None is (loc or x or y):
+            return print("error Input")
+        elif loc is None:
+            time.sleep(0.5)
+            return os.system(f"adb shell input tap {x} {y}")
+        else:
+            time.sleep(0.5)
+            temp = {'x': driver.width * loc['x'], 'y': driver.height * loc['y']}
+            return os.system(f"adb shell input tap {temp['x']} {temp['y']}")
 
     @staticmethod
     def long_press(driver, loc=None, x=None, y=None, duration=1000):
@@ -166,7 +181,7 @@ class Driver:
                    "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
                    "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
                    "D": (1 / 2, 1 / 4, 1 / 2, 3 / 4)}
-        params = [pattern[direction][i] * (size+size)[i] for i in range(4)]
+        params = [pattern[direction][i] * (size + size)[i] for i in range(4)]
         # return ActionHelpers.swipe(driver, *params, duration=duration)
         os.system(f"adb shell input swipe {params[0]} {params[1]} {params[2]} {params[3]} {duration}")
         time.sleep(1)

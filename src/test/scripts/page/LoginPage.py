@@ -51,9 +51,9 @@ class LoginPage(Page):
         return self
 
     @allure.step("选择开户公司")
-    def chooseCompany(self, text):
-        print(f"正在切换{text}后台")
-        my_log.info(f"正在切换{text}后台")
+    def chooseCompany(self, company):
+        print(f"正在切换{company}后台")
+        my_log.info(f"正在切换{company}后台")
         Driver.click(self.driver, self.login_company)
         Driver.scroll_until_elemDisplayed(self.driver, self.qiMing)
         Driver.click(self.driver, self.qiMing)
@@ -81,13 +81,26 @@ class LoginPage(Page):
         Driver.click(self.driver, self.login_submit)
         return self
 
+    @allure.step("检查账号密码是否已经保存")
+    def checkAccountSaved(self):
+        print("检查账号密码是否已经保存")
+        if Driver.get_text(self.driver, self.login_pwd) is None:
+            print("账密未保存")
+            return False
+        print("账密已记住")
+        return True
+
     @staticmethod
-    def login_common(driver):
-        LoginPage(driver).  verify(). \
-                            chooseCompany("启明星"). \
-                            inputUserNo("Q1223871051"). \
-                            inputPassWord("111111"). \
-                            clickSubmit()
+    def login_common(driver, company='启明星', userNo='Q1223871051', pwd='111111'):
+        login = LoginPage(driver)
+        login.verify()
+        if login.checkAccountSaved():
+            login.clickSubmit()
+        else:
+            login.chooseCompany(company). \
+                inputUserNo(userNo). \
+                inputPassWord(pwd). \
+                clickSubmit()
 
 
 if __name__ == '__main__':
