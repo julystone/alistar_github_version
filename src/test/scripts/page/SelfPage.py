@@ -26,6 +26,11 @@ class SelfPage(Page):
     quote_in_list = ('resource-id', 'esunny.test:id/item_list_quote_ll_main')
     # 右侧+搜索合约、持仓导入
     plus_button = (By.ID, 'esunny.test:id/toolbar_right_second')
+    # 自选合约列表名
+    contract_name_list = (By.ID, 'esunny.test:id/tv_quote_contractName')
+    # 自选合约列表号
+    contract_no_list = (By.ID, 'esunny.test:id/tv_quote_contractNo')
+
 
     def verify(self):
         # Driver.check_element_exist(self.driver, self.forth_title_switch)
@@ -68,6 +73,10 @@ class SelfPage(Page):
         Driver.swipe(self.driver, 'L')
         return self
 
+    def get_self_list(self):
+        print('get self list')
+        return Driver.find_elements(self.driver, self.contract_name_list)
+
 
 if __name__ == '__main__':
     dd = Driver(0).driver
@@ -75,10 +84,9 @@ if __name__ == '__main__':
     try:
         # log.goToSelfPage(). \
         log.verify(). \
-            goToOneQuote("棉花105"). \
-            swipe_up_quote()
+            get_self_list()
     except Exception as e:
         print(e)
-        raise e
-    input("点击继续")
+        # raise e
+    # input("点击继续")
     log.quit()

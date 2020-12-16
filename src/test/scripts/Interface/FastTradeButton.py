@@ -11,6 +11,8 @@ class FastTradeButton:
     fast_trade_btn = {'x': 780 / 1080, 'y': 144 / 2201}
     add_fav_btn = {'x': 900 / 1080, 'y': 144 / 2201}
     more_fun_btn = {'x': 1020 / 1080, 'y': 144 / 2201}
+    # more_fun_btn_2 = ('id', 'esunny.test:id/es_kline_toolbar_right_first')
+    quit_quote_btn = ('id', 'esunny.test:id/toolbar_left_first')
 
     # 退出快买快卖提示框
     quit_ft_ntf = ('text', '是否要退出快买快卖？')
@@ -112,12 +114,30 @@ class FastTradeButton:
             Driver.click(driver, FastTradeButton.price_keys[num])
         Driver.click(driver, FastTradeButton.price_keys[method])
 
+    @staticmethod
+    def click_more_btn(driver):
+        Driver.click(driver, FastTradeButton.more_fun_btn)
+
 
 if __name__ == '__main__':
     dd = Driver(0).driver
     log = QuotePage(dd)
     log.goToOneQuote('CF105')
-    FastTradeButton.goToFastTrade(dd)
-    FastTradeButton.clickPriceButton(dd)
-    FastTradeButton.trade_via_price(dd, 'buy', 14875)
-    FastTradeButton.noMoreTradeNtf(dd)
+    t1 = datetime.now()
+    FastTradeButton.click_more_btn(dd)
+    t2 = datetime.now()
+    print(t2-t1)
+    # FastTradeButton.goToFastTrade(dd)
+    # print(dd.contexts)
+    Driver.click(dd, ("part-text", "搜索合约"))
+    Driver.click(dd, FastTradeButton.more_fun_btn)
+    t3 = datetime.now()
+    # Driver.click(dd, FastTradeButton.more_fun_btn_2)
+    # FastTradeButton.click_more_btn(dd)
+    t4 = datetime.now()
+    print(t4-t3)
+    input("continue")
+    # FastTradeButton.clickPriceButton(dd)
+    # Driver.findElemWithoutException(dd, ("part-text", "对手价"))
+    # FastTradeButton.trade_via_price(dd, 'buy', 14875)
+    # FastTradeButton.noMoreTradeNtf(dd)

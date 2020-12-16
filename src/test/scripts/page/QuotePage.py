@@ -21,10 +21,13 @@ class QuotePage(Page):
     third_title_switch = (By.ID, 'esunny.test:id/es_quote_fragment_header_tv_change_double')
     # 账号输入
     forth_title_switch = (By.ID, 'esunny.test:id/es_quote_fragment_header_tv_position_double')
-    # 列表内合约
-    quote_in_list = ('resource-id', 'esunny.test:id/item_list_quote_ll_main')
+    # 自选合约列表名
+    contract_name_list = (By.ID, 'esunny.test:id/tv_quote_contractName')
+    # 自选合约列表号
+    contract_no_list = (By.ID, 'esunny.test:id/tv_quote_contractNo')
 
     def verify(self):
+        # TODO verify  这个元素定位不到
         Driver.check_element_exist(self.driver, self.forth_title_switch)
         pass
         return self
@@ -72,6 +75,10 @@ class QuotePage(Page):
         Driver.swipe(self.driver, 'L')
         return self
 
+    def get_quote_list(self):
+        print('get quote list')
+        return Driver.find_elements(self.driver, self.contract_name_list)
+
     @staticmethod
     def goToOneQuote_common(driver, block_name, quoteName):
         quote = QuotePage(driver)
@@ -85,9 +92,9 @@ if __name__ == '__main__':
     log = QuotePage(dd)
     try:
         # log.goToSelfPage(). \
-        log.verify(). \
-            goToOneQuote("棉花105"). \
-            swipe_up_quote()
+        # log.verify(). \
+        BottomToolBar.goToQuoteList(dd)
+        print(len(log.get_quote_list()))
     except Exception as e:
         print(e)
         raise e

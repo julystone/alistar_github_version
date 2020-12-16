@@ -14,10 +14,7 @@ from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
-# TODO _find_elements  还没调通
-# TODO 截图嵌入报告中
 # TODO 启动Appium
-# TODO 发送邮件模块
 
 class Driver:
     def __init__(self, configChoice):
