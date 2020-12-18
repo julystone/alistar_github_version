@@ -2,10 +2,7 @@ import os
 import time
 
 from appium import webdriver
-from appium.webdriver.extensions.action_helpers import ActionHelpers
-from appium.webdriver.common.touch_action import TouchAction
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -15,13 +12,25 @@ from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
 # TODO 启动Appium
+class Connect:
+    def __init__(self, driver):
+        self.driver = driver
+        self.driver.size = Driver.getWindowSize(driver)
+        self.driver.width, self.driver.height = self.driver.size['width'], self.driver.size['height']
+
+    def goToPage(self, Page):
+        return Page.makeAPage(self)
+
+    def disconnect(self):
+        self.driver.quit()
+
 
 class Driver:
-    def __init__(self, configChoice):
-        self.driver = self.prepareForAndroidAppium(configChoice)
-        self.size = self.getWindowSize(self.driver)
-        setattr(self.driver, 'width', self.size['width'])
-        setattr(self.driver, 'height', self.size['height'])
+    @staticmethod
+    def connectFactory(configChoice):
+        driver = Driver.prepareForAndroidAppium(configChoice)
+        con = Connect(driver)
+        return con
 
     @staticmethod
     def getWindowSize(driver):
@@ -173,7 +182,7 @@ class Driver:
         :param duration:    滑动速度，默认快速滑动，0ms
         :return:            None
         """
-        size = list(Driver.getWindowSize(driver).values())
+        size = list(driver.size.values())
         pattern = {"L": (3 / 4, 1 / 2, 1 / 4, 1 / 2),
                    "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
                    "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
@@ -205,6 +214,4 @@ class Driver:
 
 
 if __name__ == '__main__':
-    a = webdriver.webelement.WebElement.location_in_view
-    dic = {1: 11, 2: 22}
-    print(tuple(dic.values()))
+    dd = Driver(0)

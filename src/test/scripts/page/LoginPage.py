@@ -3,6 +3,7 @@ import time
 
 from appium.webdriver.common.mobileby import MobileBy as By
 
+from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
@@ -40,24 +41,35 @@ class LoginPage(Page):
     # 北斗星后台
     beiDou = ('part-text', '北斗星（上海仿真）')
 
-    @allure.step("校验页面")
-    def verify(self):
-        Driver.check_element_exist(self.driver, self.risk_book)
-        return self
-
+    @staticmethod
     @allure.step("调用右边栏接口，进入登录页面")
-    def gotoLoginPage(self):
-        RightToolBar.goToLoginPage(self.driver)
-        return self
+    def makeAPage(connection):
+        RightToolBar.goToLoginPage(connection.driver)
+        Asserter.shouldElemExist(connection.driver, LoginPage.login_pwd)
+        return LoginPage(connection.driver)
+
+    @staticmethod
+    @allure.step("普通登录")
+    def login_common(connection, company='启明星', userNo='Q1223871051', pwd='111111'):
+        # login = LoginPage.makeAPage(connection)
+        login = connection.goToPage(LoginPage)
+        if login.checkAccountSaved():
+            login.clickSubmit()
+        else:
+            login.chooseCompany(company). \
+                inputUserNo(userNo). \
+                inputPassWord(pwd). \
+                clickSubmit()
+        time.sleep(2)
 
     @allure.step("选择开户公司")
     def chooseCompany(self, company):
         print(f"正在切换{company}后台")
         my_log.info(f"正在切换{company}后台")
         Driver.click(self.driver, self.login_company)
-        Driver.scroll_until_elemDisplayed(self.driver, self.qiMing)
-        Driver.click(self.driver, self.qiMing)
-        # Driver.click(self.driver, self.qiMing)
+        locator = self.qiMing if company in "启明星" else self.beiDou
+        Driver.scroll_until_elemDisplayed(self.driver, locator)
+        Driver.click(self.driver, locator)
         return self
 
     @allure.step("输入交易账号")
@@ -90,34 +102,21 @@ class LoginPage(Page):
         print("账密已记住")
         return True
 
-    @staticmethod
-    def login_common(driver, company='启明星', userNo='Q1223871051', pwd='111111'):
-        login = LoginPage(driver)
-        login.verify()
-        if login.checkAccountSaved():
-            login.clickSubmit()
-        else:
-            login.chooseCompany(company). \
-                inputUserNo(userNo). \
-                inputPassWord(pwd). \
-                clickSubmit()
-        time.sleep(2)
-
 
 if __name__ == '__main__':
-    dd = Driver(0).driver
-    log = LoginPage(dd)
+    con = Driver.connectFactory(0)
     try:
-        log.gotoLoginPage(). \
-            verify(). \
-            chooseCompany("启明星"). \
-            inputUserNo("Q1223871051"). \
-            inputPassWord("111111"). \
+        log = con.goToPage(LoginPage)
+        log.chooseCompany('启明星').\
+            inputUserNo('Q1223871051').\
+            inputPassWord('111111').\
             clickSubmit()
+        # LoginPage.login_common(dd)
     except Exception as e:
         print(e)
         raise e
     input("点击继续")
-    log.quit()
+    con.disconnect()
+    # log.quit()
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
     # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

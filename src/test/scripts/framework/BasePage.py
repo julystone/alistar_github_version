@@ -10,10 +10,6 @@ class Page(ABC):
         self.driver = driver
 
     @abstractmethod
-    def verify(self):
+    def makeAPage(self):
         pass
-
-    def quit(self):
-        return self.driver.quit()
-
 

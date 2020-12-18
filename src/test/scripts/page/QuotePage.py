@@ -1,7 +1,9 @@
 import time
 
+import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
+from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
@@ -26,15 +28,12 @@ class QuotePage(Page):
     # 自选合约列表号
     contract_no_list = (By.ID, 'esunny.test:id/tv_quote_contractNo')
 
-    def verify(self):
-        # TODO verify  这个元素定位不到
-        Driver.check_element_exist(self.driver, self.forth_title_switch)
-        pass
-        return self
-
-    def goToQuotePage(self):
-        BottomToolBar.goToQuoteList(self.driver)
-        return self
+    @staticmethod
+    @allure.step("调用底部栏接口，进入行情页面")
+    def makeAPage(connection):
+        BottomToolBar.goToQuoteList(connection.driver)
+        Asserter.shouldElemExist(connection.driver, QuotePage.contract_name_list)
+        return QuotePage(connection.driver)
 
     def switchThirdTitle(self):
         Driver.click(self.driver, self.third_title_switch)
@@ -88,8 +87,8 @@ class QuotePage(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver(0).driver
-    log = QuotePage(dd)
+    con = Driver.connectFactory(0)
+    log = con.goToPage(QuotePage)
     try:
         # log.goToSelfPage(). \
         # log.verify(). \
