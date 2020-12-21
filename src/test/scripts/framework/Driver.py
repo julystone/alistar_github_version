@@ -12,25 +12,31 @@ from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
 # TODO 启动Appium
-class Connect:
-    def __init__(self, driver):
-        self.driver = driver
-        self.driver.size = Driver.getWindowSize(driver)
-        self.driver.width, self.driver.height = self.driver.size['width'], self.driver.size['height']
-
-    def goToPage(self, Page):
-        return Page.makeAPage(self)
-
-    def disconnect(self):
-        self.driver.quit()
+# class Connect:
+#     def __init__(self, driver):
+#         self.driver = driver
+#         self.driver.size = Driver.getWindowSize(driver)
+#         self.driver.width, self.driver.height = self.driver.size['width'], self.driver.size['height']
+#
+#     def goToPage(self, Page):
+#         return Page.makeAPage(self)
+#
+#     def disconnect(self):
+#         self.driver.quit()
 
 
 class Driver:
     @staticmethod
-    def connectFactory(configChoice):
+    def goToPage(driver, Page):
+        return Page.makeAPage(driver)
+
+    @staticmethod
+    def driverFactory(configChoice):
         driver = Driver.prepareForAndroidAppium(configChoice)
-        con = Connect(driver)
-        return con
+        # driver.ignoreUnimportantViews(True)
+        driver.size = Driver.getWindowSize(driver)
+        driver.width, driver.height = driver.size['width'], driver.size['height']
+        return driver
 
     @staticmethod
     def getWindowSize(driver):
@@ -44,8 +50,10 @@ class Driver:
                         'platformVersion': test_config.get('test_phone', 'platformVersion'),
                         'appPackage': test_config.get('test_phone', 'appPackage'),
                         'appActivity': test_config.get('test_phone', 'appActivity'),
-                        'automationName': "UiAutomator2",
-                        'noReset': test_config.get('test_phone', 'noReset')}
+                        'automationName': "UiAutomator1",
+                        'noReset': test_config.get('test_phone', 'noReset'),
+                        'ignoreUnimportantViews': True,
+                        }
         return webdriver.Remote(f'http://{ip}:{port}/wd/hub', desired_caps)
 
     @staticmethod

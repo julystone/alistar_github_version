@@ -43,16 +43,16 @@ class LoginPage(Page):
 
     @staticmethod
     @allure.step("调用右边栏接口，进入登录页面")
-    def makeAPage(connection):
-        RightToolBar.goToLoginPage(connection.driver)
-        Asserter.shouldElemExist(connection.driver, LoginPage.login_pwd)
-        return LoginPage(connection.driver)
+    def makeAPage(driver):
+        RightToolBar.goToLoginPage(driver)
+        Asserter.shouldElemExist(driver, LoginPage.login_pwd)
+        return LoginPage(driver)
 
     @staticmethod
     @allure.step("普通登录")
-    def login_common(connection, company='启明星', userNo='Q1223871051', pwd='111111'):
-        # login = LoginPage.makeAPage(connection)
-        login = connection.goToPage(LoginPage)
+    def login_common(driver, company='启明星', userNo='Q1223871051', pwd='111111'):
+        login = LoginPage.makeAPage(driver)
+        # login = driver.goToPage(LoginPage)
         if login.checkAccountSaved():
             login.clickSubmit()
         else:
@@ -104,19 +104,19 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    con = Driver.connectFactory(0)
+    dd = Driver.driverFactory(0)
     try:
-        log = con.goToPage(LoginPage)
-        log.chooseCompany('启明星').\
-            inputUserNo('Q1223871051').\
-            inputPassWord('111111').\
-            clickSubmit()
-        # LoginPage.login_common(dd)
+        # log = Driver.goToPage(dd, LoginPage)
+        # log.chooseCompany('启明星').\
+        #     inputUserNo('Q1223871051').\
+        #     inputPassWord('111111').\
+        #     clickSubmit()
+        LoginPage.login_common(dd)
     except Exception as e:
         print(e)
         raise e
     input("点击继续")
-    con.disconnect()
+    dd.quit()
     # log.quit()
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
     # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

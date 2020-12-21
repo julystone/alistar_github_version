@@ -120,11 +120,11 @@ class FastTradeButton:
 
 
 if __name__ == '__main__':
-    dd = Driver(0).driver
-    log = QuotePage(dd)
+    dd = Driver.driverFactory(0)
+    log = QuotePage.makeAPage(dd)
     log.goToOneQuote('CF105')
     t1 = datetime.now()
-    FastTradeButton.click_more_btn(dd)
+    FastTradeButton.goToFastTrade(dd)
     t2 = datetime.now()
     print(t2-t1)
     # FastTradeButton.goToFastTrade(dd)

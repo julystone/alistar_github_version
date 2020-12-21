@@ -30,10 +30,10 @@ class QuotePage(Page):
 
     @staticmethod
     @allure.step("调用底部栏接口，进入行情页面")
-    def makeAPage(connection):
-        BottomToolBar.goToQuoteList(connection.driver)
-        Asserter.shouldElemExist(connection.driver, QuotePage.contract_name_list)
-        return QuotePage(connection.driver)
+    def makeAPage(driver):
+        BottomToolBar.goToQuoteList(driver)
+        Asserter.shouldElemExist(driver, QuotePage.contract_name_list)
+        return QuotePage(driver)
 
     def switchThirdTitle(self):
         Driver.click(self.driver, self.third_title_switch)
@@ -87,13 +87,11 @@ class QuotePage(Page):
 
 
 if __name__ == '__main__':
-    con = Driver.connectFactory(0)
-    log = con.goToPage(QuotePage)
+    dd = Driver.driverFactory(0)
+    page = dd.goToPage(QuotePage)
     try:
-        # log.goToSelfPage(). \
-        # log.verify(). \
         BottomToolBar.goToQuoteList(dd)
-        print(len(log.get_quote_list()))
+        print(len(page.get_quote_list()))
     except Exception as e:
         print(e)
         raise e
