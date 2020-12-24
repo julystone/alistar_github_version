@@ -32,11 +32,11 @@ class QuotePage(Page):
         Asserter.shouldElemExist(driver, QuotePage.contract_name_list)
         return QuotePage(driver)
 
-    def switchThirdTitle(self):
+    def clickThirdTitle(self):
         Driver.click(self.driver, self.third_title_switch)
         return self
 
-    def switchForthTitle(self):
+    def clickForthTitle(self):
         Driver.click(self.driver, self.forth_title_switch)
         return self
 
@@ -52,23 +52,6 @@ class QuotePage(Page):
         locator = ('part-text', quote_name)
         Driver.scroll_until_elemDisplayed(self.driver, locator)
         Driver.click(self.driver, locator)
-        return self
-
-    def long_press_quote(self):
-        print("long_press")
-        size = Driver.getWindowSize(self.driver)
-        print(size)
-        Driver.long_press(self.driver, y=size["height"] * 0.5, x=size["width"] * 0.5)
-        return self
-
-    def swipe_up_quote(self):
-        print('swipe up')
-        Driver.swipe(self.driver, 'U')
-        return self
-
-    def swipe_left_quote(self):
-        print('swipe left')
-        Driver.swipe(self.driver, 'L')
         return self
 
     def get_quote_list(self):

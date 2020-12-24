@@ -17,3 +17,4 @@ page层：一个页面一个类，包含该页面的业务逻辑封装以及部�
 # TODO 每个case都必须使用Features,Stroies, Title 标注来为case添加report 信息(我们使用的是allure这个report框架)， 根据情况可以添加Description标注。
 # TODO case中涉及UI上创建的实体名称，比如项目，数据，模型，用户等都需要使用随机名称。 不能使用固定名称。 以防一个环境多次运行的时候因为名称冲突而失败
 # TODO case中不准许出现页面元素信息，所有页面元素的封装和业务逻辑的封装要写在page层中
+# TODO 终端界面一定要有退出

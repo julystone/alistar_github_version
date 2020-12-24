@@ -1,4 +1,5 @@
 import time
+from enum import Enum
 
 from appium.webdriver.common.mobileby import MobileBy as By
 
@@ -30,6 +31,7 @@ class LoginPage(Page):
     # 启明星、北斗星
     qiMing = ('part-text', '启明星（上海仿真）')
     beiDou = ('part-text', '北斗星（上海仿真）')
+    company_enum = Enum('company', {'启明星': qiMing, '北斗星': beiDou})
 
     @staticmethod
     @allure.step("调用右边栏接口，进入登录页面")
@@ -58,7 +60,7 @@ class LoginPage(Page):
         print(f"正在切换{company}后台")
         my_log.info(f"正在切换{company}后台")
         Driver.click(self.driver, self.login_company)
-        locator = self.qiMing if company in "启明星" else self.beiDou
+        locator = self.company_enum[company].value
         Driver.scroll_until_elemDisplayed(self.driver, locator)
         Driver.click(self.driver, locator)
         return self

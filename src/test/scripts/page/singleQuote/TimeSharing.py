@@ -28,6 +28,23 @@ class TimeSharing(Page):
         QuotePage.goToOneQuote_common(driver)
         return TimeSharing(driver)
 
+    def long_press_quote(self):
+        print("long_press")
+        size = Driver.getWindowSize(self.driver)
+        print(size)
+        Driver.long_press(self.driver, y=size["height"] * 0.5, x=size["width"] * 0.5)
+        return self
+
+    def swipe_up_quote(self):
+        print('swipe up')
+        Driver.swipe(self.driver, 'U')
+        return self
+
+    def swipe_left_quote(self):
+        print('swipe left')
+        Driver.swipe(self.driver, 'L')
+        return self
+
 
 if __name__ == '__main__':
     pass
