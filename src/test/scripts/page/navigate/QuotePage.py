@@ -1,13 +1,10 @@
-import time
-
 import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
-from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.Interface.BottomToolBar import BottomToolBar
+from src.test.scripts.page.interface.BottomToolBar import BottomToolBar
 
 
 class QuotePage(Page):
@@ -79,11 +76,12 @@ class QuotePage(Page):
         return Driver.find_elements(self.driver, self.contract_name_list)
 
     @staticmethod
-    def goToOneQuote_common(driver, block_name, quoteName):
-        quote = QuotePage(driver)
-        quote.goToQuotePage(). \
-            chooseBlock(block_name). \
-            goToOneQuote(quoteName)
+    def goToOneQuote_common(driver, block_name='内盘主力', quoteName='棉花105'):
+        quote = QuotePage.makeAPage(driver)
+        if block_name != Driver.get_text(driver, quote.title):
+            quote.chooseBlock(block_name)
+        quote.goToOneQuote(quoteName)
+        return quote
 
 
 if __name__ == '__main__':

@@ -1,12 +1,9 @@
-import time
-
 import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
-from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.Interface.BottomToolBar import BottomToolBar
+from src.test.scripts.page.interface.BottomToolBar import BottomToolBar
 
 
 class SelfPage(Page):

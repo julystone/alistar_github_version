@@ -14,5 +14,10 @@ def shouldHaveText(driver, text):
     assert Driver.check_element_exist(driver, ('part-text', text)) is True
 
 
+def shouldElemHaveText(driver, loc, text):
+    res = Driver.findElement(driver, loc).text
+    assert res == text
+
+
 def notHaveText(driver, text):
     assert Driver.check_element_exist(driver, ('part-text', text)) is False

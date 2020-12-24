@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 import allure
 import pytest
@@ -8,7 +7,7 @@ from src.test.scripts.framework.BaseTest import TestBase
 from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.OsPathUtil import DATA_DIR, REPORT_DIR
-from src.test.scripts.page.LoginPage import LoginPage
+from src.test.scripts.page.common.LoginPage import LoginPage
 
 file_path = DATA_DIR + r"/TestData.xlsx"
 sheet_name = 'Login1'
@@ -51,7 +50,7 @@ class TestLoginPage(TestBase):
         login_page.gotoLoginPage() \
             .verify()
         with allure.step("点击左上角返回按钮"):
-            Driver.click(login_page.driver, login_page.return_button)
+            Driver.click(login_page.driver, login_page.quit_button)
         try:
             assert Driver.check_element_exist(login_page.driver, login_page.risk_book) is False
         except AssertionError as e:

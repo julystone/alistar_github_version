@@ -4,39 +4,34 @@ from src.test.scripts.framework.Driver import Driver
 class RightToolBar:
     # menu功能键
     menu_button = ('id', 'esunny.test:id/toolbar_right_first')
-    # 右侧边栏 - 交易登录
+    # 右侧边栏 - 交易类
     trade_login = ('text', '交易登录')
-    # 右侧边栏 - 行情设置
+    multi_login = ('text', '多账号登录')
     quote_setting = ('text', '行情设置')
-    # 右侧边栏 - 交易设置
     trade_setting = ('text', '交易设置')
-    # 有侧边栏 - 行情登陆
+    condition_order = ('text', '云条件单')
+    stop_trade = ('text', '止损止盈')
+    stop_loss_opening = ('text', '止损开仓')
+    price_warn = ('text', '价格预警')
+    trade_related = ('text', '交易相关')
+    message = ('text', '消息')
+
+    # 右侧边栏 - 行情类
     quote_login = ('text', '行情登陆')
-    # 右侧边栏 - 价格预警 - 未登陆行情账号不会出现
-    price_warning = ('text', '价格预警')
-    # 右侧边栏 - 云端服务 - 未登陆行情账号不会出现
     cloud_service = ('text', '云端服务')
-    # 右侧边栏 - 在线开户
-    create_accountOL = ('text', '在线开户')
-    # 右侧边栏 - 星耀商场
-    quote_mall = ('text', '星耀商场')
-    # 右侧边栏 - 换肤
-    skin_setting = ('text', '换肤')
-    # 右侧边栏 - 设置
+    open_account = ('text', '在线开户')
+    starShine_mall = ('text', '星耀商场')
+    skin_change = ('text', '换肤')
     common_setting = ('text', '设置')
-    # 右侧边栏 - 关于
     about = ('text', '关于')
-    # 右侧边栏 - 止损开仓
-    stop_open = ('text', '关于')
-    # 右侧边栏 - 云条件单
-    cond_order = ('text', '关于')
-    # 右侧边栏 - 止损止盈
-    stop_order = ('text', '关于')
 
     @staticmethod
     def goToLoginPage(driver):
         Driver.click(driver, RightToolBar.menu_button)
-        Driver.click(driver, RightToolBar.trade_login)
+        if Driver.check_element_exist(Driver, RightToolBar.trade_login):
+            Driver.click(driver, RightToolBar.trade_login)
+        else:
+            Driver.click(driver, RightToolBar.multi_login)
 
     @staticmethod
     def goToQuoteSetting(driver):
@@ -48,7 +43,7 @@ class RightToolBar:
 
     @staticmethod
     def goToPriceWarning(driver):
-        Driver.click(driver, RightToolBar.price_warning)
+        Driver.click(driver, RightToolBar.price_warn)
 
     @staticmethod
     def goToCloudService(driver):
@@ -56,11 +51,11 @@ class RightToolBar:
 
     @staticmethod
     def goToQuoteMall(driver):
-        Driver.click(driver, RightToolBar.quote_mall)
+        Driver.click(driver, RightToolBar.starShine_mall)
 
     @staticmethod
-    def goToSkinChange(driver):
-        Driver.click(driver, RightToolBar.skin_setting)
+    def SkinChange(driver):
+        Driver.click(driver, RightToolBar.skin_change)
 
     @staticmethod
     def goToCommonSetting(driver):
@@ -71,13 +66,13 @@ class RightToolBar:
         Driver.click(driver, RightToolBar.about)
 
     @staticmethod
-    def goToStopOpen(driver):
-        Driver.click(driver, RightToolBar.stop_open)
+    def goToCondOrder(driver):
+        Driver.click(driver, RightToolBar.condition_order)
 
     @staticmethod
-    def goToCondOrder(driver):
-        Driver.click(driver, RightToolBar.cond_order)
+    def goToStopTrade(driver):
+        Driver.click(driver, RightToolBar.stop_trade)
 
     @staticmethod
     def goToStopOrder(driver):
-        Driver.click(driver, RightToolBar.stop_order)
+        Driver.click(driver, RightToolBar.stop_loss_opening)
