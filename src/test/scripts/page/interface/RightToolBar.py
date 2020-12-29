@@ -26,53 +26,53 @@ class RightToolBar:
     about = ('text', '关于')
 
     @staticmethod
-    def goToLoginPage(driver):
-        Driver.click(driver, RightToolBar.menu_button)
-        if Driver.check_element_exist(Driver, RightToolBar.trade_login):
-            Driver.click(driver, RightToolBar.trade_login)
+    def goToLoginPage():
+        Driver.click(RightToolBar.menu_button)
+        if Driver.check_element_exist(RightToolBar.trade_login):
+            Driver.click(RightToolBar.trade_login)
         else:
-            Driver.click(driver, RightToolBar.multi_login)
+            Driver.click(RightToolBar.multi_login)
 
     @staticmethod
-    def goToQuoteSetting(driver):
-        Driver.click(driver, RightToolBar.quote_setting)
+    def goToQuoteSetting():
+        Driver.click(RightToolBar.quote_setting)
 
     @staticmethod
-    def goToQuoteLoginPage(driver):
-        Driver.click(driver, RightToolBar.quote_login)
+    def goToQuoteLoginPage():
+        Driver.click(RightToolBar.quote_login)
 
     @staticmethod
-    def goToPriceWarning(driver):
-        Driver.click(driver, RightToolBar.price_warn)
+    def goToPriceWarning():
+        Driver.click(RightToolBar.price_warn)
 
     @staticmethod
-    def goToCloudService(driver):
-        Driver.click(driver, RightToolBar.cloud_service)
+    def goToCloudService():
+        Driver.click(RightToolBar.cloud_service)
 
     @staticmethod
-    def goToQuoteMall(driver):
-        Driver.click(driver, RightToolBar.starShine_mall)
+    def goToQuoteMall():
+        Driver.click(RightToolBar.starShine_mall)
 
     @staticmethod
-    def SkinChange(driver):
-        Driver.click(driver, RightToolBar.skin_change)
+    def SkinChange():
+        Driver.click(RightToolBar.skin_change)
 
     @staticmethod
-    def goToCommonSetting(driver):
-        Driver.click(driver, RightToolBar.common_setting)
+    def goToCommonSetting():
+        Driver.click(RightToolBar.common_setting)
 
     @staticmethod
-    def goToAbout(driver):
-        Driver.click(driver, RightToolBar.about)
+    def goToAbout():
+        Driver.click(RightToolBar.about)
 
     @staticmethod
-    def goToCondOrder(driver):
-        Driver.click(driver, RightToolBar.condition_order)
+    def goToCondOrder():
+        Driver.click(RightToolBar.condition_order)
 
     @staticmethod
-    def goToStopTrade(driver):
-        Driver.click(driver, RightToolBar.stop_trade)
+    def goToStopTrade():
+        Driver.click(RightToolBar.stop_trade)
 
     @staticmethod
-    def goToStopOrder(driver):
-        Driver.click(driver, RightToolBar.stop_loss_opening)
+    def goToStopOrder():
+        Driver.click(RightToolBar.stop_loss_opening)

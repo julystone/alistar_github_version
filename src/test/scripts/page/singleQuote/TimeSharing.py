@@ -24,25 +24,25 @@ class TimeSharing(Page):
 
     @staticmethod
     @allure.step("调用底部栏接口，进入行情页面")
-    def makeAPage(driver):
-        QuotePage.goToOneQuote_common(driver)
-        return TimeSharing(driver)
+    def makeAPage():
+        QuotePage.goToOneQuote_common()
+        return TimeSharing()
 
     def long_press_quote(self):
         print("long_press")
-        size = Driver.getWindowSize(self.driver)
+        size = Driver.getWindowSize()
         print(size)
-        Driver.long_press(self.driver, y=size["height"] * 0.5, x=size["width"] * 0.5)
+        Driver.long_press(y=size["height"] * 0.5, x=size["width"] * 0.5)
         return self
 
     def swipe_up_quote(self):
         print('swipe up')
-        Driver.swipe(self.driver, 'U')
+        Driver.swipe('U')
         return self
 
     def swipe_left_quote(self):
         print('swipe left')
-        Driver.swipe(self.driver, 'L')
+        Driver.swipe('L')
         return self
 
 

@@ -30,49 +30,49 @@ class SelfPage(Page):
 
 
     def verify(self):
-        # Driver.check_element_exist(self.driver, self.forth_title_switch)
+        # Driver.check_element_exist(self.forth_title_switch)
         pass
         return self
 
     def goToSelfPage(self):
-        BottomToolBar.goToSelfList(self.driver)
+        BottomToolBar.goToSelfList()
         return self
 
     def switchThirdTitle(self):
-        Driver.click(self.driver, self.third_title_switch)
+        Driver.click(self.third_title_switch)
         return self
 
     def switchForthTitle(self):
-        Driver.click(self.driver, self.forth_title_switch)
+        Driver.click(self.forth_title_switch)
         return self
 
     @allure.step("正在进入合约")
     def goToOneQuote(self, quote_name='苹果101'):
         print(f"正在进入{quote_name}合约")
         locator = ('part-text', quote_name)
-        Driver.click(self.driver, locator)
+        Driver.click(locator)
         return self
 
     def long_press_quote(self):
         print("long_press")
-        size = Driver.getWindowSize(self.driver)
+        size = Driver.getWindowSize()
         print(size)
-        Driver.long_press(self.driver, y=size["height"] * 0.5, x=size["width"] * 0.5)
+        Driver.long_press(y=size["height"] * 0.5, x=size["width"] * 0.5)
         return self
 
     def swipe_up_quote(self):
         print('swipe up')
-        Driver.swipe(self.driver, 'U')
+        Driver.swipe('U')
         return self
 
     def swipe_left_quote(self):
         print('swipe left')
-        Driver.swipe(self.driver, 'L')
+        Driver.swipe('L')
         return self
 
     def get_self_list(self):
         print('get self list')
-        return Driver.find_elements(self.driver, self.contract_name_list)
+        return Driver.find_elements(self.contract_name_list)
 
 
 if __name__ == '__main__':

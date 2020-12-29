@@ -22,10 +22,14 @@ class ConfirmNtf:
     # TODO 添加更多通知弹框
 
     @staticmethod
-    def noMoreNtf(driver):
-        if Driver.check_element_exist(driver, ConfirmNtf.dialog_title):
-            Driver.click(driver, ConfirmNtf.no_more)
-            Driver.click(driver, ConfirmNtf.confirm_button)
+    def noMoreNtf():
+        if Driver.check_element_exist(ConfirmNtf.dialog_title):
+            Driver.click(ConfirmNtf.no_more)
+            Driver.click(ConfirmNtf.confirm_button)
+
+    @staticmethod
+    def commonNtf():
+        Driver.click(ConfirmNtf.confirm_button)
 
 
 if __name__ == '__main__':

@@ -8,10 +8,12 @@ from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
 from src.test.scripts.page.interface.Keyboard import Keyboard
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
 import allure
 
+from src.test.scripts.page.interface.TradeNtf import TradeNtf
 from src.test.scripts.page.navigate.QuotePage import QuotePage
 from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 
@@ -33,42 +35,48 @@ class DrawTrade(Page):
 
     @staticmethod
     @allure.step("进入画线下单界面")
-    def makeAPage(driver):
-        ts = TimeSharing.makeAPage(driver)
-        Driver.click(driver, ts.draw_line_btn)
-        if Driver.check_element_exist(driver, ('text', '交易登录')):
-            LoginPage.login_common(driver)
-        Asserter.shouldElemExist(driver, DrawTrade.buy_button)
-        return DrawTrade(driver)
+    def makeAPage():
+        ts = TimeSharing.makeAPage()
+        Driver.click(ts.draw_line_btn)
+        if Driver.check_element_exist(('text', '交易登录')):
+            LoginPage.login_common()
+            Driver.click(ts.draw_line_btn)
+        # Asserter.shouldElemExist(DrawTrade.buy_button)
+        return DrawTrade()
 
     @allure.step("设置手数")
     def setLots(self, lots=1):
         print(f"设置手数 {lots}")
         my_log.info(f"设置手数 {lots}")
-        Driver.click(self.driver, self.lots_select)
-        Keyboard.lots_input(self.driver, lots)
+        Driver.click(self.lots_select)
+        Keyboard.lots_input(lots)
         return self
 
     @allure.step("点击 买")
     def clickBuy(self):
         print("点击 买")
         my_log.info("点击 买")
-        Driver.click(self.driver, self.buy_button)
+        Driver.click(self.buy_button)
         return self
 
     @allure.step("点击 卖")
     def clickSell(self):
         print("点击 卖")
         my_log.info("点击 卖")
-        Driver.click(self.driver, self.sell_button)
+        Driver.click(self.sell_button)
         return self
 
+    @allure.step("点击 确定")
+    def clickConfirm(self):
+        print("点击 确定")
+        my_log.info("点击 确定")
+        Driver.click(self.confirm_button)
+        return self
 
     @allure.step("检查交易")
-    Err
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
-        if Driver.get_text(self.driver, self.login_pwd) is None:
+        if Driver.get_text(self.login_pwd) is None:
             print("账密未保存")
             return False
         print("账密已记住")
@@ -76,19 +84,16 @@ class DrawTrade(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver.driverFactory(0)
-    try:
-        # log = Driver.goToPage(dd, LoginPage)
-        # log.chooseCompany('启明星').\
-        #     inputUserNo('Q1223871051').\
-        #     inputPassWord('111111').\
-        #     clickSubmit()
-        LoginPage.login_common(dd)
-    except Exception as e:
-        print(e)
-        raise e
+    Driver.driverInit(1)
+
+    DrawTrade.makeAPage().\
+        clickBuy(). \
+        setLots(3). \
+        clickConfirm()
+
+    ConfirmNtf.commonNtf()
+
+    TradeNtf.acceptNtf()
+
     input("点击继续")
-    dd.quit()
-    # log.quit()
-    # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
-    # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")
+    Driver.quit()

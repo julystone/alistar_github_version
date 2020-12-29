@@ -22,21 +22,21 @@ cases = wb.read_data_obj()
 @allure.feature("登录模块")
 class TestLoginPage(TestBase):
     @allure.title("{case.testName}")
+    @pytest.mark.core
     @pytest.mark.parametrize("case", cases)
     def testcase_login(self, case, getDriver):
         if not case.ifDDT:
             pytest.skip("No need to DDT")
         login_page = LoginPage(getDriver)
-        login_page.gotoLoginPage() \
-            .verify() \
-            .chooseCompany(case.com) \
+        LoginPage.makeAPage(getDriver)\
+            .chooseCompany(case.com)\
             .inputUserNo(case.acc) \
             .inputPassWord(case.pwd) \
             .clickSubmit()
         assert Driver.check_element_exist(login_page.driver, ('part-text', case.checkpoint1)) is True
 
     @allure.story("测试点击风险责任书")
-    def estcase_clickRiskBook(self, getDriver):
+    def testcase_clickRiskBook(self, getDriver):
         login_page = LoginPage(getDriver)
         login_page.gotoLoginPage() \
             .verify()

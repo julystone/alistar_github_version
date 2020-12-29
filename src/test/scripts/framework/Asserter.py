@@ -1,23 +1,24 @@
 from src.test.scripts.framework.Driver import Driver
 
 
-def shouldElemExist(driver, elem):
-    assert Driver.check_element_exist(driver, elem) is True
+def shouldElemExist(elem):
+    assert Driver.check_element_exist(elem) is True
 
 
-def notElemExist(driver, elem):
+def notElemExist(elem):
     # 深层次设置页面跳转，而且是线性设置，需要用到notExist
-    assert Driver.check_element_exist(driver, elem) is False
+    assert Driver.check_element_exist(elem) is False
 
 
-def shouldHaveText(driver, text):
-    assert Driver.check_element_exist(driver, ('part-text', text)) is True
+def shouldHaveText(text):
+    assert Driver.check_element_exist(('part-text', text)) is True
 
 
-def shouldElemHaveText(driver, loc, text):
-    res = Driver.findElement(driver, loc).text
+def shouldElemHaveText(loc, text):
+    res = Driver.get_text(loc)
+    print(res)
     assert res == text
 
 
-def notHaveText(driver, text):
-    assert Driver.check_element_exist(driver, ('part-text', text)) is False
+def notHaveText(text):
+    assert Driver.check_element_exist(('part-text', text)) is False

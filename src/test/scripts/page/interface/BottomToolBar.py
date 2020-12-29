@@ -23,35 +23,35 @@ class BottomToolBar:
     Kline_page = ('id', 'esunny.test:id/es_kline_bottom_knb_klines')
 
     @staticmethod
-    def goToSelfList(driver):
-        Driver.click(driver, BottomToolBar.self_list)
+    def goToSelfList():
+        Driver.click(BottomToolBar.self_list)
 
     @staticmethod
-    def goToQuoteList(driver):
-        Driver.click(driver, BottomToolBar.quote_list)
+    def goToQuoteList():
+        Driver.click(BottomToolBar.quote_list)
 
     @staticmethod
-    def goToDishPage(driver):
-        Driver.click(driver, BottomToolBar.dish_page)
+    def goToDishPage():
+        Driver.click(BottomToolBar.dish_page)
 
     @staticmethod
-    def goToTimeSharing(driver):
-        Driver.click(driver, BottomToolBar.time_sharing)
+    def goToTimeSharing():
+        Driver.click(BottomToolBar.time_sharing)
 
     @staticmethod
-    def goToKlinePage(driver):
-        Driver.click(driver, BottomToolBar.Kline_page)
+    def goToKlinePage():
+        Driver.click(BottomToolBar.Kline_page)
 
     @staticmethod
-    def goToNewsPage(driver):
-        if Driver.check_element_exist(driver, BottomToolBar.news_page):
-            Driver.click(driver, BottomToolBar.news_page)
+    def goToNewsPage():
+        if Driver.check_element_exist(BottomToolBar.news_page):
+            Driver.click(BottomToolBar.news_page)
         else:
-            Driver.click(driver, BottomToolBar.news_page_2)
+            Driver.click(BottomToolBar.news_page_2)
 
     @staticmethod
-    def goToTradePage(driver):
-        if Driver.check_element_exist(driver, BottomToolBar.trade_page):
-            Driver.click(driver, BottomToolBar.trade_page)
+    def goToTradePage():
+        if Driver.check_element_exist(BottomToolBar.trade_page):
+            Driver.click(BottomToolBar.trade_page)
         else:
-            Driver.click(driver, BottomToolBar.trade_page_2)
+            Driver.click(BottomToolBar.trade_page_2)

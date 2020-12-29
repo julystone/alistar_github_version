@@ -27,48 +27,48 @@ class QuotePage(Page):
 
     @staticmethod
     @allure.step("调用底部栏接口，进入行情页面")
-    def makeAPage(driver):
-        BottomToolBar.goToQuoteList(driver)
-        Asserter.shouldElemExist(driver, QuotePage.contract_name_list)
-        return QuotePage(driver)
+    def makeAPage():
+        BottomToolBar.goToQuoteList()
+        Asserter.shouldElemExist(QuotePage.contract_name_list)
+        return QuotePage()
 
     def clickThirdTitle(self):
-        Driver.click(self.driver, self.third_title_switch)
+        Driver.click(self.third_title_switch)
         return self
 
     def clickForthTitle(self):
-        Driver.click(self.driver, self.forth_title_switch)
+        Driver.click(self.forth_title_switch)
         return self
 
     def chooseBlock(self, block_name='内盘主力'):
-        Driver.click(self.driver, self.block_change)
-        # Driver.scroll_until_elemDisplayed(self.driver, self.block_change)
+        Driver.click(self.block_change)
+        # Driver.scroll_until_elemDisplayed(self.block_change)
         locator = ('part-text', block_name)
-        Driver.click(self.driver, locator)
+        Driver.click(locator)
         return self
 
     def goToOneQuote(self, quote_name='苹果101'):
         print(f"正在进入{quote_name}合约")
         locator = ('part-text', quote_name)
-        Driver.scroll_until_elemDisplayed(self.driver, locator)
-        Driver.click(self.driver, locator)
+        Driver.scroll_until_elemDisplayed(locator)
+        Driver.click(locator)
         return self
 
     def get_quote_list(self):
         print('get quote list')
-        return Driver.find_elements(self.driver, self.contract_name_list)
+        return Driver.find_elements(self.contract_name_list)
 
     @staticmethod
-    def goToOneQuote_common(driver, block_name='内盘主力', quoteName='棉花105'):
-        quote = QuotePage.makeAPage(driver)
-        if block_name != Driver.get_text(driver, quote.title):
+    def goToOneQuote_common(block_name='内盘主力', quoteName='棉花105'):
+        quote = QuotePage.makeAPage()
+        if block_name not in Driver.get_text(quote.title):
             quote.chooseBlock(block_name)
         quote.goToOneQuote(quoteName)
         return quote
 
 
 if __name__ == '__main__':
-    dd = Driver.driverFactory(0)
+    dd = Driver.driverInit(0)
     page = dd.goToPage(QuotePage)
     try:
         BottomToolBar.goToQuoteList(dd)

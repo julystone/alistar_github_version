@@ -16,6 +16,22 @@ class Case:
         return string
 
 
+class ReadYaml:
+    """
+    读取yaml数据
+    """
+
+    def __init__(self, file_name):
+        """
+        这个是用例初始化读取对象的
+        :param file_name:  文件名字  -->  str
+        """
+        pass
+
+    def __del__(self):
+
+
+
 class ReadExcel(object):
     """
     读取excel数据

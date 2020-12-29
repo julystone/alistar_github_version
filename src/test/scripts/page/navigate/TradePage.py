@@ -40,62 +40,62 @@ class TradePage(Page):
 
     @staticmethod
     @allure.step("进入交易界面")
-    def makeAPage(driver):
-        BottomToolBar.goToTradePage(driver)
-        if Driver.check_element_exist(driver, ('text', '交易登录')):
-            LoginPage.login_common(driver)
-        Asserter.shouldElemExist(driver, TradePage.buy_button)
-        return TradePage(driver)
+    def makeAPage():
+        BottomToolBar.goToTradePage()
+        if Driver.check_element_exist(('text', '交易登录')):
+            LoginPage.login_common()
+        Asserter.shouldElemExist(TradePage.buy_button)
+        return TradePage()
 
     @allure.step("选择合约")
     def setContract(self, contract):
         print(f"选择{contract}合约")
         my_log.info(f"选择{contract}合约")
-        Driver.click(self.driver, self.contract_select)
+        Driver.click(self.contract_select)
         locator = ('part-text', contract)
-        Driver.click(self.driver, locator)
+        Driver.click(locator)
         return self
 
     @allure.step("设置手数")
     def setLots(self, lots=1):
         print(f"设置手数 {lots}")
         my_log.info(f"设置手数 {lots}")
-        Driver.click(self.driver, self.lots_select)
-        Keyboard.lots_input(self.driver, lots)
+        Driver.click(self.lots_select)
+        Keyboard.lots_input(lots)
         return self
 
     @allure.step("设置价格")
     def setPrice(self, price='对手价'):
         print(f"设置价格 {price}")
         my_log.info(f"设置价格 {price}")
-        Driver.click(self.driver, self.price_select)
-        Keyboard.price_input(self.driver, price)
+        Driver.click(self.price_select)
+        Keyboard.price_input(price)
         return self
 
     @allure.step("点击 买")
     def clickBuy(self):
         print("点击 买")
         my_log.info("点击 买")
-        Driver.click(self.driver, self.buy_button)
+        Driver.click(self.buy_button)
         return self
 
     @allure.step("点击 卖")
     def clickSell(self):
         print("点击 卖")
         my_log.info("点击 卖")
-        Driver.click(self.driver, self.sell_button)
+        Driver.click(self.sell_button)
         return self
 
     @allure.step("检查委托列表")
     def checkMatchList(self):
         # 查看成交列表第一条是否有
-        first_match = Driver.find_elements(self.driver, self.match_list)[0]
-        first_order = Driver.find_elements(self.driver, self.order_list)[0]
+        first_match = Driver.find_elements(self.match_list)[0]
+        first_order = Driver.find_elements(self.order_list)[0]
         Asserter.shouldElemExist(first_order, first_match)
 
 
 if __name__ == '__main__':
-    dd = Driver.driverFactory(0)
+    dd = Driver.driverInit(0)
     page = TradePage.makeAPage(dd)
     page.setContract("棉花105").\
         setLots(1).\

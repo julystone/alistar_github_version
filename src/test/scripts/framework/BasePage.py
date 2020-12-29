@@ -6,7 +6,9 @@ from abc import ABC, abstractmethod
 
 
 class Page(ABC):
-    def __init__(self, driver):
+    driver = None
+
+    def setDriver(self, driver):
         self.driver = driver
 
     @abstractmethod

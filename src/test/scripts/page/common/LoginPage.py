@@ -35,16 +35,16 @@ class LoginPage(Page):
 
     @staticmethod
     @allure.step("调用右边栏接口，进入登录页面")
-    def makeAPage(driver):
-        RightToolBar.goToLoginPage(driver)
-        Asserter.shouldElemExist(driver, LoginPage.login_pwd)
-        return LoginPage(driver)
+    def makeAPage():
+        RightToolBar.goToLoginPage()
+        Asserter.shouldElemExist(LoginPage.login_pwd)
+        return LoginPage()
 
     @staticmethod
     @allure.step("普通登录")
-    def login_common(driver, company='启明星', userNo='Q1223871051', pwd='111111'):
+    def login_common(company='启明星', userNo='Q1223871051', pwd='111111'):
         # 通用登录不提供页面跳转前置
-        login_page = LoginPage(driver)
+        login_page = LoginPage()
         if login_page.checkAccountSaved():
             login_page.clickSubmit()
         else:
@@ -59,37 +59,37 @@ class LoginPage(Page):
     def chooseCompany(self, company):
         print(f"正在切换{company}后台")
         my_log.info(f"正在切换{company}后台")
-        Driver.click(self.driver, self.login_company)
+        Driver.click(self.login_company)
         locator = self.company_enum[company].value
-        Driver.scroll_until_elemDisplayed(self.driver, locator)
-        Driver.click(self.driver, locator)
+        Driver.scroll_until_elemDisplayed(locator)
+        Driver.click(locator)
         return self
 
     @allure.step("输入交易账号")
     def inputUserNo(self, userNo):
         print(f"正在输入userNo {userNo}")
         my_log.info(f"正在输入userNo {userNo}")
-        Driver.input_text(self.driver, self.login_userNo, userNo)
+        Driver.input_text(self.login_userNo, userNo)
         return self
 
     @allure.step("输入交易密码")
     def inputPassWord(self, pwd):
         print(f"正在输入passWord {pwd}")
         my_log.info(f"正在输入passWord {pwd}")
-        Driver.input_text(self.driver, self.login_pwd, pwd)
+        Driver.input_text(self.login_pwd, pwd)
         return self
 
     @allure.step("点击登录")
     def clickSubmit(self):
         print("点击登录按钮")
         my_log.info("点击登录按钮")
-        Driver.click(self.driver, self.login_submit)
+        Driver.click(self.login_submit)
         return self
 
     @allure.step("检查账号密码是否已经保存")
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
-        if Driver.get_text(self.driver, self.login_pwd) is None:
+        if Driver.get_text(self.login_pwd) is None:
             print("账密未保存")
             return False
         print("账密已记住")
@@ -97,7 +97,7 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver.driverFactory(0)
+    dd = Driver.driverInit(0)
     try:
         # log = Driver.goToPage(dd, LoginPage)
         # log.chooseCompany('启明星').\

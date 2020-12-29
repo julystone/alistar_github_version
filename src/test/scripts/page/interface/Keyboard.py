@@ -48,20 +48,20 @@ class Keyboard:
     }
 
     @staticmethod
-    def price_input(driver, price):
+    def price_input(price):
         print(price)
         if price in ['市价', '对手价', '最新价', '排队价', '超价']:
-            Driver.click(driver, Keyboard.price_keys[price])
+            Driver.click(Keyboard.price_keys[price])
         for num in str(price):
-            Driver.click(driver, Keyboard.price_keys[num])
-        Driver.click(driver, Keyboard.price_keys['hide'])
+            Driver.click(Keyboard.price_keys[num])
+        Driver.click(Keyboard.price_keys['hide'])
 
     @staticmethod
-    def lots_input(driver, slots):
+    def lots_input(slots):
         print(slots)
         for num in str(slots):
-            Driver.click(driver, Keyboard.lots_keys[num])
-        Driver.click(driver, Keyboard.lots_keys['hide'])
+            Driver.click(Keyboard.lots_keys[num])
+        Driver.click(Keyboard.lots_keys['hide'])
 
 
 if __name__ == '__main__':
