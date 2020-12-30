@@ -13,7 +13,15 @@ from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 # TODO 启动Appium
 class Driver:
-    driver = None
+    _driver = None
+    
+    @classmethod
+    def getDriver(cls):
+        return cls._driver
+
+    @classmethod
+    def setDriver(cls, dv):
+        cls._driver = dv
 
     @staticmethod
     def goToPage(Page):
@@ -21,14 +29,15 @@ class Driver:
 
     @staticmethod
     def driverInit(configChoice):
-        Driver.driver = Driver.prepareForAndroidAppium(configChoice)
-        # Driver.driver.ignoreUnimportantViews(True)
-        Driver.driver.size = Driver.getWindowSize()
-        Driver.driver.width, Driver.driver.height = Driver.driver.size['width'], Driver.driver.size['height']
+        Driver.setDriver(Driver.prepareForAndroidAppium(configChoice))
+        # Driver.getDriver().ignoreUnimportantViews(True)
+        # Driver.getDriver().setWaitForIdleTimeout(100)
+        Driver.getDriver().size = Driver.getWindowSize()
+        Driver.getDriver().width, Driver.getDriver().height = Driver.getDriver().size['width'], Driver.getDriver().size['height']
 
     @staticmethod
     def getWindowSize():
-        return Driver.driver.get_window_size()
+        return Driver.getDriver().get_window_size()
 
     @staticmethod
     def prepareForAndroidAppium(configChoice=0, ip='localhost', port='4723'):
@@ -38,9 +47,10 @@ class Driver:
                         'platformVersion': test_config.get('test_phone', 'platformVersion'),
                         'appPackage': test_config.get('test_phone', 'appPackage'),
                         'appActivity': test_config.get('test_phone', 'appActivity'),
-                        'automationName': "UiAutomator1",
+                        'automationName': "UiAutomator2",
                         'noReset': test_config.get('test_phone', 'noReset'),
                         'ignoreUnimportantViews': True,
+                        'setWaitForIdleTimeout': 5
                         }
         driver = webdriver.Remote(f'http://{ip}:{port}/wd/hub', desired_caps)
         return driver
@@ -60,13 +70,13 @@ class Driver:
     def get_screenshot_as_file(extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        Driver.driver.get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
+        Driver.getDriver().get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
 
     @staticmethod
     def get_screenshot_as_png():
         # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        return Driver.driver.get_screenshot_as_png()
+        return Driver.getDriver().get_screenshot_as_png()
 
     @staticmethod
     def findElement(loc):
@@ -80,8 +90,8 @@ class Driver:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Driver.driver, 5).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Driver.driver.find_element(*loc)
+        WebDriverWait(Driver.getDriver(), 10).until(EC.presence_of_element_located(loc), message="TimeOut")
+        return Driver.getDriver().find_element(*loc)
 
     @staticmethod
     def findElemWithoutException(loc):
@@ -108,8 +118,8 @@ class Driver:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Driver.driver, 20).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Driver.driver.find_elements(*loc)
+        WebDriverWait(Driver.getDriver(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
+        return Driver.getDriver().find_elements(*loc)
 
     @staticmethod
     def check_element_exist(loc):
@@ -128,7 +138,7 @@ class Driver:
             ret = Driver.check_element_exist(loc)
             if ret:
                 break
-            Driver.swipe(direction='D', duration=300)
+            Driver.swipe(direction='U', duration=300)
         return ret
 
     @staticmethod
@@ -152,13 +162,13 @@ class Driver:
     @staticmethod
     def click_coordinate(loc=None, x=None, y=None):
         if None is (loc or x or y):
-            return print("error Input")
+            return "error Input"
         elif loc is None:
             time.sleep(0.5)
             return os.system(f"adb shell input tap {x} {y}")
         else:
             time.sleep(0.5)
-            temp = {'x': Driver.driver.width * loc['x'], 'y': Driver.driver.height * loc['y']}
+            temp = {'x': Driver.getDriver().width * loc['x'], 'y': Driver.getDriver().height * loc['y']}
             return os.system(f"adb shell input tap {temp['x']} {temp['y']}")
 
     @staticmethod
@@ -177,7 +187,7 @@ class Driver:
         :param duration:    滑动速度，默认快速滑动，0ms
         :return:            None
         """
-        size = list(Driver.driver.size.values())
+        size = list(Driver.getDriver().size.values())
         pattern = {"L": (3 / 4, 1 / 2, 1 / 4, 1 / 2),
                    "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
                    "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
@@ -198,14 +208,14 @@ class Driver:
 
     # @staticmethod
     # def scroll_to_elem(driver, loc):
-    #     webDriver.driver.webelement.WebElement.click()
-    #     webDriver.driver.webDriver.driver.WebDriver.tap()
+    #     webDriver.getDriver().webelement.WebElement.click()
+    #     webDriver.getDriver().webDriver.getDriver().WebDriver.tap()
     #     ActionHelpers.tap()
     #     pass
 
     @staticmethod
     def quit():
-        Driver.driver.quit()
+        Driver.getDriver().quit()
 
 
 if __name__ == '__main__':

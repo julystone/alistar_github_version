@@ -77,7 +77,7 @@ class DrawTrade(Page):
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
         if Driver.get_text(self.login_pwd) is None:
-            print("账密未保存")
+            print("账密未保存") 
             return False
         print("账密已记住")
         return True

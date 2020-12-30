@@ -65,4 +65,5 @@ class Keyboard:
 
 
 if __name__ == '__main__':
+    Keyboard.price_input("对手价")
     pass

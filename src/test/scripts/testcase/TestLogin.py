@@ -3,6 +3,7 @@ import os
 import allure
 import pytest
 
+from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BaseTest import TestBase
 from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver import Driver
@@ -10,7 +11,7 @@ from src.test.scripts.framework.OsPathUtil import DATA_DIR, REPORT_DIR
 from src.test.scripts.page.common.LoginPage import LoginPage
 
 file_path = DATA_DIR + r"/TestData.xlsx"
-sheet_name = 'Login1'
+sheet_name = 'Login'
 wb = ReadExcel(file_path, sheet_name)
 cases = wb.read_data_obj()
 
@@ -20,52 +21,38 @@ cases = wb.read_data_obj()
 
 
 @allure.feature("登录模块")
+@pytest.mark.specific
 class TestLoginPage(TestBase):
     @allure.title("{case.testName}")
     @pytest.mark.core
     @pytest.mark.parametrize("case", cases)
-    def testcase_login(self, case, getDriver):
+    def testcase_login(self, case, DriverInit):
         if not case.ifDDT:
             pytest.skip("No need to DDT")
-        login_page = LoginPage(getDriver)
-        LoginPage.makeAPage(getDriver)\
+        LoginPage.makeAPage()\
             .chooseCompany(case.com)\
             .inputUserNo(case.acc) \
             .inputPassWord(case.pwd) \
             .clickSubmit()
-        assert Driver.check_element_exist(login_page.driver, ('part-text', case.checkpoint1)) is True
+        Asserter.shouldHaveText(case.checkpoint1)
 
-    @allure.story("测试点击风险责任书")
-    def testcase_clickRiskBook(self, getDriver):
-        login_page = LoginPage(getDriver)
-        login_page.gotoLoginPage() \
-            .verify()
-        with allure.step("点击风险责任书"):
-            Driver.click(login_page.driver, login_page.risk_book)
-        assert Driver.check_element_exist(login_page.driver, login_page.login_submit) is False
+    @allure.title("测试点击风险责任书")
+    def testcase_clickRiskBook(self, DriverInit):
+        LoginPage.makeAPage()\
+            .clickRiskBook()
+        Asserter.notHaveText('请输入用户名')
 
-    @allure.story("测试点击左上角返回按钮")
-    def estcase_clickBackwards(self, getDriver):
-        login_page = LoginPage(getDriver)
-        login_page.gotoLoginPage() \
-            .verify()
-        with allure.step("点击左上角返回按钮"):
-            Driver.click(login_page.driver, login_page.quit_button)
-        try:
-            assert Driver.check_element_exist(login_page.driver, login_page.risk_book) is False
-        except AssertionError as e:
-            Driver.get_screenshot_as_file(login_page.driver)
-            raise e
+    @allure.title("测试点击左上角返回按钮")
+    def testcase_clickBackwards(self, DriverInit):
+        LoginPage.makeAPage() \
+            .clickBackwards()
+        Asserter.notHaveText('请输入用户名')
 
-    @allure.story("测试密码输入 安全键盘的弹出")
-    def estcase_clickPwdInput(self, getDriver):
-        login_page = LoginPage(getDriver)
-        login_page.gotoLoginPage() \
-            .verify()
-        with allure.step("点击密码输入框"):
-            Driver.click(login_page.driver, login_page.login_pwd)
-        with allure.step("检测到键盘"):
-            assert Driver.check_element_exist(login_page.driver, login_page.risk_book) is False
+    @allure.title("测试密码输入 安全键盘的弹出")
+    def estcase_clickPwdInput(self, DriverInit):
+        LoginPage.makeAPage() \
+            .clickSubmit()
+        Asserter.shouldHaveText('安全键盘')
         # assert login_page._check_element_exist(('part-text', '安全键盘')) is True
 
 

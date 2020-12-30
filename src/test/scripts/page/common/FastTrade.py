@@ -8,10 +8,12 @@ from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
 from src.test.scripts.page.interface.Keyboard import Keyboard
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
 import allure
 
+from src.test.scripts.page.interface.TradeNtf import TradeNtf
 from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 
 """
@@ -36,7 +38,7 @@ class FastTrade(Page):
         Driver.click(ts.fast_trade_btn)
         if Driver.check_element_exist(('text', '交易登录')):
             LoginPage.login_common()
-        Asserter.shouldElemExist(FastTrade.buy_button)
+        # Asserter.shouldElemExist(FastTrade.buy_button)
         return FastTrade()
 
     @allure.step("设置手数")
@@ -69,7 +71,6 @@ class FastTrade(Page):
         Driver.click(self.sell_button)
         return self
 
-    Err:
     @allure.step("检查账号密码是否已经保存")
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
@@ -81,7 +82,17 @@ class FastTrade(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver.driverInit(0)
+    Driver.driverInit(1)
+
+    FastTrade.makeAPage().\
+        clickBuy(). \
+        setPrice('对手价').\
+        setLots(3). \
+        clickConfirm()
+
+    ConfirmNtf.commonNtf()
+
+    TradeNtf.acceptNtf()
 
     input("点击继续")
-    dd.quit()
+    Driver.quit()

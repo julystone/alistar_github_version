@@ -11,7 +11,7 @@ from openpyxl.styles import Font
 
 class Case:
     def __repr__(self):
-        string = 'In __repr__：'
+        string = '\n In __repr__：'
         string += '\n' + repr(self.__dict__)
         return string
 
@@ -27,9 +27,6 @@ class ReadYaml:
         :param file_name:  文件名字  -->  str
         """
         pass
-
-    def __del__(self):
-
 
 
 class ReadExcel(object):

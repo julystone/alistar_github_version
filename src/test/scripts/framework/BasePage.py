@@ -6,10 +6,13 @@ from abc import ABC, abstractmethod
 
 
 class Page(ABC):
-    driver = None
+    _driver = None
 
     def setDriver(self, driver):
-        self.driver = driver
+        self._driver = driver
+
+    def getDriver(self):
+        return self._driver
 
     @abstractmethod
     def makeAPage(self):

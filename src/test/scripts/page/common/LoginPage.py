@@ -86,6 +86,20 @@ class LoginPage(Page):
         Driver.click(self.login_submit)
         return self
 
+    @allure.step("点击风险责任书")
+    def clickRiskBook(self):
+        print("点击风险责任书")
+        my_log.info("点击风险责任书")
+        Driver.click(self.risk_book)
+        return self
+
+    @allure.step("点击登录")
+    def clickBackwards(self):
+        print("点击登录按钮")
+        my_log.info("点击登录按钮")
+        Driver.click(self.quit_button)
+        return self
+
     @allure.step("检查账号密码是否已经保存")
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
@@ -97,19 +111,13 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    dd = Driver.driverInit(0)
-    try:
-        # log = Driver.goToPage(dd, LoginPage)
-        # log.chooseCompany('启明星').\
-        #     inputUserNo('Q1223871051').\
-        #     inputPassWord('111111').\
-        #     clickSubmit()
-        LoginPage.login_common(dd)
-    except Exception as e:
-        print(e)
-        raise e
+    Driver.driverInit(0)
+
+    LoginPage.makeAPage()\
+        .login_common()
+
     input("点击继续")
-    dd.quit()
+    Driver.quit()
     # log.quit()
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
     # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")
