@@ -36,11 +36,12 @@ class DrawTrade(Page):
     @staticmethod
     @allure.step("进入画线下单界面")
     def makeAPage():
-        ts = TimeSharing.makeAPage()
-        Driver.click(ts.draw_line_btn)
+        ts = TimeSharing.makeAPage()\
+                    .clickDrawLineBtn()
         if Driver.check_element_exist(('text', '交易登录')):
-            LoginPage.login_common()
-            Driver.click(ts.draw_line_btn)
+            LoginPage.makeAPage()\
+                    .login_common()
+            ts.clickDrawLineBtn()
         # Asserter.shouldElemExist(DrawTrade.buy_button)
         return DrawTrade()
 

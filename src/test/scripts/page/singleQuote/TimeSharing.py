@@ -28,6 +28,10 @@ class TimeSharing(Page):
         QuotePage.goToOneQuote_common()
         return TimeSharing()
 
+    def clickDrawLineBtn(self):
+        Driver.click(self.draw_line_btn)
+        return self
+
     def long_press_quote(self):
         print("long_press")
         size = Driver.getWindowSize()
