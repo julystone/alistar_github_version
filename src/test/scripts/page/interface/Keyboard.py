@@ -52,8 +52,9 @@ class Keyboard:
         print(price)
         if price in ['市价', '对手价', '最新价', '排队价', '超价']:
             Driver.click(Keyboard.price_keys[price])
-        for num in str(price):
-            Driver.click(Keyboard.price_keys[num])
+        else:
+            for num in str(price):
+                Driver.click(Keyboard.price_keys[num])
         Driver.click(Keyboard.price_keys['hide'])
 
     @staticmethod

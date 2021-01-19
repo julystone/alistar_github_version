@@ -47,7 +47,7 @@ class Driver:
                         'platformVersion': test_config.get('test_phone', 'platformVersion'),
                         'appPackage': test_config.get('test_phone', 'appPackage'),
                         'appActivity': test_config.get('test_phone', 'appActivity'),
-                        'automationName': "UiAutomator2",
+                        'automationName': "UiAutomator1",
                         'noReset': test_config.get('test_phone', 'noReset'),
                         'ignoreUnimportantViews': True,
                         'setWaitForIdleTimeout': 5

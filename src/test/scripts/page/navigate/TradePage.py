@@ -1,5 +1,4 @@
-import time
-
+import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
@@ -7,9 +6,6 @@ from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.common.LoginPage import LoginPage
-from src.test.scripts.page.interface import RightToolBar
-import allure
-
 from src.test.scripts.page.interface.BottomToolBar import BottomToolBar
 from src.test.scripts.page.interface.Keyboard import Keyboard
 
@@ -46,7 +42,6 @@ class TradePage(Page):
             LoginPage.login_common()
         Asserter.shouldElemExist(TradePage.buy_button)
         return TradePage()
-
     @allure.step("选择合约")
     def setContract(self, contract):
         print(f"选择{contract}合约")
@@ -89,14 +84,18 @@ class TradePage(Page):
     @allure.step("检查委托列表")
     def checkMatchList(self):
         # 查看成交列表第一条是否有
-        first_match = Driver.find_elements(self.match_list)[0]
-        first_order = Driver.find_elements(self.order_list)[0]
-        Asserter.shouldElemExist(first_order, first_match)
+        first_match_temp = Driver.find_elements(self.match_list)[1]
+        first_match = Driver.find_elements(first_match_temp)[1]
+        first_match_2 = Driver.find_elements(first_match)
+        for elem in first_match_2:
+            print(Driver.get_text(elem))
+        # first_order = Driver.find_elements(self.order_list)[1][1]
+        # Asserter.shouldElemExist(first_order, first_match)
 
 
 if __name__ == '__main__':
-    dd = Driver.driverInit(0)
-    page = TradePage.makeAPage(dd)
+    Driver.driverInit(1)
+    page = TradePage.makeAPage()
     page.setContract("棉花105").\
         setLots(1).\
         setPrice('对手价').\
@@ -104,4 +103,5 @@ if __name__ == '__main__':
         clickSell().\
         checkMatchList()
     input("点击继续")
-    dd.quit()
+
+# android.widget.TextView - esunny.test:id/order_list_tv_contract_no

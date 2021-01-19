@@ -29,8 +29,8 @@ class TestLoginPage(TestBase):
     def testcase_login(self, case, DriverInit):
         if not case.ifDDT:
             pytest.skip("No need to DDT")
-        LoginPage.makeAPage()\
-            .chooseCompany(case.com)\
+        LoginPage.makeAPage() \
+            .chooseCompany(case.com) \
             .inputUserNo(case.acc) \
             .inputPassWord(case.pwd) \
             .clickSubmit()
@@ -38,7 +38,7 @@ class TestLoginPage(TestBase):
 
     @allure.title("测试点击风险责任书")
     def testcase_clickRiskBook(self, DriverInit):
-        LoginPage.makeAPage()\
+        LoginPage.makeAPage() \
             .clickRiskBook()
         Asserter.notHaveText('请输入用户名')
 
@@ -50,8 +50,8 @@ class TestLoginPage(TestBase):
 
     @allure.title("测试密码输入 安全键盘的弹出")
     def estcase_clickPwdInput(self, DriverInit):
-        LoginPage.makeAPage() \
-            .clickSubmit()
+        (LoginPage.makeAPage()
+         .clickSubmit())
         Asserter.shouldHaveText('安全键盘')
         # assert login_page._check_element_exist(('part-text', '安全键盘')) is True
 

@@ -30,6 +30,7 @@ class TimeSharing(Page):
 
     def clickDrawLineBtn(self):
         Driver.click(self.draw_line_btn)
+        LoginPage.login_common()
         return self
 
     def long_press_quote(self):
@@ -51,4 +52,8 @@ class TimeSharing(Page):
 
 
 if __name__ == '__main__':
-    pass
+    Driver.driverInit(1)
+    page = TimeSharing.makeAPage()
+    (page.clickDrawLineBtn()
+     .swipe_up_quote())
+    input("点击继续")
