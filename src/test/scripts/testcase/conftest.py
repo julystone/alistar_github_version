@@ -12,7 +12,7 @@ from src.test.scripts.framework.Driver import Driver
 # TODO 添加失败、成功截图、每次assert进行截图、截图监听器
 @pytest.fixture(scope="function")
 def DriverInit():
-    Driver.driverInit(1)
+    Driver.driverInit(0)
     yield
     Driver.quit()
 

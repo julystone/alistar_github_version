@@ -6,38 +6,30 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+import uiautomator2 as u2
+
 from src.test.scripts.framework import ConfigUtil, BasePage
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
 # TODO 启动Appium
-class Driver:
-    _driver = None
-    
-    @classmethod
-    def getDriver(cls):
-        return cls._driver
+class Device:
+    d = u2.connect()
 
-    @classmethod
-    def setDriver(cls, dv):
-        cls._driver = dv
 
+class PageOperation:
     @staticmethod
     def goToPage(Page):
         return Page.makeAPage()
 
     @staticmethod
-    def driverInit(configChoice):
-        Driver.setDriver(Driver.prepareForAndroidAppium(configChoice))
-        # Driver.getDriver().ignoreUnimportantViews(True)
-        # Driver.getDriver().setWaitForIdleTimeout(100)
-        Driver.getDriver().size = Driver.getWindowSize()
-        Driver.getDriver().width, Driver.getDriver().height = Driver.getDriver().size['width'], Driver.getDriver().size['height']
+    def SessionInit(packageName):
+        return Device().d.session(packageName)
 
     @staticmethod
     def getWindowSize():
-        return Driver.getDriver().get_window_size()
+        return Operation.getDevice().window_size()
 
     @staticmethod
     def prepareForAndroidAppium(configChoice=0, ip='localhost', port='4723'):
@@ -70,13 +62,13 @@ class Driver:
     def get_screenshot_as_file(extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        Driver.getDriver().get_screenshot_as_file(SCREENSHOT_DIR + timeStamp + extra + ".png")
+        Operation.getDevice().screenshot(SCREENSHOT_DIR + timeStamp + extra + ".png")
 
     @staticmethod
     def get_screenshot_as_png():
         # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        return Driver.getDriver().get_screenshot_as_png()
+        return Operation.getDevice().get_screenshot_as_png()
 
     @staticmethod
     def findElement(loc):
@@ -90,12 +82,12 @@ class Driver:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Driver.getDriver(), 10).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Driver.getDriver().find_element(*loc)
+        WebDriverWait(Operation.getDevice(), 10).until(EC.presence_of_element_located(loc), message="TimeOut")
+        return Operation.getDevice().find_element(*loc)
 
     @staticmethod
     def findElemByImage(imagepath):
-        return Driver.getDriver().find_element_by_image(imagepath)
+        return Operation.getDevice().find_element_by_image(imagepath)
 
     @staticmethod
     def findElemWithoutException(loc):
@@ -106,7 +98,7 @@ class Driver:
         """
         elem = None
         try:
-            elem = Driver.findElement(loc)
+            elem = Operation.findElement(loc)
         except NoSuchElementException:
             print(f"{loc}元素没有定位到")
             my_log.info(f"{loc}元素没有定位到")
@@ -122,15 +114,15 @@ class Driver:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Driver.getDriver(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Driver.getDriver().find_elements(*loc)
+        WebDriverWait(Operation.getDevice(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
+        return Operation.getDevice().find_elements(*loc)
 
     @staticmethod
     def check_element_exist(loc):
         ret = True
         if isinstance(loc, dict):
             return ret
-        elem = Driver.findElemWithoutException(loc)
+        elem = Operation.findElemWithoutException(loc)
         if None is elem:
             ret = False
         my_log.info(f"{loc} {ret}")
@@ -141,29 +133,29 @@ class Driver:
         # Driver.swipe(driver, direction='U', duration=80)
         ret = True
         for _ in range(10):
-            ret = Driver.check_element_exist(loc)
+            ret = Operation.check_element_exist(loc)
             if ret:
                 break
-            Driver.swipe(direction='U', duration=300)
+            Operation.swipe(direction='U', duration=300)
         return ret
 
     @staticmethod
     def input_text(loc, text):
-        elem = Driver.findElemWithoutException(loc)
+        elem = Operation.findElemWithoutException(loc)
         elem.clear()
         elem.send_keys(text)
 
     @staticmethod
     def loc_coord(loc):
-        elem = Driver.findElemWithoutException(loc)
+        elem = Operation.findElemWithoutException(loc)
         return elem.location_in_view
 
     @staticmethod
     def click(loc):
         if isinstance(loc, dict):
-            return Driver.click_coordinate(loc=loc)
+            return Operation.click_coordinate(loc=loc)
         elif isinstance(loc, tuple):
-            return Driver.findElement(loc).click()
+            return Operation.findElement(loc).click()
 
     @staticmethod
     def click_coordinate(loc=None, x=None, y=None):
@@ -174,13 +166,13 @@ class Driver:
             return os.system(f"adb shell input tap {x} {y}")
         else:
             time.sleep(0.5)
-            temp = {'x': Driver.getDriver().width * loc['x'], 'y': Driver.getDriver().height * loc['y']}
+            temp = {'x': Operation.getDevice().width * loc['x'], 'y': Operation.getDevice().height * loc['y']}
             return os.system(f"adb shell input tap {temp['x']} {temp['y']}")
 
     @staticmethod
     def long_press(loc=None, x=None, y=None, duration=1000):
         if loc is not None:
-            coordinate = Driver.loc_coord(loc)
+            coordinate = Operation.loc_coord(loc)
             x, y = coordinate['x'], coordinate['y']
         os.system(f"adb shell input swipe {x} {y} {x} {y} {duration}")
 
@@ -193,7 +185,7 @@ class Driver:
         :param duration:    滑动速度，默认快速滑动，0ms
         :return:            None
         """
-        size = list(Driver.getDriver().size.values())
+        size = list(Operation.getDevice().size.values())
         pattern = {"L": (3 / 4, 1 / 2, 1 / 4, 1 / 2),
                    "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
                    "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
@@ -205,12 +197,12 @@ class Driver:
 
     @staticmethod
     def get_text(loc):
-        return Driver.findElemWithoutException(loc).text
+        return Operation.findElemWithoutException(loc).text
 
     @staticmethod
     def get_toast_message(toast_message):
         loc = ('part-text', toast_message)
-        return Driver.get_text(loc)
+        return Operation.get_text(loc)
 
     # @staticmethod
     # def scroll_to_elem(driver, loc):
@@ -221,10 +213,10 @@ class Driver:
 
     @staticmethod
     def quit():
-        Driver.getDriver().quit()
+        Operation.getDevice().quit()
 
 
 if __name__ == '__main__':
-    Driver.driverInit(1)
-    Driver.findElemByImage('./pics/add.jpg')
-    Driver.quit()
+    Operation.deviceInit(1)
+    Operation.findElemByImage('./pics/add.jpg')
+    Operation.quit()

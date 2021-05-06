@@ -37,11 +37,13 @@ class TradePage(Page):
     @staticmethod
     @allure.step("进入交易界面")
     def makeAPage():
+        Driver.check_element_exist(TradePage.title)
         BottomToolBar.goToTradePage()
         if Driver.check_element_exist(('text', '交易登录')):
             LoginPage.login_common()
         Asserter.shouldElemExist(TradePage.buy_button)
         return TradePage()
+
     @allure.step("选择合约")
     def setContract(self, contract):
         print(f"选择{contract}合约")
@@ -96,11 +98,11 @@ class TradePage(Page):
 if __name__ == '__main__':
     Driver.driverInit(1)
     page = TradePage.makeAPage()
-    page.setContract("棉花105").\
-        setLots(1).\
-        setPrice('对手价').\
-        clickBuy().\
-        clickSell().\
+    page.setContract("棉花105"). \
+        setLots(1). \
+        setPrice('对手价'). \
+        clickBuy(). \
+        clickSell(). \
         checkMatchList()
     input("点击继续")
 

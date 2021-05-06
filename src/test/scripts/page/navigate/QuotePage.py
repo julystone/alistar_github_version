@@ -71,7 +71,7 @@ if __name__ == '__main__':
     dd = Driver.driverInit(0)
     page = dd.goToPage(QuotePage)
     try:
-        BottomToolBar.goToQuoteList(dd)
+        BottomToolBar.goToQuoteList()
         print(len(page.get_quote_list()))
     except Exception as e:
         print(e)
