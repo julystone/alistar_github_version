@@ -14,22 +14,26 @@ from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
 # TODO 启动Appium
-class Device:
-    d = u2.connect()
+class Driver:
+    def __init__(self, addr, package_name, implicitly_time=20):
+        self._d = u2.connect(addr)
+        self._d.implicitly_wait(implicitly_time)
+        # self.windowSize = self._d.window_size()
+        self.width, self.height = self._d.window_size()
+        self.deviceInfo = self._d.device_info
+        self._session = self._d.session(package_name=package_name)
 
+    # def __del__(self):
+    #     self._session.close()
 
-class PageOperation:
-    @staticmethod
-    def goToPage(Page):
-        return Page.makeAPage()
+    def setDriver(self, newDriver):
+        self._d = newDriver
 
-    @staticmethod
-    def SessionInit(packageName):
-        return Device().d.session(packageName)
+    def getDriver(self):
+        return self._d
 
-    @staticmethod
-    def getWindowSize():
-        return Operation.getDevice().window_size()
+    def appStart(self, package_name, activity, stop):
+        self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
 
     @staticmethod
     def prepareForAndroidAppium(configChoice=0, ip='localhost', port='4723'):
@@ -58,39 +62,31 @@ class PageOperation:
                         'noReset': test_config.get('test_phone', 'noReset')}
         return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    @staticmethod
-    def get_screenshot_as_file(extra=""):
+    def get_screenshot_as_file(self, extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        Operation.getDevice().screenshot(SCREENSHOT_DIR + timeStamp + extra + ".png")
+        self.getDriver().screenshot(SCREENSHOT_DIR + timeStamp + extra + ".png")
 
-    @staticmethod
-    def get_screenshot_as_png():
+    def get_screenshot_as_png(self):
         # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        return Operation.getDevice().get_screenshot_as_png()
+        return self.getDriver().screenshot()
 
-    @staticmethod
-    def findElement(loc):
-        """
-        对基础方法find_element做一层封装
-        @param loc: locator
-        @return:    WebElement对象
-        """
-        # 对查找元素做一层封装，对text、partial_text使用XPATH定位
-        if "text" == loc[0]:
-            loc = ("xpath", f"//*[@text='{loc[1]}']")
-        elif "part-text" == loc[0]:
-            loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Operation.getDevice(), 10).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Operation.getDevice().find_element(*loc)
+    def findElement(self, loc):
+        via = loc[0].upper()
+        if via == 'TEXT':
+            return self.getDriver()(text=loc[1])
+        elif via == 'PART-TEXT':
+            return self.getDriver()(textContains=loc[1])
+        elif via == 'RESOURCE-ID':
+            return self.getDriver()(resourceId=loc[1])
+        else:
+            print("match rules not found")
 
-    @staticmethod
-    def findElemByImage(imagepath):
-        return Operation.getDevice().find_element_by_image(imagepath)
+    # def findElemByImage(self, imagepath):
+    #     return self.find_element_by_image(imagepath)
 
-    @staticmethod
-    def findElemWithoutException(loc):
+    def findElemWithoutException(self, loc):
         """
         对findElement做一层封装，不报错
         @param loc: locator
@@ -98,7 +94,7 @@ class PageOperation:
         """
         elem = None
         try:
-            elem = Operation.findElement(loc)
+            elem = self.findElement(loc)
         except NoSuchElementException:
             print(f"{loc}元素没有定位到")
             my_log.info(f"{loc}元素没有定位到")
@@ -107,58 +103,35 @@ class PageOperation:
             my_log.info(f"{loc}元素定位超时")
         return elem
 
-    @staticmethod
-    def find_elements(loc):
+    def find_elements(self, loc):
         # 对查找元素返回一整个符合定位的列表
         if "text" == loc[0]:
             loc = ("xpath", f"//*[@text='{loc[1]}']")
         elif "part-text" == loc[0]:
             loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(Operation.getDevice(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return Operation.getDevice().find_elements(*loc)
+        WebDriverWait(self.getDriver(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
+        return self.getDriver().find_elements(*loc)
 
-    @staticmethod
-    def check_element_exist(loc):
-        ret = True
-        if isinstance(loc, dict):
-            return ret
-        elem = Operation.findElemWithoutException(loc)
-        if None is elem:
-            ret = False
-        my_log.info(f"{loc} {ret}")
+    def check_element_exist(self, loc):
+        ret = self.findElement(loc).exists()
         return ret
 
-    @staticmethod
-    def scroll_until_elemDisplayed(loc):
-        # Driver.swipe(driver, direction='U', duration=80)
-        ret = True
-        for _ in range(10):
-            ret = Operation.check_element_exist(loc)
-            if ret:
-                break
-            Operation.swipe(direction='U', duration=300)
-        return ret
-
-    @staticmethod
-    def input_text(loc, text):
-        elem = Operation.findElemWithoutException(loc)
-        elem.clear()
-        elem.send_keys(text)
+    def input_text(self, loc, text):
+        elem = self.findElemWithoutException(loc)
+        elem.send_keys(text, clear=True)
 
     @staticmethod
     def loc_coord(loc):
-        elem = Operation.findElemWithoutException(loc)
+        elem = self.findElemWithoutException(loc)
         return elem.location_in_view
 
-    @staticmethod
-    def click(loc):
+    def click(self, loc):
         if isinstance(loc, dict):
-            return Operation.click_coordinate(loc=loc)
+            return self.click_coordinate(loc=loc)
         elif isinstance(loc, tuple):
-            return Operation.findElement(loc).click()
+            return self.findElement(loc).click()
 
-    @staticmethod
-    def click_coordinate(loc=None, x=None, y=None):
+    def click_coordinate(self, loc=None, x=None, y=None):
         if None is (loc or x or y):
             return "error Input"
         elif loc is None:
@@ -166,43 +139,39 @@ class PageOperation:
             return os.system(f"adb shell input tap {x} {y}")
         else:
             time.sleep(0.5)
-            temp = {'x': Operation.getDevice().width * loc['x'], 'y': Operation.getDevice().height * loc['y']}
+            temp = {'x': self.width * loc['x'], 'y': self.height * loc['y']}
             return os.system(f"adb shell input tap {temp['x']} {temp['y']}")
 
     @staticmethod
     def long_press(loc=None, x=None, y=None, duration=1000):
         if loc is not None:
-            coordinate = Operation.loc_coord(loc)
+            coordinate = self.loc_coord(loc)
             x, y = coordinate['x'], coordinate['y']
         os.system(f"adb shell input swipe {x} {y} {x} {y} {duration}")
 
-    @staticmethod
-    def swipe(direction, duration=80):
-        """
-        调用ActionHelpers实现屏幕的滑动操作。4个坐标顺序分别为：
-        :param driver:      Webdriver对象
-        :param direction:   方向，可以填入[“L”, "R", "U", "D"]
-        :param duration:    滑动速度，默认快速滑动，0ms
-        :return:            None
-        """
-        size = list(Operation.getDevice().size.values())
-        pattern = {"L": (3 / 4, 1 / 2, 1 / 4, 1 / 2),
-                   "R": (1 / 4, 1 / 2, 3 / 4, 1 / 2),
-                   "U": (1 / 2, 3 / 4, 1 / 2, 1 / 4),
-                   "D": (1 / 2, 1 / 4, 1 / 2, 3 / 4)}
-        params = [pattern[direction][i] * (size + size)[i] for i in range(4)]
-        # return ActionHelpers.swipe(driver, *params, duration=duration)
-        os.system(f"adb shell input swipe {params[0]} {params[1]} {params[2]} {params[3]} {duration}")
-        time.sleep(1)
+    def swipe(self, direction):
+        self.getDriver().swipe_ext(direction.lower())
+
+    def scroll_until_elemDisplayed(self, loc):
+        # Driver.swipe(driver, direction='U', duration=80)
+        ret = True
+
+        ret = self.findElement(loc).scroll
+        for _ in range(10):
+            ret = self.check_element_exist(loc)
+            if ret:
+                break
+            self.swipe(direction='U', duration=300)
+        return ret
 
     @staticmethod
     def get_text(loc):
-        return Operation.findElemWithoutException(loc).text
+        return self.findElemWithoutException(loc).text
 
     @staticmethod
     def get_toast_message(toast_message):
         loc = ('part-text', toast_message)
-        return Operation.get_text(loc)
+        return self.get_text(loc)
 
     # @staticmethod
     # def scroll_to_elem(driver, loc):
@@ -213,10 +182,10 @@ class PageOperation:
 
     @staticmethod
     def quit():
-        Operation.getDevice().quit()
+        self.getDriver().quit()
 
 
 if __name__ == '__main__':
-    Operation.deviceInit(1)
-    Operation.findElemByImage('./pics/add.jpg')
-    Operation.quit()
+    self.deviceInit(1)
+    self.findElemByImage('./pics/add.jpg')
+    self.quit()
