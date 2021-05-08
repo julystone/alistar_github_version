@@ -14,9 +14,7 @@ def shouldHaveText(text):
     assert Driver.check_element_exist(('part-text', text)) is True
 
 
-def shouldElemHaveText(loc, text):
-    res = Driver.get_text(loc)
-    print(res)
+def shouldTextEqual(res, text):
     assert res == text
 
 

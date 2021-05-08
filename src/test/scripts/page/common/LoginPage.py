@@ -5,13 +5,12 @@ from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BasePage import Page
-from src.test.scripts.framework.Driver import Driver
+from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.interface.RightToolBar import RightToolBar
 import allure
 
 
-class LoginPage(Page):
+class LoginPage(Page, Driver):
     # title、左侧退出按钮
     title = (By.ID, 'esunny.test:id/toolbar_title')
     quit_button = (By.ID, 'esunny.test:id/toolbar_left_first')
@@ -33,16 +32,13 @@ class LoginPage(Page):
     beiDou = ('part-text', '北斗星（上海仿真）')
     company_enum = Enum('company', {'启明星': qiMing, '北斗星': beiDou})
 
-    @staticmethod
     @allure.step("调用右边栏接口，进入登录页面")
-    def makeAPage():
-        RightToolBar.goToLoginPage()
-        Asserter.shouldElemExist(LoginPage.login_pwd)
-        return LoginPage()
+    def __init__(self):
+        super().__init__()
+        Asserter.shouldElemExist(self.login_pwd)
 
-    @staticmethod
     @allure.step("普通登录")
-    def login_common(company='启明星', userNo='Q1223871051', pwd='111111'):
+    def login_common(self, company='启明星', userNo='Q1223871051', pwd='111111'):
         # 通用登录不提供页面跳转前置
         login_page = LoginPage()
         if login_page.checkAccountSaved():
@@ -59,45 +55,45 @@ class LoginPage(Page):
     def chooseCompany(self, company):
         print(f"正在切换{company}后台")
         my_log.info(f"正在切换{company}后台")
-        Driver.click(self.login_company)
+        self.click(self.login_company)
         locator = self.company_enum[company].value
-        Driver.scroll_until_elemDisplayed(locator)
-        Driver.click(locator)
+        self.scroll_until_locDisplayed(locator)
+        self.click(locator)
         return self
 
     @allure.step("输入交易账号")
     def inputUserNo(self, userNo):
         print(f"正在输入userNo {userNo}")
         my_log.info(f"正在输入userNo {userNo}")
-        Driver.input_text(self.login_userNo, userNo)
+        self.set_text(self.login_userNo, userNo)
         return self
 
     @allure.step("输入交易密码")
     def inputPassWord(self, pwd):
         print(f"正在输入passWord {pwd}")
         my_log.info(f"正在输入passWord {pwd}")
-        Driver.input_text(self.login_pwd, pwd)
+        self.set_text(self.login_pwd, pwd)
         return self
 
     @allure.step("点击登录")
     def clickSubmit(self):
         print("点击登录按钮")
         my_log.info("点击登录按钮")
-        Driver.click(self.login_submit)
+        self.click(self.login_submit)
         return self
 
     @allure.step("点击风险责任书")
     def clickRiskBook(self):
         print("点击风险责任书")
         my_log.info("点击风险责任书")
-        Driver.click(self.risk_book)
+        self.click(self.risk_book)
         return self
 
     @allure.step("点击登录")
     def clickBackwards(self):
         print("点击登录按钮")
         my_log.info("点击登录按钮")
-        Driver.click(self.quit_button)
+        self.click(self.quit_button)
         return self
 
     @allure.step("检查账号密码是否已经保存")
@@ -111,7 +107,8 @@ class LoginPage(Page):
 
 
 if __name__ == '__main__':
-    Driver.driverInit(0)
+    lg = LoginPage()
+    lg.makeAPage()
 
     LoginPage.makeAPage()\
         .login_common()

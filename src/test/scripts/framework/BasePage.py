@@ -4,17 +4,11 @@
 # TODO 发送邮件模块
 from abc import ABC, abstractmethod
 
+from src.test.scripts.framework.Driver_atx import Driver
 
-class Page(ABC):
-    _driver = None
 
-    def setDriver(self, driver):
-        self._driver = driver
+class Page(ABC, Driver):
+    BACK_BUTTON = ('resource-id', "esunny.test:id/toolbar_left_icons")
 
-    def getDriver(self):
-        return self._driver
-
-    @abstractmethod
-    def makeAPage(self):
-        pass
-
+    def pageBack(self):
+        self.click(self.BACK_BUTTON)

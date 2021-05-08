@@ -1,13 +1,9 @@
-import time
-
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.common.LoginPage import LoginPage
-from src.test.scripts.page.interface import RightToolBar
 import allure
 
 from src.test.scripts.page.navigate.TradePage import TradePage
@@ -44,7 +40,7 @@ class DotTrade(Page):
     def makeAPage():
         tp = TradePage.makeAPage()
         Driver.click(tp.dot_trade)
-        Asserter.shouldElemHaveText(DotTrade.title, '点价下单')
+        Asserter.shouldTextEqual(DotTrade.title, '点价下单')
         return DotTrade()
 
     @allure.step("选择合约")
