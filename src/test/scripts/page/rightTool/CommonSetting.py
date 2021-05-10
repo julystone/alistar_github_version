@@ -1,10 +1,10 @@
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+from src.test.scripts.page.rightTool.LangChoose import LangChoose
 
 
 # TODO  how to distinguish switch status between Open with Close?
-class CommonSettings(Page, Driver):
+class CommonSetting(Page, Driver):
     # title
     title = ('text', '系统设置')
 
@@ -20,26 +20,24 @@ class CommonSettings(Page, Driver):
 
     def __init__(self):
         super().__init__()
-        if not self.check_element_exist(self.title):
-            RightToolBar().goToCommonSetting()
-        assert self.get_text(self.title) == '系统设置'
+        assert self.check_element_exist(self.clear_account_info) is True
 
     def getCurLang(self):
         return self.get_text(self.language)
 
-    def goToLangSetting(self):
+    def goToLangChoose(self):
         self.click(self.language)
+        return LangChoose()
 
     def getCurRingBell(self):
         return self.get_text(self.price_ring)
 
     def goToRingBellSetting(self):
-        return self.click(self.price_ring)
+        self.click(self.price_ring)
 
 
 if __name__ == '__main__':
-    debugPage = CommonSettings()
+    debugPage = CommonSetting()
     res = debugPage.getCurRingBell()
     print(res)
-    debugPage.goToLangSetting()
-    # AP.goToUploadPage()
+    debugPage.goToLangChoose().pageBack()

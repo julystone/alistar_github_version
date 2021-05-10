@@ -28,11 +28,12 @@ class Connection:
 
 class Driver:
     def __init__(self, addr='', implicitly_time=20):
+        self._addr = addr
         self._d = Connection(addr).driver
-        # self._d = u2.connect(addr)
         self._d.implicitly_wait(implicitly_time)
         self.width, self.height = self._d.window_size()
         self.deviceInfo = self._d.device_info
+        self.appStart('esunny.test')
 
     def setDriver(self, newDriver):
         self._d = newDriver
@@ -70,6 +71,9 @@ class Driver:
     def appStart(self, package_name, activity=None, stop=False):
         if not self.getDriver().app_current()['package'] == package_name:
             self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
+
+    def activityStart(self, activity):
+        self.getDriver().app_start(package_name='esunny.test', activity=activity)
 
     def get_screenshot_as_file(self, extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
@@ -183,10 +187,13 @@ if __name__ == '__main__':
     d = Driver()
     d1 = Driver()
     d2 = Driver()
-    d2.appStart('esunny.test')
-    di = {'part-text': '安粮期货', }
-    dii = ('text', '纯碱110')
-    d.swipe('up')
-    print(d.getDriver().app_current())
-    d1.swipe('down')
-    d2.swipe('up')
+    print(d2.getDriver().app_current()['package'])
+    print(d2.getDriver().app_info('esunny.test'))
+    # d2.getDriver().wait_activity('com.esunny.ui.login.EsLoginActivity')
+    # d2.activityStart('com.esunny.ui.login.EsLoginActivity')
+    # di = {'part-text': '安粮期货', }
+    # dii = ('text', '纯碱110')
+    # d.swipe('up')
+    # print(d.getDriver().app_current())
+    # d1.swipe('down')
+    # d2.swipe('up')

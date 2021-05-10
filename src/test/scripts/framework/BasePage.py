@@ -10,5 +10,17 @@ from src.test.scripts.framework.Driver_atx import Driver
 class Page(ABC, Driver):
     BACK_BUTTON = ('resource-id', "esunny.test:id/toolbar_left_icons")
 
+    @staticmethod
+    def operationDeco(operation):
+        def wrapper(self, *args, **kwargs):
+            page = operation(self, *args, **kwargs)
+            if page is None:
+                return self
+        return wrapper
+
+    def selfCheck(self, loc):
+        assert self.check_element_exist(loc)
+
     def pageBack(self):
         self.click(self.BACK_BUTTON)
+        return self

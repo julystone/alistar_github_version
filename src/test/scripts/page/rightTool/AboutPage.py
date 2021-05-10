@@ -22,9 +22,10 @@ class AboutPage(Page, Driver):
 
     def __init__(self):
         super().__init__()
-        if not self.check_element_exist(self.title):
-            RightToolBar().goToAbout()
-        assert self.get_text(self.title) == '关于和帮助'
+        self.selfCheck()
+
+    def selfCheck(self):
+        assert self.check_element_exist(self.privacy) is True
 
     def getPackageNo(self):
         return self.get_text(self.packageNo)
@@ -49,5 +50,6 @@ if __name__ == '__main__':
     debugPage = AboutPage()
     res = debugPage.getVersion()
     print(res)
+    debugPage.goToUploadPage()
     debugPage.pageBack()
     # AP.goToUploadPage()

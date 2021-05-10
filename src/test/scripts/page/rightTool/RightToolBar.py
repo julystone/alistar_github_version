@@ -1,5 +1,6 @@
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
+from src.test.scripts.page.rightTool.CommonSetting import CommonSetting
 
 
 class RightToolBar(Page, Driver):
@@ -21,6 +22,7 @@ class RightToolBar(Page, Driver):
     quote_login = ('text', '行情登陆')
     cloud_service = ('text', '云端服务')
     open_account = ('text', '在线开户')
+    trade_calendar = ('text', '交易日历')
     starShine_mall = ('text', '星耀商场')
     skin_change = ('text', '换肤')
     common_setting = ('text', '设置')
@@ -59,6 +61,7 @@ class RightToolBar(Page, Driver):
 
     def goToCommonSetting(self):
         self.click(self.common_setting)
+        return CommonSetting()
 
     def goToAbout(self):
         self.click(self.about)
@@ -71,6 +74,9 @@ class RightToolBar(Page, Driver):
 
     def goToStopOrder(self):
         self.click(self.stop_loss_opening)
+
+    def goToCalendar(self):
+        self.click(self.trade_calendar)
 
 
 if __name__ == '__main__':
