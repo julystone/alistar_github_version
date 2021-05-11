@@ -24,4 +24,3 @@ if __name__ == '__main__':
     res = debugPage.getCurrentBell()
     print(res)
     # debugPage.pageBack()
-qq
