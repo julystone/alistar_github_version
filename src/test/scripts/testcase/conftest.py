@@ -3,7 +3,7 @@ import os
 import allure
 import pytest
 
-from src.test.scripts.framework.Driver import Driver
+from src.test.scripts.framework.Driver_atx import Driver
 
 
 # conftest.py
@@ -12,9 +12,10 @@ from src.test.scripts.framework.Driver import Driver
 # TODO 添加失败、成功截图、每次assert进行截图、截图监听器
 @pytest.fixture(scope="function")
 def DriverInit():
-    Driver.driverInit(0)
+    Driver().appStart(package_name='esunny.test', stop=True)
     yield
-    Driver.quit()
+    # Driver.quit()
+    print('test ended')
 
 
 @pytest.fixture()
@@ -40,9 +41,9 @@ def pytest_runtest_makereport(item):
 
     if report.when == 'call':
         if report.outcome == 'failed':
-            Driver.get_screenshot_as_file(extra=item.funcargs["case"].testNo)
+            Driver().get_screenshot_as_file(extra=item.funcargs["case"].testNo)
             with allure.step("添加失败截图..."):
-                allure.attach(Driver.get_screenshot_as_png(), "失败截图", allure.attachment_type.PNG)
+                allure.attach(Driver().get_screenshot_as_png(), "失败截图", allure.attachment_type.PNG)
 
 
 @pytest.fixture(scope='session')

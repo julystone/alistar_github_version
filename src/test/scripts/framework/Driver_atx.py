@@ -1,14 +1,14 @@
 import os
 import time
 
-from appium import webdriver
+# from appium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 import uiautomator2 as u2
 
-from src.test.scripts.framework import ConfigUtil, BasePage
+from src.test.scripts.framework import ConfigUtil
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
@@ -68,8 +68,9 @@ class Driver:
                         'noReset': test_config.get('test_phone', 'noReset')}
         return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    def appStart(self, package_name, activity=None, stop=False):
-        if not self.getDriver().app_current()['package'] == package_name:
+    def appStart(self, package_name, activity=None, stop=False, debug=True):
+        # if not self.getDriver().app_current()['package'] == package_name:
+        if not debug:
             self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
 
     def activityStart(self, activity):
@@ -83,7 +84,7 @@ class Driver:
     def get_screenshot_as_png(self):
         # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
-        return self.getDriver().screenshot()
+        return self.getDriver().screenshot(format='raw')
 
     @staticmethod
     def locAdaptor(loc):
@@ -115,28 +116,19 @@ class Driver:
         @param loc: locator
         @return:    WebElement对象 或 None
         """
-        elem = None
-        try:
-            elem = self.findElement(loc)
-        except NoSuchElementException:
+        elem = self.findElement(loc)
+        if not elem.exists:
+            elem = None
             print(f"{loc}元素没有定位到")
             my_log.info(f"{loc}元素没有定位到")
-        except TimeoutException:
-            print(f"{loc}元素定位超时")
-            my_log.info(f"{loc}元素定位超时")
         return elem
 
     def find_elements(self, loc):
         # 对查找元素返回一整个符合定位的列表
-        if "text" == loc[0]:
-            loc = ("xpath", f"//*[@text='{loc[1]}']")
-        elif "part-text" == loc[0]:
-            loc = ("xpath", f"//*[contains(@text, '{loc[1]}')]")
-        WebDriverWait(self.getDriver(), 20).until(EC.presence_of_element_located(loc), message="TimeOut")
-        return self.getDriver().find_elements(*loc)
+        return self.findElement(loc)
 
     def check_element_exist(self, loc):
-        ret = self.findElement(loc).exists()
+        ret = self.findElement(loc).exists
         return ret
 
     def loc2coord(self, loc):
@@ -145,6 +137,11 @@ class Driver:
 
     def click(self, loc):
         self.findElemWithoutException(loc).click()
+        return self
+
+    def clickText(self, text):
+        loc = ('text', text)
+        return self.click(loc)
 
     def click_coordinate(self, x=None, y=None):
         if None is (x or y):
@@ -166,10 +163,12 @@ class Driver:
         :return: None
         """
         self.getDriver().swipe_ext(direction.lower())
+        return self
 
     def scroll_until_locDisplayed(self, loc):
         loc = Driver.locAdaptor(loc)
         self.getDriver()(scrollable=True).scroll.to(**Driver.locAdaptor(loc))
+        return self
 
     def set_text(self, loc, text):
         elem = self.findElemWithoutException(loc)
@@ -181,6 +180,12 @@ class Driver:
     def get_toast_message(self, toast_message):
         loc = ('part-text', toast_message)
         return self.get_text(loc)
+
+    def dialog_handle(self, dialog, btn):
+        if self.check_element_exist(dialog):
+            self.click(btn)
+            assert self.check_element_exist(dialog) is False
+        return self
 
 
 if __name__ == '__main__':

@@ -15,8 +15,6 @@ class TradeCalendar(Page, Driver):
 
     def __init__(self):
         super().__init__()
-        if not self.check_element_exist(self.month):
-            RightToolBar().goToCalendar()
         assert self.get_text(self.title) == '交易日历'
 
     def getCurMonth(self):
@@ -34,6 +32,7 @@ class TradeCalendar(Page, Driver):
 
 
 if __name__ == '__main__':
+    RightToolBar().goToCalendar()
     debugPage = TradeCalendar()
     res = debugPage.getCurMonth()
     print(res)

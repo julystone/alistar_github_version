@@ -24,3 +24,4 @@ class Page(ABC, Driver):
     def pageBack(self):
         self.click(self.BACK_BUTTON)
         return self
+    pass

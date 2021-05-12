@@ -9,6 +9,8 @@ from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.framework.MyLogger import my_log
 import allure
 
+from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+
 
 class LoginPage(Page, Driver):
     # title、左侧退出按钮
@@ -35,7 +37,8 @@ class LoginPage(Page, Driver):
     @allure.step("调用右边栏接口，进入登录页面")
     def __init__(self):
         super().__init__()
-        Asserter.shouldElemExist(self.login_pwd)
+        self.check_element_exist(self.login_pwd)
+        # Asserter.shouldElemExist(self.login_pwd)
 
     @allure.step("普通登录")
     def login_common(self, company='启明星', userNo='Q1223871051', pwd='111111'):
@@ -73,6 +76,7 @@ class LoginPage(Page, Driver):
         print(f"正在输入passWord {pwd}")
         my_log.info(f"正在输入passWord {pwd}")
         self.set_text(self.login_pwd, pwd)
+        self.click(self.title)
         return self
 
     @allure.step("点击登录")
@@ -99,7 +103,7 @@ class LoginPage(Page, Driver):
     @allure.step("检查账号密码是否已经保存")
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
-        if Driver.get_text(self.login_pwd) is None:
+        if self.get_text(self.login_pwd) in ['输入密码']:
             print("账密未保存")
             return False
         print("账密已记住")
@@ -107,14 +111,13 @@ class LoginPage(Page, Driver):
 
 
 if __name__ == '__main__':
+    RightToolBar().goToLoginPage()
     lg = LoginPage()
-    lg.makeAPage()
 
-    LoginPage.makeAPage()\
-        .login_common()
+    lg.login_common()
 
     input("点击继续")
-    Driver.quit()
+    # Driver.quit()
     # log.quit()
     # pytest.main(["-v", "--alluredir", f"{REPORT_DIR}/.allureTemp"])
     # os.system(f"allure generate {REPORT_DIR}/.allureTemp -o {REPORT_DIR}/allure --clean")

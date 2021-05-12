@@ -1,70 +1,80 @@
-from datetime import datetime
-
-from src.test.scripts.framework.Driver import Driver
-from src.test.scripts.page.navigate.QuotePage import QuotePage
-from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.Driver_atx import Driver
 
 
-class Keyboard:
+class BaseKeyboard(Page, Driver):
     """
     封装两种键盘，手数键盘、价格键盘
     以相对坐标轴封装，提高自动化效率
     """
-    lots_keys = {
-        '1': {'x': 135 / 1080, 'y': 1740 / 2201}, '2': {'x': 405 / 1080, 'y': 1740 / 2201},
-        '3': {'x': 675 / 1080, 'y': 1740 / 2201},
+    key_down = None
+    key_plus = None
+    key_minus = None
+    key_back = None
 
-        '4': {'x': 135 / 1080, 'y': 1895 / 2201}, '5': {'x': 405 / 1080, 'y': 1895 / 2201},
-        '6': {'x': 675 / 1080, 'y': 1895 / 2201},
+    def __init__(self):
+        super(BaseKeyboard, self).__init__()
 
-        '7': {'x': 135 / 1080, 'y': 2050 / 2201}, '8': {'x': 405 / 1080, 'y': 2050 / 2201},
-        '9': {'x': 675 / 1080, 'y': 2050 / 2201},
+    def numInput(self, num):
+        for _ in str(num):
+            self.clickText(_)
+        self.keyboardDown()
 
-        '00': {'x': 135 / 1080, 'y': 2165 / 2201}, '0': {'x': 405 / 1080, 'y': 2165 / 2201},
-        '<-': {'x': 675 / 1080, 'y': 2165 / 2201},
+    def numAddOne(self):
+        self.click(self.key_plus)
 
-        'plus': {'x': 945 / 1080, 'y': 1820 / 2201}, 'minus': {'x': 945 / 1080, 'y': 2128 / 2201},
-        'hide': {'x': 945 / 1080, 'y': 1594 / 2201},
-    }
+    def numMinusOne(self):
+        self.click(self.key_minus)
 
-    price_keys = {
-        '市价': {'x': 107 / 1080, 'y': 1594 / 2201}, 'FOK': {'x': 323 / 1080, 'y': 1594 / 2201},
-        'FAK': {'x': 539 / 1080, 'y': 1594 / 2201}, 'hide': {'x': 975 / 1080, 'y': 1594 / 2201},
+    def keyboardDown(self):
+        self.click(self.key_down)
 
-        '对手价': {'x': 107 / 1080, 'y': 1740 / 2201}, '1': {'x': 323 / 1080, 'y': 1740 / 2201},
-        '2': {'x': 539 / 1080, 'y': 1740 / 2201}, '3': {'x': 755 / 1080, 'y': 1740 / 2201},
 
-        '最新价': {'x': 107 / 1080, 'y': 1895 / 2201}, '4': {'x': 323 / 1080, 'y': 1895 / 2201},
-        '5': {'x': 539 / 1080, 'y': 1895 / 2201}, '6': {'x': 755 / 1080, 'y': 1895 / 2201},
+class PriceKeyBoard(BaseKeyboard):
+    key_down = ("resourceId", "esunny.test:id/ImageView_trade_keyboard_keyDone")
+    key_plus = ("resourceId", "esunny.test:id/button_trade_keyboard_keyPlus")
+    key_minus = ("resourceId", "esunny.test:id/button_trade_keyboard_keyMinus")
+    key_back = ("resourceId", "esunny.test:id/ImageView_trade_keyboard_keyBack")
 
-        '排队价': {'x': 107 / 1080, 'y': 2050 / 2201}, '7': {'x': 323 / 1080, 'y': 2050 / 2201},
-        '8': {'x': 539 / 1080, 'y': 2050 / 2201}, '9': {'x': 755 / 1080, 'y': 2050 / 2201},
+    def __init__(self):
+        super(PriceKeyBoard, self).__init__()
+        print(self.key_down)
+        assert self.check_element_exist(self.key_down)
 
-        '超价': {'x': 107 / 1080, 'y': 2165 / 2201}, '.': {'x': 323 / 1080, 'y': 2165 / 2201},
-        '0': {'x': 539 / 1080, 'y': 2165 / 2201}, '<-': {'x': 755 / 1080, 'y': 2165 / 2201},
-
-        'plus': {'x': 975 / 1080, 'y': 1820 / 2201}, 'minus': {'x': 975 / 1080, 'y': 2128 / 2201},
-        # 'buy': {'x': 480 / 1080, 'y': 1460 / 2201}, 'sell': {'x': 720 / 1080, 'y': 1460 / 2201},
-    }
-
-    @staticmethod
-    def price_input(price):
+    def priceInput(self, price):
         print(price)
         if price in ['市价', '对手价', '最新价', '排队价', '超价']:
-            Driver.click(Keyboard.price_keys[price])
+            self.clickText(price)
         else:
-            for num in str(price):
-                Driver.click(Keyboard.price_keys[num])
-        Driver.click(Keyboard.price_keys['hide'])
+            self.numInput(price)
 
-    @staticmethod
-    def lots_input(slots):
-        print(slots)
-        for num in str(slots):
-            Driver.click(Keyboard.lots_keys[num])
-        Driver.click(Keyboard.lots_keys['hide'])
+    def chooseFak(self):
+        self.clickText('FAK')
+
+    def chooseFok(self):
+        self.clickText('FOK')
+
+
+class LotsKeyBoard(BaseKeyboard):
+    key_down = ("resourceId", "esunny.test:id/ImageView_trade_keyboard_lots_keyDone")
+    key_plus = ("resourceId", "esunny.test:id/button_trade_keyboard_lots_keyPlus")
+    key_minus = ("resourceId", "esunny.test:id/button_trade_keyboard_lots_keyMinus")
+    key_back = ("resourceId", "esunny.test:id/ImageView_trade_keyboard_lots_keyBack")
+
+    def __init__(self):
+        super(LotsKeyBoard, self).__init__()
+        assert self.check_element_exist(self.key_down)
+
+    def lotsInput(self, lots):
+        print(lots)
+        self.numInput(lots)
 
 
 if __name__ == '__main__':
-    Keyboard.price_input("对手价")
+    # debugPage1 = LotsKeyBoard()
+    # debugPage1.keyboardDown()
+    # debugPage2 = PriceKeyBoard()
+    # debugPage2.keyboardDown()
+    # debugPage3 = BaseKeyboard()
+    # debugPage3.keyboardDown()
     pass

@@ -40,4 +40,5 @@ if __name__ == '__main__':
     debugPage = CommonSetting()
     res = debugPage.getCurRingBell()
     print(res)
-    debugPage.goToLangChoose().pageBack()
+    debugPage.goToRingBellSetting()
+    # debugPage.goToLangChoose().pageBack()

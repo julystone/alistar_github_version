@@ -9,6 +9,7 @@ from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.OsPathUtil import DATA_DIR, REPORT_DIR
 from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
 
 file_path = DATA_DIR + r"/TestData.xlsx"
 sheet_name = 'Login'
@@ -29,29 +30,34 @@ class TestLoginPage(TestBase):
     def testcase_login(self, case, DriverInit):
         if not case.ifDDT:
             pytest.skip("No need to DDT")
-        LoginPage.makeAPage() \
+        RightToolBar().goToLoginPage()
+        LoginPage() \
             .chooseCompany(case.com) \
             .inputUserNo(case.acc) \
             .inputPassWord(case.pwd) \
             .clickSubmit()
+
         Asserter.shouldHaveText(case.checkpoint1)
 
     @allure.title("测试点击风险责任书")
     def testcase_clickRiskBook(self, DriverInit):
-        LoginPage.makeAPage() \
+        RightToolBar().goToLoginPage()
+        LoginPage() \
             .clickRiskBook()
         Asserter.notHaveText('请输入用户名')
 
     @allure.title("测试点击左上角返回按钮")
     def testcase_clickBackwards(self, DriverInit):
-        LoginPage.makeAPage() \
+        RightToolBar().goToLoginPage()
+        LoginPage() \
             .clickBackwards()
         Asserter.notHaveText('请输入用户名')
 
     @allure.title("测试密码输入 安全键盘的弹出")
     def estcase_clickPwdInput(self, DriverInit):
-        (LoginPage.makeAPage()
-         .clickSubmit())
+        RightToolBar().goToLoginPage()
+        LoginPage() \
+         .clickSubmit()
         Asserter.shouldHaveText('安全键盘')
         # assert login_page._check_element_exist(('part-text', '安全键盘')) is True
 

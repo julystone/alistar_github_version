@@ -1,6 +1,5 @@
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.rightTool.CommonSetting import CommonSetting
 
 
 class RightToolBar(Page, Driver):
@@ -30,9 +29,7 @@ class RightToolBar(Page, Driver):
 
     def __init__(self):
         super().__init__()
-        if not self.check_element_exist(self.trade_login):
-            self.click(self.menu_button)
-            self.check_element_exist(self.trade_login)
+        self.check_element_exist(self.trade_login)
 
     def goToLoginPage(self):
         self.click(self.menu_button)
@@ -61,7 +58,6 @@ class RightToolBar(Page, Driver):
 
     def goToCommonSetting(self):
         self.click(self.common_setting)
-        return CommonSetting()
 
     def goToAbout(self):
         self.click(self.about)
@@ -81,5 +77,6 @@ class RightToolBar(Page, Driver):
 
 if __name__ == '__main__':
     Rt = RightToolBar()
-    Rt.click(Rt.menu_button)
-    Rt.goToAbout()
+    print(Rt.check_element_exist(('text', '自选')))
+    # Rt.click(Rt.menu_button)
+    # Rt.goToAbout()
