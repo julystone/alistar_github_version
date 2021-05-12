@@ -9,7 +9,7 @@ from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.framework.MyLogger import my_log
 import allure
 
-from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+from src.test.scripts.page.setting.RightToolBar import RightToolBar
 
 
 class LoginPage(Page, Driver):

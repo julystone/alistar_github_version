@@ -1,6 +1,6 @@
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+from src.test.scripts.page.setting.RightToolBar import RightToolBar
 
 
 class TradeCalendar(Page, Driver):

@@ -1,12 +1,9 @@
-from src.test.scripts.framework.BasePage import Page
-from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+from assertpy import assert_that
+
+from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
-class AboutPage(Page, Driver):
-    # 左侧返回键、title
-    title = ('text', '关于和帮助')
-
+class AboutPage(SettingBasePage):
     # 详细信息
     packageNo = ('resource-id', 'esunny.test:id/activity_es_about_tv_package_no_value')
     quoteAddr = ('resource-id', "esunny.test:id/activity_es_about_tv_quote_address_value")
@@ -20,12 +17,8 @@ class AboutPage(Page, Driver):
     feedback = ('resource-id', "esunny.test:id/activity_es_about_rl_feedback")
     privacy = ('resource-id', "esunny.test:id/activity_es_about_rl_privacy")
 
-    def __init__(self):
-        super().__init__()
-        self.selfCheck()
-
     def selfCheck(self):
-        assert self.check_element_exist(self.privacy) is True
+        assert_that(self.check_element_exist(self.packageNo)).is_true()
 
     def getPackageNo(self):
         return self.get_text(self.packageNo)
@@ -50,6 +43,7 @@ if __name__ == '__main__':
     debugPage = AboutPage()
     res = debugPage.getVersion()
     print(res)
-    debugPage.goToUploadPage()
-    debugPage.pageBack()
+    # debugPage.goToUploadPage()
+    debugPage.findElement(debugPage.quit_btn)
+    # debugPage.quitPage()
     # AP.goToUploadPage()

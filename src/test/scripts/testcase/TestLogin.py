@@ -9,7 +9,7 @@ from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.OsPathUtil import DATA_DIR, REPORT_DIR
 from src.test.scripts.page.common.LoginPage import LoginPage
-from src.test.scripts.page.rightTool.RightToolBar import RightToolBar
+from src.test.scripts.page.setting.RightToolBar import RightToolBar
 
 file_path = DATA_DIR + r"/TestData.xlsx"
 sheet_name = 'Login'

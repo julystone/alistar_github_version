@@ -13,8 +13,8 @@ class NavigateBasePage(Page, Driver):
     switch2trade = ("resourceId", "esunny.test:id/nav_item_trade")
     switch2news = ("resourceId", "esunny.test:id/nav_item_news")
 
-    def __init__(self):
-        super().__init__()
+    def selfCheck(self):
+        pass
 
     def goToRightToolBar(self):
         self.click(self.menu_button)

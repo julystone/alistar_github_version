@@ -1,10 +1,12 @@
-from src.test.scripts.framework.BasePage import Page
-from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.rightTool.LangChoose import LangChoose
+from assertpy import assert_that
+
+from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
 # TODO  how to distinguish switch status between Open with Close?
-class CommonSetting(Page, Driver):
+
+
+class CommonSetting(SettingBasePage):
     # title
     title = ('text', '系统设置')
 
@@ -19,18 +21,19 @@ class CommonSetting(Page, Driver):
     clear_account_info = ('resourceId', "esunny.test:id/es_activity_system_setting_rl_clear_account_info")
 
     def __init__(self):
-        super().__init__()
-        assert self.check_element_exist(self.clear_account_info) is True
+        super(CommonSetting, self).__init__()
+
+    def selfCheck(self):
+        assert_that(self.check_element_exist(self.clear_account_info)).is_true()
 
     def getCurLang(self):
         return self.get_text(self.language)
 
-    def goToLangChoose(self):
-        self.click(self.language)
-        return LangChoose()
-
     def getCurRingBell(self):
         return self.get_text(self.price_ring)
+
+    def goToLangChoose(self):
+        self.click(self.language)
 
     def goToRingBellSetting(self):
         self.click(self.price_ring)
@@ -41,4 +44,6 @@ if __name__ == '__main__':
     res = debugPage.getCurRingBell()
     print(res)
     debugPage.goToRingBellSetting()
+    debugPage.getDriver().sleep(2)
+    debugPage.quitPage()
     # debugPage.goToLangChoose().pageBack()
