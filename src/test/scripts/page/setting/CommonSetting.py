@@ -9,7 +9,7 @@ from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 class CommonSetting(SettingBasePage):
     # title
     title = ('text', '系统设置')
-
+    quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")
     # 详细信息
     language = ('resourceId', "esunny.test:id/es_activity_system_setting_tv_language")
     disconnect_ring = ('resourceId', "esunny.test:id/es_activity_system_setting_switch_is_use_rington")
@@ -20,11 +20,8 @@ class CommonSetting(SettingBasePage):
     clear_favorite_list = ('resourceId', "esunny.test:id/es_activity_system_setting_rl_clear_favorites")
     clear_account_info = ('resourceId', "esunny.test:id/es_activity_system_setting_rl_clear_account_info")
 
-    def __init__(self):
-        super(CommonSetting, self).__init__()
-
     def selfCheck(self):
-        assert_that(self.check_element_exist(self.clear_account_info)).is_true()
+        assert_that(self.check_element_exist(self.title)).is_true()
 
     def getCurLang(self):
         return self.get_text(self.language)
@@ -40,10 +37,20 @@ class CommonSetting(SettingBasePage):
 
 
 if __name__ == '__main__':
+    debugPage1 = CommonSetting()
+    print(debugPage1)
+    debugPage1 = CommonSetting()
+    print(debugPage1)
+    debugPage1 = CommonSetting()
+    print(debugPage1)
     debugPage = CommonSetting()
+    print(debugPage)
     res = debugPage.getCurRingBell()
     print(res)
-    debugPage.goToRingBellSetting()
+    # debugPage.goToRingBellSetting()
     debugPage.getDriver().sleep(2)
-    debugPage.quitPage()
+    print(debugPage.findElement(debugPage.quit_btn).exists)
+    # debugPage.quitPage()
+
+    # debugPage.quitPage()
     # debugPage.goToLangChoose().pageBack()

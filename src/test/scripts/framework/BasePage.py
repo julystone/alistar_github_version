@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class Page(ABC, Driver):
+class Page(ABC):
     BACK_BUTTON = ('resource-id', "esunny.test:id/toolbar_left_icons")
 
     def __init__(self):
@@ -26,7 +26,7 @@ class Page(ABC, Driver):
     def selfCheck(self):
         pass
 
-    def pageBack(self):
-        self.click(self.BACK_BUTTON)
-        return self
+    # def pageBack(self):
+    #     self.click(self.BACK_BUTTON)
+    #     return self
     pass

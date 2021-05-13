@@ -23,7 +23,7 @@ def getDriverFactory():  # fixture工厂
     driver_lists = []
 
     def _getDriverFactory(option=0):
-        dv = Driver.prepareForAndroidAppium(option)
+        dv = Driver.prepareForAndroidATX()
         driver_lists.append(dv)
         return dv
 

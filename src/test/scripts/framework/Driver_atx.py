@@ -1,16 +1,13 @@
-import os
 import time
-
-# from appium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
 import uiautomator2 as u2
 
 from src.test.scripts.framework import ConfigUtil
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
+
+
+# from appium import webdriver
 
 
 # TODO 启动Appium
@@ -27,13 +24,19 @@ class Connection:
 
 
 class Driver:
-    def __init__(self, addr='', implicitly_time=20):
-        self._addr = addr
-        self._d = Connection(addr).driver
-        self._d.implicitly_wait(implicitly_time)
+    def __init__(self):
+        self.pre = self.prepareForAndroidATX()
+        self._addr = self.pre['addr']
+        self._d = Connection(self._addr).driver
+
+        self._implicitly_time = self.pre['implicitly_time']
+        self._d.implicitly_wait(int(self._implicitly_time))
+
+        self._packageName = self.pre['appPackage']
+        self.appStart(package_name=self._packageName)
+
         self.width, self.height = self._d.window_size()
         self.deviceInfo = self._d.device_info
-        self.appStart('esunny.test')
 
     def setDriver(self, newDriver):
         self._d = newDriver
@@ -41,21 +44,15 @@ class Driver:
     def getDriver(self):
         return self._d
 
-    @staticmethod
-    def prepareForAndroidAppium(configChoice=0, ip='localhost', port='4723'):
-        test_config = ConfigUtil.ConfigData(configChoice)
-        desired_caps = {'deviceName': 'test_phone',
-                        'platformName': test_config.get('test_phone', 'platformName'),
-                        'platformVersion': test_config.get('test_phone', 'platformVersion'),
-                        'appPackage': test_config.get('test_phone', 'appPackage'),
-                        'appActivity': test_config.get('test_phone', 'appActivity'),
-                        'automationName': "UiAutomator1",
-                        'noReset': test_config.get('test_phone', 'noReset'),
-                        'ignoreUnimportantViews': True,
-                        'setWaitForIdleTimeout': 5
-                        }
-        driver = webdriver.Remote(f'http://{ip}:{port}/wd/hub', desired_caps)
-        return driver
+    def prepareForAndroidATX(self, configChoice=0):
+        if not hasattr(self, '_d'):
+            test_config = ConfigUtil.ConfigData(configChoice)
+            desired_caps = {'addr': test_config.get('test_phone', 'addr'),
+                            'implicitly_time': test_config.get('test_phone', 'implicitly_time'),
+                            'appPackage': test_config.get('test_phone', 'appPackage'),
+                            'appActivity': test_config.get('test_phone', 'appActivity'),
+                            }
+            return desired_caps
 
     @staticmethod
     def prepareForIOSAppium(configChoice):
@@ -68,10 +65,11 @@ class Driver:
                         'noReset': test_config.get('test_phone', 'noReset')}
         return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    def appStart(self, package_name, activity=None, stop=False, debug=True):
-        # if not self.getDriver().app_current()['package'] == package_name:
-        if not debug:
+    def appStart(self, package_name, activity=None, stop=False):
+        self.packageName = self.getDriver().app_current()['package']
+        if self.packageName != package_name:
             self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
+            self.packageName = package_name
 
     def activityStart(self, activity):
         self.getDriver().app_start(package_name='esunny.test', activity=activity)
