@@ -36,14 +36,14 @@ class AboutPage(SettingBasePage):
         self.click(self.upload)
 
     def goToFeedbackPage(self):
-        self.get_text(self.feedback)
+        self.click(self.feedback)
 
 
 if __name__ == '__main__':
     debugPage = AboutPage()
     res = debugPage.getVersion()
     print(res)
-    # debugPage.goToUploadPage()
-    debugPage.findElement(debugPage.quit_btn)
-    # debugPage.quitPage()
-    # AP.goToUploadPage()
+    debugPage.goToUploadPage()
+    debugPage.getDriver().sleep(2)
+    # debugPage.findElement(debugPage.quit_btn)
+    debugPage.quitPage()

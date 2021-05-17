@@ -13,10 +13,24 @@ class SettingBasePage(Page, Driver):
     def getCurTitle(self):
         return self.get_text(self.title)
 
+    def changeOneSwitch(self, switch, expect):
+        switch_selector = self.findElemWithoutException(switch)
+        if switch_selector.info['checked'] != expect:
+            switch_selector.click()
+
+    def getCurSwitchStatus(self, switch):
+        return self.findElemWithoutException(switch).info['checked']
+
+    def getCurItemStatus(self, item):
+        return self.findElemWithoutException(item).info['selected']
+
     def quitPage(self):
         self.click(self.quit_btn)
 
 
 if __name__ == '__main__':
     debugPage = SettingBasePage()
-    res = debugPage.quitPage()
+    debugPage.title = ('text', '系统设置')
+    debugPage.quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")
+
+    debugPage.quitPage()

@@ -27,9 +27,8 @@ class RightToolBar(Page, Driver):
     common_setting = ('text', '设置')
     about = ('text', '关于')
 
-    def __init__(self):
-        super().__init__()
-        self.check_element_exist(self.trade_login)
+    def selfCheck(self):
+        self.check_element_exist(self.trade_setting)
 
     def goToLoginPage(self):
         self.click(self.menu_button)
@@ -76,7 +75,7 @@ class RightToolBar(Page, Driver):
 
 
 if __name__ == '__main__':
-    Rt = RightToolBar()
-    print(Rt.check_element_exist(('text', '自选')))
+    debugPage = RightToolBar()
+    print(debugPage.check_element_exist(('text', '自选')))
     # Rt.click(Rt.menu_button)
     # Rt.goToAbout()

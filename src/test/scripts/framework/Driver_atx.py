@@ -121,6 +121,10 @@ class Driver:
             my_log.info(f"{loc}元素没有定位到")
         return elem
 
+    def findElemViaText(self, text):
+        loc = ('text', text)
+        return self.findElemWithoutException(loc)
+
     def find_elements(self, loc):
         # 对查找元素返回一整个符合定位的列表
         return self.findElement(loc)
