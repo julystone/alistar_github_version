@@ -1,5 +1,3 @@
-from assertpy import assert_that
-
 from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
@@ -16,23 +14,32 @@ class CommonSetting(SettingBasePage):
     screen_on_switch = ('resourceId', "esunny.test:id/es_activity_system_setting_switch_keep_screen_on")
     clear_favorite_list = ('resourceId', "esunny.test:id/es_activity_system_setting_rl_clear_favorites")
     clear_account_info = ('resourceId', "esunny.test:id/es_activity_system_setting_rl_clear_account_info")
-
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.title)).is_true()
+    # 校验项
+    title_text = '系统设置'
 
     def getCurLang(self):
         return self.get_text(self.language)
 
     def goToLangChoose(self):
         self.click(self.language)
+        return LangChoose()
+
+    def getDisconnectRingStatus(self):
+        return self.getCurSwitchStatus(self.disconnect_ring)
 
     def switchDisconnectRing(self, expect):
         self.changeOneSwitch(self.disconnect_ring, expect)
         return self
 
+    def getTradeRingStatus(self):
+        return self.getCurSwitchStatus(self.trade_ring)
+
     def switchTradeRing(self, expect):
         self.changeOneSwitch(self.trade_ring, expect)
         return self
+
+    def getNotifyRingStatus(self):
+        return self.getCurSwitchStatus(self.notify_ring)
 
     def switchNotifyRing(self, expect):
         self.changeOneSwitch(self.notify_ring, expect)
@@ -47,40 +54,47 @@ class CommonSetting(SettingBasePage):
 
     def goToRingBellSetting(self):
         self.click(self.price_ring)
+        return RingBellSetting()
 
 
 class LangChoose(SettingBasePage):
-    # 左侧返回键、title
-    title = ('text', '切换语言')
-
     # 详细信息
     defaultBand = ("resourceId", "esunny.test:id/es_activity_switch_language_default")
     defaultChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_default")
     englishChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_english")
     chinaChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_china")
     hoKongChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_hongkong")
+    # Alert
+    alert_title = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_title")
+    confirm_btn = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_confirm")
+    # 校验项
+    title_text = '切换语言'
 
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.defaultBand)).is_true()
-
-    def getCurrentLang(self):
+    def getCurLang(self):
         for loc in [self.defaultChoose, self.englishChoose, self.chinaChoose, self.hoKongChoose]:
             elem = self.findElemWithoutException(loc)
             if elem:
                 break
         return elem.sibling().info['text']
 
+    def changeLang(self, lang):
+        self.clickText(lang)
+        self.alertHandle()
+        return self
+
+    def alertHandle(self):
+        if self.findElemWithoutException(self.alert_title):
+            self.click(self.confirm_btn)
+
 
 class RingBellSetting(SettingBasePage):
     # title
     title = ('text', '价格预警音')
-
     # 详细信息
     bellList = ("resourceId", "esunny.test:id/es_activity_price_warning_rv")
     check = ("resourceId", "esunny.test:id/es_item_choose_default_price_tv_check")
-
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.bellList)).is_true()
+    # 校验项
+    title_text = '切换语言'
 
     def getCurrentBell(self):
         elem = self.findElemWithoutException(self.check)
@@ -89,5 +103,7 @@ class RingBellSetting(SettingBasePage):
 
 if __name__ == '__main__':
     debugPage = CommonSetting()
-    debugPage.switchDisconnectRing(False).switchNotifyRing(True).switchKeepScreenOn(False)
+    # debugPage.switchDisconnectRing(False).switchNotifyRing(True).switchKeepScreenOn(False)
+    debugPage.goToLangChoose().getCurLang()
+
     debugPage.getDriver().sleep(2)

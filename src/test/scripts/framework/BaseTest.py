@@ -3,6 +3,7 @@
 # @Author :   julystone
 # @Date   :   2020/11/30 9:38
 # @Email  :   july401@qq.com
+from src.test.scripts.framework.Asserter import Asserter
 
 
 class TestBase:

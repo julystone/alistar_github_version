@@ -1,21 +1,15 @@
-from src.test.scripts.framework.BasePage import Page
-from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.setting.RightToolBar import RightToolBar
+from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
-class TradeCalendar(Page, Driver):
-    # title
-    title = ('text', '交易日历')
-
+class TradeCalendar(SettingBasePage):
     # 详细信息
     month = ('resourceId', "esunny.test:id/activity_es_trade_calendar_tv_month")
     year = ('resourceId', "esunny.test:id/activity_es_trade_calendar_tv_year")
     calendar_month = ('resourceId', "esunny.test:id/vp_month")
     calendar_week = ('resourceId', "esunny.test:id/vp_week")
-
-    def __init__(self):
-        super().__init__()
-        assert self.get_text(self.title) == '交易日历'
+    # 校验项
+    title_text = "交易日历"
 
     def getCurMonth(self):
         return self.get_text(self.month)

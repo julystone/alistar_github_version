@@ -1,26 +1,37 @@
-from src.test.scripts.framework.Driver_atx import Driver
+from assertpy import assert_that
 
 
-def shouldElemExist(elem):
-    assert Driver().check_element_exist(elem) is True
+class Asserter:
+    @staticmethod
+    def PageHasElem(Page, elem):
+        assert_that(Page.findElemWithoutException(elem)).is_not_none()
 
+    @staticmethod
+    def PageNotHasElem(Page, elem):
+        assert_that(Page.findElemWithoutException(elem)).is_none()
 
-def notElemExist(elem):
-    # 深层次设置页面跳转，而且是线性设置，需要用到notExist
-    assert Driver().check_element_exist(elem) is False
+    @staticmethod
+    def PageHasText(Page, text):
+        assert_that(Page.findElemViaText(text)).is_not_none()
 
+    @staticmethod
+    def PageNotHasText(Page, text):
+        assert_that(Page.findElemViaText(text)).is_none()
 
-def shouldHaveText(text):
-    assert Driver().check_element_exist(('part-text', text)) is True
+    @staticmethod
+    def TextEqualText(res, text):
+        assert_that(res).is_equal_to(text)
 
+    @staticmethod
+    def _boolAdaptor(bool_str):
+        if isinstance(bool_str, str):
+            bool_str = eval(bool_str)
+        return bool_str
 
-def shouldTextEqual(res, text):
-    assert res == text
+    @staticmethod
+    def BoolEqualBool(first, second):
+        assert_that(Asserter._boolAdaptor(first) is Asserter._boolAdaptor(second)).is_true()
 
-
-def notHaveText(text):
-    assert Driver().check_element_exist(('part-text', text)) is False
-
-
-def waitUntilText(text):
-    assert Driver().getDriver().wai
+    @staticmethod
+    def BoolNotEqualBool(first, second):
+        assert_that(Asserter._boolAdaptor(first) is Asserter._boolAdaptor(second)).is_false()

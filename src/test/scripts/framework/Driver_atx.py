@@ -66,10 +66,12 @@ class Driver:
         return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
     def appStart(self, package_name, activity=None, stop=False):
-        self.packageName = self.getDriver().app_current()['package']
-        if self.packageName != package_name:
+        packageTemp = self.getDriver().app_current()['package']
+        if stop:
             self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
-            self.packageName = package_name
+        elif not (packageTemp == package_name or stop is True):
+            self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
+            self._packageName = package_name
 
     def activityStart(self, activity):
         self.getDriver().app_start(package_name='esunny.test', activity=activity)

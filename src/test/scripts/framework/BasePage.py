@@ -8,8 +8,6 @@ from src.test.scripts.framework.Driver_atx import Driver
 
 
 class Page(ABC):
-    BACK_BUTTON = ('resource-id', "esunny.test:id/toolbar_left_icons")
-
     def __init__(self):
         super(Page, self).__init__()
         self.selfCheck()
@@ -25,8 +23,3 @@ class Page(ABC):
     @abstractmethod
     def selfCheck(self):
         pass
-
-    # def pageBack(self):
-    #     self.click(self.BACK_BUTTON)
-    #     return self
-    pass

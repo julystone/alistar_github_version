@@ -4,7 +4,6 @@ from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
 class QuoteSetting(SettingBasePage):
-    # title
     title = ('text', '行情设置')
     quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")
     # K线分时相关
@@ -22,9 +21,8 @@ class QuoteSetting(SettingBasePage):
     quote_font_size = ("resourceId", "esunny.test:id/es_activity_chart_setting_tv_text_size")
     # 其他
     code_table_setting = ("resourceId", "esunny.test:id/es_activity_chart_setting_rl_code_table")
-
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.deep_red_green)).is_true()
+    # 校验项
+    title_text = "行情设置"
 
     def getCurPriceCalculate(self):
         return self.get_text(self.price_calculate)
@@ -82,9 +80,8 @@ class PriceCalculateChoose(SettingBasePage):
     settlePriceChoose = ("resourceId", "esunny.test:id/es_activity_etv_price_calculate_pre_settle_price")
     closePriceChoose = ("resourceId", "esunny.test:id/es_activity_etv_price_calculate_pre_closing_price")
     openPriceChoose = ("resourceId", "esunny.test:id/es_activity_etv_price_calculate_open_price")
-
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.settleBand)).is_true()
+    # 校验项
+    title_text = "涨跌计算方式"
 
     def getCurrentPriceCal(self):
         for loc in [self.settlePriceChoose, self.closePriceChoose, self.openPriceChoose]:
@@ -95,8 +92,8 @@ class PriceCalculateChoose(SettingBasePage):
 
 
 class IndexSetting(SettingBasePage):
-    def selfCheck(self):
-        assert_that(self.check_element_exist(('text', '量仓指标'))).is_true()
+    # 校验项
+    title_text = "指标配置"
 
     def turnOnIndex(self, index_name):
         print(index_name)
@@ -105,8 +102,8 @@ class IndexSetting(SettingBasePage):
 
 
 class IndexParameterSetting(SettingBasePage):
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('指标参数修改')
+    # 校验项
+    title_text = "指标参数修改"
 
     def fillInIndexNum(self, index_name, parameter_name, num):
         selector = self.clickText(index_name).findElement(('text', parameter_name))
@@ -118,9 +115,8 @@ class DrawLineSetting(SettingBasePage):
     position_ave_line = ("resourceId", "esunny.test:id/es_activity_chart_setting_position_cost_switch_button")
     last_price_line = ("resourceId", "esunny.test:id/es_activity_chart_setting_last_price_switch_button")
     draw_line = ("resourceId", "esunny.test:id/es_activity_chart_setting_draw_line_switch_button")
-
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('图表画线设置')
+    # 校验项
+    title_text = "图表画线设置"
 
     def switchPositionAveLine(self, expect):
         self.changeOneSwitch(self.position_ave_line, expect)
@@ -135,9 +131,8 @@ class DrawLineSetting(SettingBasePage):
 class CommonPeriodSetting(SettingBasePage):
     title = ('text', '行情设置')
     quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")
-
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('常用周期设置')
+    # 校验项
+    title_text = "常用周期设置"
 
 
 class ExchangeChoose(SettingBasePage):
@@ -154,22 +149,20 @@ class ExchangeChoose(SettingBasePage):
 
 class TitleChoose(SettingBasePage):
     is_single_line = ('resourceId', "esunny.test:id/es_activity_quote_title_setting_switch_is_show_single")
-
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('行情列头设置')
+    # 校验项
+    title_text = "行情列头设置"
 
 
 class QuoteFontSize(SettingBasePage):
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('行情字体大小')
+    # 校验项
+    title_text = "行情字体大小"
 
 
 class CodeTableSetting(SettingBasePage):
     code_table_switch = ("resourceId", "esunny.test:id/es_activity_code_table_is_save_data_switch_button")
     code_table_address = ("resourceId", "esunny.test:id/es_activity_code_table_tv_quote_address")
-
-    def selfCheck(self):
-        assert_that(self.getCurTitle()).is_equal_to('码表设置')
+    # 校验项
+    title_text = "码表设置"
 
 
 if __name__ == '__main__':

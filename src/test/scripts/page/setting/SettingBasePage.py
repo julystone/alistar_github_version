@@ -1,14 +1,17 @@
+from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class SettingBasePage(Page, Driver):
+class SettingBasePage(Page, Driver, Asserter):
     # 顶部栏
     title = ("resourceId", "esunny.test:id/toolbar_title")
     quit_btn = ("resourceId", "esunny.test:id/toolbar_left_icons")
+    # 校验项
+    title_text = "测试标题"
 
     def selfCheck(self):
-        pass
+        Asserter.TextEqualText(self.getCurTitle(), self.title_text)
 
     def getCurTitle(self):
         return self.get_text(self.title)
@@ -26,6 +29,7 @@ class SettingBasePage(Page, Driver):
 
     def quitPage(self):
         self.click(self.quit_btn)
+        return self
 
 
 if __name__ == '__main__':

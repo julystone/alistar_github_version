@@ -1,8 +1,11 @@
+from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.BasePage import Page
 from src.test.scripts.framework.Driver_atx import Driver
+from src.test.scripts.page.setting.CommonSetting import CommonSetting
+from src.test.scripts.page.setting.QuoteSetting import QuoteSetting
 
 
-class RightToolBar(Page, Driver):
+class RightToolBar(Driver):
     # menu功能键
     menu_button = ('xpath', '//*[@resource-id="esunny.test:id/toolbar_right_icons"]/android.widget.FrameLayout[1]')
     # 右侧边栏 - 交易类
@@ -36,9 +39,11 @@ class RightToolBar(Page, Driver):
             self.click(self.trade_login)
         else:
             self.click(self.multi_login)
+        return LoginPage()
 
     def goToQuoteSetting(self):
         self.click(self.quote_setting)
+        return QuoteSetting()
 
     def goToQuoteLoginPage(self):
         self.click(self.quote_login)
@@ -57,6 +62,7 @@ class RightToolBar(Page, Driver):
 
     def goToCommonSetting(self):
         self.click(self.common_setting)
+        return CommonSetting()
 
     def goToAbout(self):
         self.click(self.about)

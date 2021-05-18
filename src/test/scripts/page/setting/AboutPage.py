@@ -16,9 +16,8 @@ class AboutPage(SettingBasePage):
     upload = ('resource-id', "esunny.test:id/activity_es_about_rl_daily")
     feedback = ('resource-id', "esunny.test:id/activity_es_about_rl_feedback")
     privacy = ('resource-id', "esunny.test:id/activity_es_about_rl_privacy")
-
-    def selfCheck(self):
-        assert_that(self.check_element_exist(self.packageNo)).is_true()
+    # 校验项
+    title_text = "关于和帮助"
 
     def getPackageNo(self):
         return self.get_text(self.packageNo)
