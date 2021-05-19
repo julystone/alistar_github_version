@@ -1,0 +1,91 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "DESKTOP-LO57H1T",
+    "children" : [ {
+      "name" : "17856-MainThread",
+      "children" : [ {
+        "name" : "进入后退出系统设置",
+        "uid" : "21d89df36b7ecd7",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424309088,
+          "stop" : 1621424312726,
+          "duration" : 3638
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "交易提示音开关测试",
+        "uid" : "fa9ad87751abe185",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424326777,
+          "stop" : 1621424328677,
+          "duration" : 1900
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "进入语言选择，语言切换成繁体",
+        "uid" : "fdbedafe2e4c4eb3",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424313730,
+          "stop" : 1621424322366,
+          "duration" : 8636
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "消息提示音开关测试",
+        "uid" : "7c28ec52630f7061",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424330163,
+          "stop" : 1621424332138,
+          "duration" : 1975
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "屏幕常亮开关测试",
+        "uid" : "60d4250737a6ff8d",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424333578,
+          "stop" : 1621424335486,
+          "duration" : 1908
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "断线提示音开关测试",
+        "uid" : "710753660b75771",
+        "parentUid" : "74d4a69cedac12acf41442f49aae5d15",
+        "status" : "passed",
+        "time" : {
+          "start" : 1621424323476,
+          "stop" : 1621424325387,
+          "duration" : 1911
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "74d4a69cedac12acf41442f49aae5d15"
+    } ],
+    "uid" : "bdf942cf9cc2e8ceb95b4d54aa4e5913"
+  } ]
+}

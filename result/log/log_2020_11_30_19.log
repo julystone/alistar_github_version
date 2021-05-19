@@ -1,7 +1,0 @@
-2020-11-30 19:24:48,545 | 51884 | [base_page.py-->line:51] | ERROR: [F]('id', 'esunny.test:id/es_activity_login_tv_state_confirm')元素没有定位到
-2020-11-30 19:24:49,190 | 51884 | [base_page.py-->line:29] | INFO : [S]正在保存当前截图
-2020-11-30 19:24:49,190 | 51884 | [base_page.py-->line:69] | INFO : [F]('id', 'esunny.test:id/es_activity_login_tv_state_confirm')元素不存在
-2020-11-30 19:25:34,191 | 51884 | [base_page.py-->line:51] | ERROR: [F]('id', 'esunny.test:id/es_activity_login_tv_state_confirm')元素没有定位到
-2020-11-30 19:26:00,810 | 51884 | [base_page.py-->line:51] | ERROR: [F]('id', 'esunny.test:id/tv_login_submit')元素没有定位到
-2020-11-30 19:26:01,765 | 51884 | [base_page.py-->line:29] | INFO : [S]正在保存当前截图
-2020-11-30 19:26:01,766 | 51884 | [base_page.py-->line:69] | INFO : [F]('id', 'esunny.test:id/tv_login_submit')元素不存在

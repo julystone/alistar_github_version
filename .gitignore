@@ -1,4 +1,4 @@
-result/
+result/.allureTemp
 AppUIAutomation-master/
 .pytest_cache
 task/
