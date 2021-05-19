@@ -1,8 +1,8 @@
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class BaseKeyboard(Page, Driver):
+class BaseKeyboard(BasePage, Driver):
     """
     封装两种键盘，手数键盘、价格键盘
     以相对坐标轴封装，提高自动化效率

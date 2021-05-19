@@ -4,7 +4,7 @@ from enum import Enum
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.framework.MyLogger import my_log
 import allure
@@ -12,7 +12,7 @@ import allure
 from src.test.scripts.page.setting.RightToolBar import RightToolBar
 
 
-class LoginPage(Page, Driver):
+class LoginPage(BasePage, Driver):
     # title、左侧退出按钮
     title = (By.ID, 'esunny.test:id/toolbar_title')
     quit_button = (By.ID, 'esunny.test:id/toolbar_left_first')

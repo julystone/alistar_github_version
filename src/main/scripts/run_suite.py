@@ -12,8 +12,7 @@ date2display_cut = date2display[:10]
 if not os.path.exists(os.path.join(DATA_DIR, f'{date2display_cut}')):
     shutil.copytree(DATA_DIR, os.path.join(DATA_DIR, f'{date2display_cut}'))
 
-# if os.path.exists(f"{REPORT_DIR}\\.allureTemp"):
-#     shutil.rmtree(f"{REPORT_DIR}\\.allureTemp")
-pytest.main([CASE_DIR, "-m", "specific", "-sq", "--alluredir", f"{REPORT_DIR}\\.allureTemp", "--clean-alluredir"])
-shutil.copyfile(f"{CONF_DIR}\\environment.properties", f"{REPORT_DIR}\\.allureTemp\\environment.properties")
-os.system(f"allure generate {REPORT_DIR}\\.allureTemp -o {REPORT_DIR}\\allure --clean")
+pytest.main([CASE_DIR, "-vlsq"])
+# pytest.main([CASE_DIR, "-vlsq", "--alluredir", f"{REPORT_DIR}\\.allureTemp", "--clean-alluredir"])
+# shutil.copyfile(f"{CONF_DIR}\\environment.properties", f"{REPORT_DIR}\\.allureTemp\\environment.properties")
+# os.system(f"allure generate {REPORT_DIR}\\.allureTemp -o {REPORT_DIR}\\allure --clean")

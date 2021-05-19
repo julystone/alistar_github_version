@@ -1,4 +1,4 @@
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.common.LoginPage import LoginPage
@@ -14,7 +14,7 @@ from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 """
 
 
-class DrawTrade(Page):
+class DrawTrade(BasePage):
     quit_btn = {'x': 60 / 1080, 'y': 144 / 2201}
 
     # 底部栏

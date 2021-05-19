@@ -1,13 +1,13 @@
 import allure
 from appium.webdriver.common.mobileby import MobileBy as By
 
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.page.navigate.QuotePage import QuotePage
 from src.test.scripts.page.common.LoginPage import LoginPage
 
 
-class TimeSharing(Page):
+class TimeSharing(BasePage):
     # 顶部栏
     contract_name = ('id', 'esunny.test:id/es_kline_toolbar_title')
     draw_line_btn = {'x': 660 / 1080, 'y': 144 / 2201}

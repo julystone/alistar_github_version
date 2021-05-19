@@ -1,8 +1,8 @@
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class TradeCalendar(Page, Driver):
+class TradeCalendar(BasePage, Driver):
     # title
     title = ('text', '交易日历')
 

@@ -1,5 +1,3 @@
-from assertpy import assert_that
-
 from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 

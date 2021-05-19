@@ -1,8 +1,8 @@
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class NavigateBasePage(Page, Driver):
+class NavigateBasePage(BasePage, Driver):
     # 顶部栏
     title = ("resourceId", "esunny.test:id/toolbar_title")
     menu_button = ('xpath', '//*[@resource-id="esunny.test:id/toolbar_right_icons"]/android.widget.FrameLayout[1]')

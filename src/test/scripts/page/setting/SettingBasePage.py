@@ -1,9 +1,9 @@
 from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class SettingBasePage(Page, Driver, Asserter):
+class SettingBasePage(BasePage, Driver, Asserter):
     # 顶部栏
     title = ("resourceId", "esunny.test:id/toolbar_title")
     quit_btn = ("resourceId", "esunny.test:id/toolbar_left_icons")

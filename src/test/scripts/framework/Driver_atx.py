@@ -7,10 +7,10 @@ from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
 
-# from appium import webdriver
+# Driver：页面驱动程序，可实例化。
+# Connection： 手机配置、连接实例，单例即可
+# TODO 将Driver中可提出单例的，移到Connection中
 
-
-# TODO 启动Appium
 class Connection:
     _single = None
 
@@ -33,7 +33,7 @@ class Driver:
         self._d.implicitly_wait(int(self._implicitly_time))
 
         self._packageName = self.pre['appPackage']
-        self.appStart(package_name=self._packageName)
+        self.appStart()
 
         self.width, self.height = self._d.window_size()
         self.deviceInfo = self._d.device_info
@@ -57,24 +57,15 @@ class Driver:
     @staticmethod
     def prepareForIOSAppium(configChoice):
         # TODO iOS还没调试
-        test_config = ConfigUtil.ConfigData(configChoice)
-        desired_caps = {'platformName': test_config.get('test_phone', 'platformName'),
-                        'platformVersion': test_config.get('test_phone', 'platformVersion'),
-                        'appPackage': test_config.get('test_phone', 'appPackage'),
-                        'appActivity': test_config.get('test_phone', 'appActivity'),
-                        'noReset': test_config.get('test_phone', 'noReset')}
-        return webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+        pass
 
-    def appStart(self, package_name, activity=None, stop=False):
-        packageTemp = self.getDriver().app_current()['package']
-        if stop:
-            self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
-        elif not (packageTemp == package_name or stop is True):
-            self.getDriver().app_start(package_name=package_name, activity=activity, wait=True, stop=stop)
-            self._packageName = package_name
+    def appStart(self, stop=False):
+        self.getDriver().app_start(package_name=self._packageName, wait=True, stop=stop)
 
-    def activityStart(self, activity):
-        self.getDriver().app_start(package_name='esunny.test', activity=activity)
+    def appRestart(self):
+        self.appStart(stop=True)
+        self.findElement(("id", "esunny.test:id/tv_start_loading")).wait_gone()
+        print("restart success")
 
     def get_screenshot_as_file(self, extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
@@ -82,7 +73,6 @@ class Driver:
         self.getDriver().screenshot(SCREENSHOT_DIR + timeStamp + extra + ".png")
 
     def get_screenshot_as_png(self):
-        # timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
         my_log.info("正在保存当前截图")
         return self.getDriver().screenshot(format='raw')
 
@@ -187,8 +177,10 @@ class Driver:
 
     def dialog_handle(self, dialog, btn):
         if self.check_element_exist(dialog):
-            self.click(btn)
-            assert self.check_element_exist(dialog) is False
+            res = self.findElement(btn).click_gone()
+            # self.click(btn)
+            # self.getDriver().sleep(0.5)
+            assert res is True
         return self
 
 

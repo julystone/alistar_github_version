@@ -6,5 +6,15 @@
 from src.test.scripts.framework.Asserter import Asserter
 
 
-class TestBase:
-    pass
+class BaseTest:
+    def recover_steps(self):
+        pass
+
+    def start_steps(self):
+        pass
+
+    def setup(self):
+        try:
+            self.start_steps()
+        except AttributeError:
+            self.recover_steps()

@@ -22,7 +22,7 @@ class CommonSetting(SettingBasePage):
 
     def goToLangChoose(self):
         self.click(self.language)
-        return LangChoose()
+        return self.LangChoose()
 
     def getDisconnectRingStatus(self):
         return self.getCurSwitchStatus(self.disconnect_ring)
@@ -54,51 +54,45 @@ class CommonSetting(SettingBasePage):
 
     def goToRingBellSetting(self):
         self.click(self.price_ring)
-        return RingBellSetting()
+        return self.RingBellSetting()
 
+    class LangChoose(SettingBasePage):
+        # 详细信息
+        defaultBand = ("resourceId", "esunny.test:id/es_activity_switch_language_default")
+        defaultChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_default")
+        englishChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_english")
+        chinaChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_china")
+        hoKongChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_hongkong")
+        # Alert
+        alert_title = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_title")
+        confirm_btn = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_confirm")
+        # 校验项
+        title_text = '切换语言'
 
-class LangChoose(SettingBasePage):
-    # 详细信息
-    defaultBand = ("resourceId", "esunny.test:id/es_activity_switch_language_default")
-    defaultChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_default")
-    englishChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_english")
-    chinaChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_china")
-    hoKongChoose = ("resourceId", "esunny.test:id/es_activity_switch_language_etv_hongkong")
-    # Alert
-    alert_title = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_title")
-    confirm_btn = ("resourceId", "esunny.test:id/es_custom_toast_dialog_tv_confirm")
-    # 校验项
-    title_text = '切换语言'
+        def getCurLang(self):
+            for loc in [self.defaultChoose, self.englishChoose, self.chinaChoose, self.hoKongChoose]:
+                elem = self.findElemWithoutException(loc)
+                if elem:
+                    break
+            return elem.sibling().info['text']
 
-    def getCurLang(self):
-        for loc in [self.defaultChoose, self.englishChoose, self.chinaChoose, self.hoKongChoose]:
-            elem = self.findElemWithoutException(loc)
-            if elem:
-                break
-        return elem.sibling().info['text']
+        def changeLang(self, lang):
+            self.clickText(lang)
+            self.dialog_handle(self.alert_title, self.confirm_btn)
+            return self
 
-    def changeLang(self, lang):
-        self.clickText(lang)
-        self.alertHandle()
-        return self
+    class RingBellSetting(SettingBasePage):
+        # title
+        title = ('text', '价格预警音')
+        # 详细信息
+        bellList = ("resourceId", "esunny.test:id/es_activity_price_warning_rv")
+        check = ("resourceId", "esunny.test:id/es_item_choose_default_price_tv_check")
+        # 校验项
+        title_text = '切换语言'
 
-    def alertHandle(self):
-        if self.findElemWithoutException(self.alert_title):
-            self.click(self.confirm_btn)
-
-
-class RingBellSetting(SettingBasePage):
-    # title
-    title = ('text', '价格预警音')
-    # 详细信息
-    bellList = ("resourceId", "esunny.test:id/es_activity_price_warning_rv")
-    check = ("resourceId", "esunny.test:id/es_item_choose_default_price_tv_check")
-    # 校验项
-    title_text = '切换语言'
-
-    def getCurrentBell(self):
-        elem = self.findElemWithoutException(self.check)
-        return elem.sibling().info['text']
+        def getCurrentBell(self):
+            elem = self.findElemWithoutException(self.check)
+            return elem.sibling().info['text']
 
 
 if __name__ == '__main__':

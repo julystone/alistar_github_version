@@ -4,7 +4,7 @@ import allure
 import pytest
 
 from src.test.scripts.framework import Asserter
-from src.test.scripts.framework.BaseTest import TestBase
+from src.test.scripts.framework.BaseTest import BaseTest
 from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.OsPathUtil import DATA_DIR, REPORT_DIR
@@ -23,7 +23,7 @@ cases = wb.read_data_obj()
 
 @allure.feature("登录模块")
 @pytest.mark.specific
-class TestLoginPage(TestBase):
+class TestLoginPage(BaseTest):
     @allure.title("{case.testName}")
     @pytest.mark.core
     @pytest.mark.parametrize("case", cases)

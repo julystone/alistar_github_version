@@ -1,7 +1,7 @@
 from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework import Asserter
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
 import allure
@@ -9,7 +9,7 @@ import allure
 from src.test.scripts.page.navigate.TradePage import TradePage
 
 
-class DotTrade(Page):
+class DotTrade(BasePage):
     # 顶部栏
     # title = (By.ID, 'esunny.test:id/toolbar_ll_title')
     title = (By.ID, 'esunny.test:id/toolbar_title')

@@ -1,5 +1,5 @@
 from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.setting.CommonSetting import CommonSetting
 from src.test.scripts.page.setting.QuoteSetting import QuoteSetting

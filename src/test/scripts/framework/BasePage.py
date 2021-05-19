@@ -7,9 +7,9 @@ from abc import ABC, abstractmethod
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class Page(ABC):
+class BasePage(ABC):
     def __init__(self):
-        super(Page, self).__init__()
+        super(BasePage, self).__init__()
         self.selfCheck()
 
     @staticmethod

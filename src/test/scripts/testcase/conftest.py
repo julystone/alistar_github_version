@@ -11,11 +11,18 @@ from src.test.scripts.framework.Driver_atx import Driver
 
 # TODO 添加失败、成功截图、每次assert进行截图、截图监听器
 @pytest.fixture(scope="function")
-def DriverInit():
-    Driver().appStart(package_name='esunny.test', stop=False)
+def PageInit(request):
+    print('Environment Preparing')
+    try:
+        request.param['Page']()
+    except AttributeError:
+        request.param['func']()
     yield
-    # Driver.quit()
-    print('test ended')
+    print('Environment Recovering')
+    try:
+        request.param['Page']()
+    except AttributeError:
+        request.param['func']()
 
 
 @pytest.fixture()

@@ -9,11 +9,11 @@ from appium.webdriver.common.mobileby import MobileBy
 
 
 from src.test.scripts.framework import ConfigUtil
-from src.test.scripts.framework.BasePage import Page
+from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 
 
-class LoginPage(Page):
+class LoginPage(BasePage):
     # 用户名输入框
     menu_button = (MobileBy.ID, 'esunny.test:id/rv_favorite_list')  # 完美
     text3 = ('part-text', '行情')  # 找到了，但是好慢好慢    11
