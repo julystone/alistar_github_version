@@ -3,4 +3,5 @@ AppUIAutomation-master/
 .pytest_cache
 task/
 .idea/
+__pycache__
 /src/test/scripts/page/report/*

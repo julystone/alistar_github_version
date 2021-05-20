@@ -102,16 +102,14 @@ class Driver:
 
     @staticmethod
     def locAdaptor(loc):
-        if isinstance(loc, dict):
-            loc = [list(loc.keys())[0], list(loc.values())[0]]
-        elif isinstance(loc, tuple):
-            loc = list(loc)
+        # TODO 不同包号id会更改
+        loc = list(loc)
         via = loc[0].lower()
-        if via in ['text', 'test']:
+        if via in ['text']:
             loc[0] = 'text'
-        elif via in ['part-text', 'partText']:
+        elif via in ['part-text', 'parttext', 'textcontains']:
             loc[0] = 'textContains'
-        elif via in ['resource-id', 'resourceId', 'id']:
+        elif via in ['resource-id', 'resourceid', 'id']:
             loc[0] = 'resourceId'
         elif via in ['xpath']:
             return loc[1]
