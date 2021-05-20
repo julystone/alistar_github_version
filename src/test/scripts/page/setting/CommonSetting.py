@@ -97,7 +97,8 @@ class CommonSetting(SettingBasePage):
 
 if __name__ == '__main__':
     debugPage = CommonSetting()
+    debugPage = CommonSetting().LangChoose()
     # debugPage.switchDisconnectRing(False).switchNotifyRing(True).switchKeepScreenOn(False)
-    debugPage.goToLangChoose().getCurLang()
+    # debugPage.goToLangChoose().getCurLang()
 
     debugPage.getDriver().sleep(2)

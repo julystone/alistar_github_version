@@ -31,6 +31,7 @@ class TestCommonSetting(BaseTest):
         NavigateBasePage().goToRightToolBar()
         RightToolBar().goToCommonSetting()
         self.testPage = CommonSetting()
+        self.testPage.getDriver().sleep(2)
 
     @allure.title("进入后退出系统设置")
     def testcase_quitPage(self):

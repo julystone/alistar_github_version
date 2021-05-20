@@ -6,65 +6,89 @@ from src.test.scripts.framework import ConfigUtil
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
 
-
 # Driver：页面驱动程序，可实例化。
 # Connection： 手机配置、连接实例，单例即可
 # TODO 将Driver中可提出单例的，移到Connection中
 
-class Connection:
-    _single = None
+PACKAGE_NAME = None
 
-    def __init__(self, addr):
-        self.driver = u2.connect(addr)
+
+class Connection:
+    _packageName = None
+    _d = None
+    _single = None
+    _count = 0
 
     def __new__(cls, *args, **kwargs):
+        cls._count += 1
         if cls._single is None:
             cls._single = object.__new__(cls)
+            cls.ConnectionInit()
+        print(cls._count)
         return cls._single
 
+    @classmethod
+    def ConnectionInit(cls):
+        global PACKAGE_NAME
+        pre = cls.prepareForAndroidATX()
+        cls._addr = pre['addr']
+        cls._d = u2.connect(cls._addr)
 
-class Driver:
-    def __init__(self):
-        self.pre = self.prepareForAndroidATX()
-        self._addr = self.pre['addr']
-        self._d = Connection(self._addr).driver
+        cls._implicitly_time = pre['implicitly_time']
+        cls._d.implicitly_wait(int(cls._implicitly_time))
 
-        self._implicitly_time = self.pre['implicitly_time']
-        self._d.implicitly_wait(int(self._implicitly_time))
+        cls._packageName = pre['appPackage']
+        PACKAGE_NAME = cls._packageName
 
-        self._packageName = self.pre['appPackage']
-        self.appStart()
+        cls.width, cls.height = cls._d.window_size()
+        cls.deviceInfo = cls._d.device_info
 
-        self.width, self.height = self._d.window_size()
-        self.deviceInfo = self._d.device_info
+    @classmethod
+    def setDriver(cls, newDriver):
+        cls._d = newDriver
 
-    def setDriver(self, newDriver):
-        self._d = newDriver
+    @classmethod
+    def getDriver(cls):
+        return cls._d
 
-    def getDriver(self):
-        return self._d
+    @classmethod
+    def getPackageName(cls):
+        return cls._packageName
 
-    def prepareForAndroidATX(self, configChoice=0):
-        if not hasattr(self, '_d'):
-            test_config = ConfigUtil.ConfigData(configChoice)
-            desired_caps = {'addr': test_config.get('test_phone', 'addr'),
-                            'implicitly_time': test_config.get('test_phone', 'implicitly_time'),
-                            'appPackage': test_config.get('test_phone', 'appPackage'),
-                            'appActivity': test_config.get('test_phone', 'appActivity'),
-                            }
-            return desired_caps
+    @staticmethod
+    def prepareForAndroidATX(configChoice=0):
+        print("读取配置")
+        test_config = ConfigUtil.ConfigData(configChoice)
+        desired_caps = {'addr': test_config.get('test_phone', 'addr'),
+                        'implicitly_time': test_config.get('test_phone', 'implicitly_time'),
+                        'appPackage': test_config.get('test_phone', 'appPackage'),
+                        'appActivity': test_config.get('test_phone', 'appActivity'),
+                        }
+        return desired_caps
 
     @staticmethod
     def prepareForIOSAppium(configChoice):
         # TODO iOS还没调试
         pass
 
+
+class Driver:
+    def __init__(self):
+        self._d = Connection().getDriver()
+        self._packageName = PACKAGE_NAME
+
+    def getDriver(self):
+        return self._d
+
+    def getPackageName(self):
+        return self._packageName
+
     def appStart(self, stop=False):
         self.getDriver().app_start(package_name=self._packageName, wait=True, stop=stop)
+        self.findElement(("id", "esunny.test:id/tv_start_loading")).wait_gone()
 
     def appRestart(self):
         self.appStart(stop=True)
-        self.findElement(("id", "esunny.test:id/tv_start_loading")).wait_gone()
         print("restart success")
 
     def get_screenshot_as_file(self, extra=""):
@@ -96,6 +120,7 @@ class Driver:
     def findElement(self, loc):
         loc = Driver.locAdaptor(loc)
         if isinstance(loc, dict):
+            self.wait_element(loc, 1.5)
             return self.getDriver()(**loc)
         else:
             return self.getDriver().xpath(loc)
@@ -124,6 +149,9 @@ class Driver:
     def check_element_exist(self, loc):
         ret = self.findElement(loc).exists
         return ret
+
+    def wait_element(self, loc, timeout):
+        assert self.getDriver()(**loc).wait(timeout=timeout)
 
     def loc2coord(self, loc):
         elem = self.findElemWithoutException(loc)
@@ -179,15 +207,18 @@ class Driver:
         if self.check_element_exist(dialog):
             res = self.findElement(btn).click_gone()
             # self.click(btn)
-            # self.getDriver().sleep(0.5)
+            # self.driver.sleep(0.5)
             assert res is True
         return self
 
 
 if __name__ == '__main__':
     d = Driver()
+    print(d.getDriver())
     d1 = Driver()
+    print(d1.getDriver())
     d2 = Driver()
+    print(d2.getDriver())
     print(d2.getDriver().app_current()['package'])
     print(d2.getDriver().app_info('esunny.test'))
     # d2.getDriver().wait_activity('com.esunny.ui.login.EsLoginActivity')

@@ -3,7 +3,7 @@ from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
 
 
-class SettingBasePage(BasePage, Driver, Asserter):
+class SettingBasePage(Driver, BasePage):
     # 顶部栏
     title = ("resourceId", "esunny.test:id/toolbar_title")
     quit_btn = ("resourceId", "esunny.test:id/toolbar_left_icons")

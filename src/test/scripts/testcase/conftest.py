@@ -9,37 +9,6 @@ from src.test.scripts.framework.Driver_atx import Driver
 # conftest.py
 
 
-# TODO 添加失败、成功截图、每次assert进行截图、截图监听器
-@pytest.fixture(scope="function")
-def PageInit(request):
-    print('Environment Preparing')
-    try:
-        request.param['Page']()
-    except AttributeError:
-        request.param['func']()
-    yield
-    print('Environment Recovering')
-    try:
-        request.param['Page']()
-    except AttributeError:
-        request.param['func']()
-
-
-@pytest.fixture()
-def getDriverFactory():  # fixture工厂
-    driver_lists = []
-
-    def _getDriverFactory(option=0):
-        dv = Driver.prepareForAndroidATX()
-        driver_lists.append(dv)
-        return dv
-
-    yield _getDriverFactory
-
-    for dv in driver_lists:
-        dv.quit()
-
-
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item):
     outcome = yield

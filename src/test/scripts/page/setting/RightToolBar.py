@@ -62,7 +62,6 @@ class RightToolBar(Driver):
 
     def goToCommonSetting(self):
         self.click(self.common_setting)
-        return CommonSetting()
 
     def goToAbout(self):
         self.click(self.about)
