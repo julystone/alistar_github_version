@@ -35,6 +35,15 @@ class AboutPage(SettingBasePage):
     def goToFeedbackPage(self):
         self.click(self.feedback)
 
+    class UploadPage(SettingBasePage):
+        title_text = '上传运行日志'
+        submit_btn = ("resourceId", "esunny.test:id/tv_daily_submit")
+        phone_input = ("resourceId", "esunny.test:id/activity_estar_upload_daily_phone_et")
+        log_list = ("resourceId", "esunny.test:id/activity_estar_upload_daily_no_file")
+
+    class FeedbackPage:
+        title_text = '反馈中心'
+
 
 if __name__ == '__main__':
     debugPage = AboutPage()

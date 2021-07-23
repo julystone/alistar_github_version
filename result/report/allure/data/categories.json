@@ -1,5 +1,26 @@
 {
   "uid" : "4b4757e66a1912dae1a509f688f20b0f",
   "name" : "categories",
-  "children" : [ ]
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "AssertionError: Expected not <None>, but was.",
+      "children" : [ {
+        "name" : "测试登录",
+        "uid" : "5e2185cc5c048a60",
+        "parentUid" : "7089dbe65185260709ce351fac34c1c3",
+        "status" : "failed",
+        "time" : {
+          "start" : 1627029830795,
+          "stop" : 1627029851788,
+          "duration" : 20993
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "7089dbe65185260709ce351fac34c1c3"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ]
 }

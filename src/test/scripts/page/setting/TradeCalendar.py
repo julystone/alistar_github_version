@@ -1,4 +1,3 @@
-from src.test.scripts.page.setting.RightToolBar import RightToolBar
 from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
 
 
@@ -26,7 +25,6 @@ class TradeCalendar(SettingBasePage):
 
 
 if __name__ == '__main__':
-    RightToolBar().goToCalendar()
     debugPage = TradeCalendar()
     res = debugPage.getCurMonth()
     print(res)

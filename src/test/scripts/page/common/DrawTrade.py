@@ -1,12 +1,13 @@
+import allure
+
 from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.common.LoginPage import LoginPage
 from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
-from src.test.scripts.page.interface.Keyboard import Keyboard
-import allure
-
+from src.test.scripts.page.interface.Keyboard import PriceKeyBoard
+from src.test.scripts.page.interface.Keyboard import LotsKeyBoard
 from src.test.scripts.page.interface.TradeNtf import TradeNtf
+from src.test.scripts.page.setting.LoginPage import LoginPage
 from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 
 """
@@ -28,11 +29,11 @@ class DrawTrade(BasePage):
     @staticmethod
     @allure.step("进入画线下单界面")
     def makeAPage():
-        ts = TimeSharing.makeAPage()\
-                    .clickDrawLineBtn()
+        ts = TimeSharing.makeAPage() \
+            .clickDrawLineBtn()
         if Driver.check_element_exist(('text', '交易登录')):
-            LoginPage.makeAPage()\
-                    .login_common()
+            LoginPage.makeAPage() \
+                .login_common()
             ts.clickDrawLineBtn()
         # Asserter.shouldElemExist(DrawTrade.buy_button)
         return DrawTrade()
@@ -70,7 +71,7 @@ class DrawTrade(BasePage):
     def checkAccountSaved(self):
         print("检查账号密码是否已经保存")
         if Driver.get_text(self.login_pwd) is None:
-            print("账密未保存") 
+            print("账密未保存")
             return False
         print("账密已记住")
         return True
@@ -79,7 +80,7 @@ class DrawTrade(BasePage):
 if __name__ == '__main__':
     Driver.driverInit(1)
 
-    DrawTrade.makeAPage().\
+    DrawTrade.makeAPage(). \
         clickBuy(). \
         setLots(3). \
         clickConfirm()

@@ -1,7 +1,7 @@
 result/
-AppUIAutomation-master/
 .pytest_cache
 task/
 .idea/
 __pycache__
+config/
 /src/test/scripts/page/report/*

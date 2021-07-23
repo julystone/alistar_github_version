@@ -15,6 +15,9 @@ class BaseKeyboard(BasePage, Driver):
     def __init__(self):
         super(BaseKeyboard, self).__init__()
 
+    def selfCheck(self):
+        pass
+
     def numInput(self, num):
         for _ in str(num):
             self.clickText(_)

@@ -1,15 +1,15 @@
 {
   "total" : 1,
   "items" : [ {
-    "uid" : "8e50b96cf7d48de2fb755db5fd007bd5",
-    "name" : "系统设置",
+    "uid" : "c3a8c3e4b5dcd67524e9b756a1cc2860",
+    "name" : "交易登录",
     "statistic" : {
-      "failed" : 0,
+      "failed" : 1,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 6,
+      "passed" : 0,
       "unknown" : 0,
-      "total" : 6
+      "total" : 1
     }
   } ]
 }

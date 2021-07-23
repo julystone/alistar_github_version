@@ -1,61 +1,11 @@
 [ {
-  "uid" : "fdbedafe2e4c4eb3",
-  "name" : "进入语言选择，语言切换成繁体",
+  "uid" : "5e2185cc5c048a60",
+  "name" : "测试登录",
   "time" : {
-    "start" : 1621424313730,
-    "stop" : 1621424322366,
-    "duration" : 8636
+    "start" : 1627029830795,
+    "stop" : 1627029851788,
+    "duration" : 20993
   },
-  "status" : "passed",
-  "severity" : "normal"
-}, {
-  "uid" : "7c28ec52630f7061",
-  "name" : "消息提示音开关测试",
-  "time" : {
-    "start" : 1621424330163,
-    "stop" : 1621424332138,
-    "duration" : 1975
-  },
-  "status" : "passed",
-  "severity" : "normal"
-}, {
-  "uid" : "60d4250737a6ff8d",
-  "name" : "屏幕常亮开关测试",
-  "time" : {
-    "start" : 1621424333578,
-    "stop" : 1621424335486,
-    "duration" : 1908
-  },
-  "status" : "passed",
-  "severity" : "normal"
-}, {
-  "uid" : "710753660b75771",
-  "name" : "断线提示音开关测试",
-  "time" : {
-    "start" : 1621424323476,
-    "stop" : 1621424325387,
-    "duration" : 1911
-  },
-  "status" : "passed",
-  "severity" : "normal"
-}, {
-  "uid" : "21d89df36b7ecd7",
-  "name" : "进入后退出系统设置",
-  "time" : {
-    "start" : 1621424309088,
-    "stop" : 1621424312726,
-    "duration" : 3638
-  },
-  "status" : "passed",
-  "severity" : "normal"
-}, {
-  "uid" : "fa9ad87751abe185",
-  "name" : "交易提示音开关测试",
-  "time" : {
-    "start" : 1621424326777,
-    "stop" : 1621424328677,
-    "duration" : 1900
-  },
-  "status" : "passed",
+  "status" : "failed",
   "severity" : "normal"
 } ]

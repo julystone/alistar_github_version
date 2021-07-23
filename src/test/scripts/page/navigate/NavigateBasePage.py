@@ -17,7 +17,10 @@ class NavigateBasePage(BasePage, Driver):
         pass
 
     def goToRightToolBar(self):
+        self.wait_element(self.menu_button, 20)
         self.click(self.menu_button)
+        from src.test.scripts.page.setting.RightToolBar import RightToolBar
+        return RightToolBar()
 
     def getCurTitle(self):
         return self.get_text(self.title)

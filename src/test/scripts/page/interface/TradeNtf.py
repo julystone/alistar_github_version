@@ -1,8 +1,4 @@
-from datetime import datetime
-
-from src.test.scripts.framework.Driver import Driver
-from src.test.scripts.page.navigate.QuotePage import QuotePage
-from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.framework.Driver_atx import Driver
 
 """
 封装多种通知
@@ -24,6 +20,13 @@ class TradeNtf:
     @staticmethod
     def acceptNtf():
         Driver.check_element_exist(TradeNtf.accept)
+
+
+class TopFloatBar(Driver):
+    float_text = ("resourceId", "esunny.test:id/view_trade_notification_feedback")
+
+    def getFloatText(self):
+        return self.get_text(self.float_text)
 
 
 if __name__ == '__main__':

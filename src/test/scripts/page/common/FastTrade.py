@@ -1,7 +1,7 @@
 from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.page.setting.LoginPage import LoginPage
 from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
 from src.test.scripts.page.interface.Keyboard import Keyboard
 import allure

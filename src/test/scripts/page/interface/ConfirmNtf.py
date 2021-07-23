@@ -1,8 +1,4 @@
-from datetime import datetime
-
 from src.test.scripts.framework.Driver import Driver
-from src.test.scripts.page.navigate.QuotePage import QuotePage
-from src.test.scripts.page.common.LoginPage import LoginPage
 
 """
 封装多种通知

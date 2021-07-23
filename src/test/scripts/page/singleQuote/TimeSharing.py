@@ -1,10 +1,9 @@
 import allure
-from appium.webdriver.common.mobileby import MobileBy as By
 
 from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.page.navigate.QuotePage import QuotePage
-from src.test.scripts.page.common.LoginPage import LoginPage
+from src.test.scripts.page.setting.LoginPage import LoginPage
 
 
 class TimeSharing(BasePage):

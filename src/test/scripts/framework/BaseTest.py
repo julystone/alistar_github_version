@@ -3,18 +3,46 @@
 # @Author :   julystone
 # @Date   :   2020/11/30 9:38
 # @Email  :   july401@qq.com
+from src.test.scripts.framework import BasePage
 from src.test.scripts.framework.Asserter import Asserter
 
 
 class BaseTest:
-    def recover_steps(self):
+    testPage: BasePage
+
+    def init_steps(self):
         pass
 
-    def start_steps(self):
+    def recover_steps(self):
         pass
 
     def setup(self):
         try:
-            self.start_steps()
-        except AttributeError:
+            self.init_steps()
+        except (AttributeError, AssertionError):
             self.recover_steps()
+
+    def teardown(self):
+        pass
+
+    def meta_switchTest(self, switch):
+        # 数据备份
+        before = self.testPage.getCurSwitchStatus(switch)
+
+        # 切换
+        self.testPage.changeOneSwitch(switch, not before)
+        after = self.testPage.getCurSwitchStatus(switch)
+        Asserter.BoolNotEqualBool(before, after)
+
+        self.testPage.changeOneSwitch(switch, before)
+
+    def meta_checkTest(self, check):
+        # 数据备份
+        before = self.testPage.getCurCheckStatus(check)
+
+        # 切换
+        self.testPage.changeOneCheck(check, not before)
+        after = self.testPage.getCurCheckStatus(check)
+        Asserter.BoolNotEqualBool(before, after)
+
+        self.testPage.changeOneCheck(check, before)

@@ -17,12 +17,30 @@ class CommonSetting(SettingBasePage):
     # 校验项
     title_text = '系统设置'
 
-    def getCurLang(self):
-        return self.get_text(self.language)
+    # def selfCheck(self):
+    #     pass
 
-    def goToLangChoose(self):
-        self.click(self.language)
-        return self.LangChoose()
+    def changeLang(self, lang):
+        self._goToLangChoose().changeLang(lang).quitPage()
+        return self
+
+    def changeBell(self, bell):
+        """
+        :param bell: ["Ding", "MidlyAlarming", "Nassau", "pixiedust", "pizzicato", "Ring_Classic_02",
+        "Ring_Digital_02", "Ring_Synth_02", "Ring_synth_04", "TaDa", "Tinkerbell"] :return: self
+        """
+        self._goToRingBellSetting().changeBell(bell).quitPage()
+        return self
+
+    def closeBell(self, expect):
+        self._goToRingBellSetting().switchRingButton(expect).quitPage()
+        return self
+
+    def clearFavorites(self):
+        self.click(self.clear_favorite_list)
+
+    def clearAccount(self):
+        self.click(self.clear_account_info)
 
     def getDisconnectRingStatus(self):
         return self.getCurSwitchStatus(self.disconnect_ring)
@@ -52,7 +70,14 @@ class CommonSetting(SettingBasePage):
     def getCurRingBell(self):
         return self.get_text(self.price_ring)
 
-    def goToRingBellSetting(self):
+    def getCurLang(self):
+        return self.get_text(self.language)
+
+    def _goToLangChoose(self):
+        self.click(self.language)
+        return self.LangChoose()
+
+    def _goToRingBellSetting(self):
         self.click(self.price_ring)
         return self.RingBellSetting()
 
@@ -85,20 +110,43 @@ class CommonSetting(SettingBasePage):
         # title
         title = ('text', '价格预警音')
         # 详细信息
+        ringButton = ("resourceId", "esunny.test:id/es_activity_price_warning_switch_is_use_rington")
         bellList = ("resourceId", "esunny.test:id/es_activity_price_warning_rv")
         check = ("resourceId", "esunny.test:id/es_item_choose_default_price_tv_check")
+        ring_time = ("resourceId", "esunny.test:id/es_activity_price_warning_tv_time")
+
         # 校验项
-        title_text = '切换语言'
+        title_text = '价格预警音'
 
         def getCurrentBell(self):
             elem = self.findElemWithoutException(self.check)
             return elem.sibling().info['text']
 
+        def getCurRingTime(self):
+            return self.get_text(self.ring_time)
+
+        def changeRingTime(self, time):
+            self.click(self.ring_time)
+            self.clickText(time)
+            self.quitPage()
+            return self
+
+        def switchRingButton(self, expect):
+            self.changeOneSwitch(self.ringButton, expect)
+            return self
+
+        def changeBell(self, bell):
+            self.clickText(bell)
+            return self
+
 
 if __name__ == '__main__':
     debugPage = CommonSetting()
-    debugPage = CommonSetting().LangChoose()
+    debugPage = CommonSetting()
+    debugPage = CommonSetting()
+    print(debugPage)
+    debugPage = CommonSetting().changeBell("ring")
+    print(debugPage)
+    print(debugPage.getCurrentBell())
     # debugPage.switchDisconnectRing(False).switchNotifyRing(True).switchKeepScreenOn(False)
     # debugPage.goToLangChoose().getCurLang()
-
-    debugPage.getDriver().sleep(2)

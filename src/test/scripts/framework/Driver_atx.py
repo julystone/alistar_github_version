@@ -1,6 +1,8 @@
 import time
+from typing import Union
 
 import uiautomator2 as u2
+from uiautomator2 import UiObject
 
 from src.test.scripts.framework import ConfigUtil
 from src.test.scripts.framework.MyLogger import my_log
@@ -17,14 +19,15 @@ class Connection:
     _packageName = None
     _d = None
     _single = None
-    _count = 0
+
+    # _count = 0
 
     def __new__(cls, *args, **kwargs):
-        cls._count += 1
+        # cls._count += 1
         if cls._single is None:
             cls._single = object.__new__(cls)
             cls.ConnectionInit()
-        print(cls._count)
+        # print(cls._count)
         return cls._single
 
     @classmethod
@@ -35,7 +38,7 @@ class Connection:
         cls._d = u2.connect(cls._addr)
 
         cls._implicitly_time = pre['implicitly_time']
-        cls._d.implicitly_wait(int(cls._implicitly_time))
+        cls._d.settings['wait_timeout'] = (int(cls._implicitly_time))
 
         cls._packageName = pre['appPackage']
         PACKAGE_NAME = cls._packageName
@@ -48,7 +51,7 @@ class Connection:
         cls._d = newDriver
 
     @classmethod
-    def getDriver(cls):
+    def getDriver(cls) -> u2.Device:
         return cls._d
 
     @classmethod
@@ -56,7 +59,7 @@ class Connection:
         return cls._packageName
 
     @staticmethod
-    def prepareForAndroidATX(configChoice=0):
+    def prepareForAndroidATX(configChoice=1):
         print("读取配置")
         test_config = ConfigUtil.ConfigData(configChoice)
         desired_caps = {'addr': test_config.get('test_phone', 'addr'),
@@ -77,19 +80,19 @@ class Driver:
         self._d = Connection().getDriver()
         self._packageName = PACKAGE_NAME
 
-    def getDriver(self):
+    def getDriver(self) -> u2.Device:
         return self._d
 
-    def getPackageName(self):
+    def getPackageName(self) -> str:
         return self._packageName
 
     def appStart(self, stop=False):
         self.getDriver().app_start(package_name=self._packageName, wait=True, stop=stop)
-        self.findElement(("id", "esunny.test:id/tv_start_loading")).wait_gone()
+        self.dialog_handle(('text', '未获取到权限'), ('text', '取消'))
+        self.getDriver()(text="自选").wait(20)
 
     def appRestart(self):
         self.appStart(stop=True)
-        print("restart success")
 
     def get_screenshot_as_file(self, extra=""):
         timeStamp = f"{time.strftime('%Y%m%d%H%M%S_', time.localtime())}"
@@ -98,11 +101,14 @@ class Driver:
 
     def get_screenshot_as_png(self):
         my_log.info("正在保存当前截图")
-        return self.getDriver().screenshot(format='raw')
+        # pass
+        return self.getDriver().screenshot(format='pillow')
 
-    @staticmethod
-    def locAdaptor(loc):
+    def locAdaptor(self, loc):
         # TODO 不同包号id会更改
+        if self.getPackageName() not in loc[1]:
+            temp = loc[1].replace('esunny.test', PACKAGE_NAME)
+            loc = (loc[0], temp)
         loc = list(loc)
         via = loc[0].lower()
         if via in ['text']:
@@ -115,20 +121,22 @@ class Driver:
             return loc[1]
         return {loc[0]: loc[1]}
 
-    def findElement(self, loc):
-        loc = Driver.locAdaptor(loc)
+    def findElement(self, loc) -> UiObject:
+        loc = Driver.locAdaptor(self, loc)
         if isinstance(loc, dict):
-            self.wait_element(loc, 1.5)
             return self.getDriver()(**loc)
         else:
             return self.getDriver().xpath(loc)
 
-    def findElemWithoutException(self, loc):
+    def findElemWithoutException(self, loc: Union[tuple, UiObject]):
         """
         对findElement做一层封装，不报错
-        @param loc: locator
-        @return:    WebElement对象 或 None
+        @param loc: locator或者UiObject对象
+        @return:    UiObject对象 或 None
         """
+        if isinstance(loc, UiObject):
+            return loc
+        self.wait_element(loc, 1.5)
         elem = self.findElement(loc)
         if not elem.exists:
             elem = None
@@ -145,18 +153,62 @@ class Driver:
         return self.findElement(loc)
 
     def check_element_exist(self, loc):
-        ret = self.findElement(loc).exists
-        return ret
+        elem = self.findElemWithoutException(loc)
+        return elem.exists
+
+    def changeOneSwitch(self, switch, expect):
+        # 开关按钮操作
+        if self.getCurSwitchStatus(switch) != expect:
+            self.click(switch)
+        return self
+
+    def changeOneCheck(self, check, expect):
+        # 勾选项操作
+        if self.getCurCheckStatus(check) != expect:
+            self.click(check)
+        return self
+
+    def getCurSwitchStatus(self, switch):
+        # 检测switch开关是否打开，eg：深度买红买绿
+        return self.findElemWithoutException(switch).info['checked']
+
+    def getCurItemStatus(self, item):
+        # 检测板块是否被选中
+        return self.findElemWithoutException(item).info['selected']
+
+    def getCurCheckStatus(self, check):
+        # 检测圆形勾选栏是否勾选，eg：记住密码
+        elem = self.findElemWithoutException(check)
+        if elem.get_text() == '\ue617':
+            return True
+        elif elem.get_text() == '\ue61c':
+            return False
+
+    def getCurSortStatus(self, sort):
+        # 检测排序的三角控件是否启用(黑色)，eg：合约排序
+        elem = self.findElemWithoutException(sort)
+        if elem.get_text() == '\ue65b':
+            return True
+        elif elem.get_text() == '\ue65a':
+            return False
 
     def wait_element(self, loc, timeout):
-        assert self.getDriver()(**loc).wait(timeout=timeout)
+        elem = self.findElement(loc)
+        return elem.wait(timeout=timeout)
+
+    def wait_element_gone(self, loc, timeout):
+        elem = self.findElemWithoutException(loc)
+        if elem is None:
+            return True
+        return elem.wait_gone(timeout=timeout)
 
     def loc2coord(self, loc):
         elem = self.findElemWithoutException(loc)
         return elem.center()
 
     def click(self, loc):
-        self.findElemWithoutException(loc).click()
+        elem = self.findElemWithoutException(loc)
+        elem.click()
         return self
 
     def clickText(self, text):
@@ -170,6 +222,10 @@ class Driver:
             time.sleep(0.5)
             return self.getDriver().click(x, y)
 
+    def force_sleep(self, seconds):
+        time.sleep(seconds)
+        return self
+
     def long_click(self, loc=None, x=None, y=None, duration=1000):
         if loc is not None:
             coordinate = self.loc2coord(loc)
@@ -177,17 +233,36 @@ class Driver:
         self.getDriver().long_click(x, y, duration)
         # os.system(f"adb shell input swipe {x} {y} {x} {y} {duration}")
 
-    def swipe(self, direction):
+    def swipe(self, direction, *args, **kwargs):
         """
         :param direction: up, down, left, right  Caps Included
         :return: None
         """
-        self.getDriver().swipe_ext(direction.lower())
+        self.getDriver().swipe_ext(direction.lower(), *args, **kwargs)
         return self
 
-    def scroll_until_locDisplayed(self, loc):
-        loc = Driver.locAdaptor(loc)
-        self.getDriver()(scrollable=True).scroll.to(**Driver.locAdaptor(loc))
+    # def swipe_zone(self, direction, loc):
+    #     elem = self.findElemWithoutException(loc)
+    #     scale = elem.info["visibleBounds"]
+    #     quyu = (scale['left'], scale['top'], scale['right'], scale['bottom'])
+    #     self.getDriver().swipe_ext(direction,box=quyu)
+
+    def swipe_loc(self, direction, loc):
+        # 指定某区域上下滑动
+        elem = self.findElemWithoutException(loc)
+        if direction == '上划':
+            elem.scroll.vert.backward()
+        elif direction == '下滑':
+            elem.scroll.toEnd()
+
+    def swipe_until_text(self, text, loc):
+        # 上下滑动至出现指定text
+        elem = self.findElemWithoutException(loc)
+        elem.scroll.to(text=text)
+
+    def swipe_until_loc(self, loc):
+        loc = self.locAdaptor(loc)
+        self.getDriver()(scrollable=True).scroll.to(**loc)
         return self
 
     def set_text(self, loc, text):
@@ -195,7 +270,8 @@ class Driver:
         elem.set_text(text)
 
     def get_text(self, loc):
-        return self.findElemWithoutException(loc).get_text()
+        elem = self.findElemWithoutException(loc)
+        return elem.get_text()
 
     def get_toast_message(self, toast_message):
         loc = ('part-text', toast_message)
@@ -203,27 +279,14 @@ class Driver:
 
     def dialog_handle(self, dialog, btn):
         if self.check_element_exist(dialog):
-            res = self.findElement(btn).click_gone()
-            # self.click(btn)
-            # self.driver.sleep(0.5)
+            elem = self.findElemWithoutException(btn)
+            res = elem.click_gone()
             assert res is True
         return self
 
 
 if __name__ == '__main__':
     d = Driver()
-    print(d.getDriver())
-    d1 = Driver()
-    print(d1.getDriver())
-    d2 = Driver()
-    print(d2.getDriver())
-    print(d2.getDriver().app_current()['package'])
-    print(d2.getDriver().app_info('esunny.test'))
-    # d2.getDriver().wait_activity('com.esunny.ui.login.EsLoginActivity')
-    # d2.activityStart('com.esunny.ui.login.EsLoginActivity')
-    # di = {'part-text': '安粮期货', }
-    # dii = ('text', '纯碱110')
-    # d.swipe('up')
-    # print(d.getDriver().app_current())
-    # d1.swipe('down')
-    # d2.swipe('up')
+    res = d.get_text(("resourceId", "esunny.test:id/es_activity_system_setting_tv_language"))
+    print(res)
+    # d.swipe_zone('up', (0, 221, 359, 2040))
