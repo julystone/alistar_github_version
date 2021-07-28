@@ -17,11 +17,8 @@ class CommonSetting(SettingBasePage):
     # 校验项
     title_text = '系统设置'
 
-    # def selfCheck(self):
-    #     pass
-
     def changeLang(self, lang):
-        self._goToLangChoose().changeLang(lang).quitPage()
+        self.goToLangChoose().changeLang(lang).quitPage()
         return self
 
     def changeBell(self, bell):
@@ -29,11 +26,11 @@ class CommonSetting(SettingBasePage):
         :param bell: ["Ding", "MidlyAlarming", "Nassau", "pixiedust", "pizzicato", "Ring_Classic_02",
         "Ring_Digital_02", "Ring_Synth_02", "Ring_synth_04", "TaDa", "Tinkerbell"] :return: self
         """
-        self._goToRingBellSetting().changeBell(bell).quitPage()
+        self.goToRingBellSetting().changeBell(bell).quitPage()
         return self
 
     def closeBell(self, expect):
-        self._goToRingBellSetting().switchRingButton(expect).quitPage()
+        self.goToRingBellSetting().switchRingButton(expect).quitPage()
         return self
 
     def clearFavorites(self):
@@ -73,11 +70,11 @@ class CommonSetting(SettingBasePage):
     def getCurLang(self):
         return self.get_text(self.language)
 
-    def _goToLangChoose(self):
+    def goToLangChoose(self):
         self.click(self.language)
         return self.LangChoose()
 
-    def _goToRingBellSetting(self):
+    def goToRingBellSetting(self):
         self.click(self.price_ring)
         return self.RingBellSetting()
 

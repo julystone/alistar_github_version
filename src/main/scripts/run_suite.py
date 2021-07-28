@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from src.test.scripts.framework.OsPathUtil import REPORT_DIR, DATA_DIR, CASE_DIR, CONF_DIR, BAK_DIR
+from utils.OsPathUtil import REPORT_DIR, DATA_DIR, CASE_DIR, CONF_DIR, BAK_DIR
 
 # 文件备份
 date2display = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())

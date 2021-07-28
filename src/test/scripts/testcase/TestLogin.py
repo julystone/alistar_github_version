@@ -4,13 +4,13 @@ import allure
 import pytest
 
 from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BaseTest import BaseTest
-from src.test.scripts.framework.DataUtil import ReadExcel
 from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.framework.OsPathUtil import REPORT_DIR, DATA_DIR
-from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
-from src.test.scripts.page.setting.LoginPage import LoginPage
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
+from src.test.scripts.page.navigate.FavPage import FavPage
+from src.test.scripts.page.setting.LoginPage import LoginPage
+from src.test.scripts.testcase.BaseTest import BaseTest
+from utils.DataUtil import ReadExcel
+from utils.OsPathUtil import REPORT_DIR, DATA_DIR
 
 # file_path = DATA_DIR + r"/TestData.xlsx"
 # sheet_name = 'Login'
@@ -32,7 +32,7 @@ case_list = wb.read_data_obj()
 class TestLogin(BaseTest):
     def recover_steps(self):
         Driver().appRestart()
-        self.testPage = NavigateBasePage().goToRightToolBar().goToLoginPage()
+        self.testPage = FavPage().goToRightToolBar().goToLoginPage()
 
     def init_steps(self):
         self.testPage = LoginPage()
@@ -40,6 +40,7 @@ class TestLogin(BaseTest):
     @allure.title("{case.testName}")
     @pytest.mark.parametrize("case", case_list)
     def testcase_LoginMulti(self, case):
+        # TODO 在密码页面无法截图，需要规避
         max_await_time = 30
         if not case.ifDDT:
             pytest.skip("No need to DDT")

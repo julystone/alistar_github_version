@@ -3,12 +3,12 @@ import os
 import allure
 
 from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BaseTest import BaseTest
 from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.framework.OsPathUtil import REPORT_DIR
+from src.test.scripts.page.interface.RightToolBar import RightToolBar
 from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 from src.test.scripts.page.setting.CommonSetting import CommonSetting
-from src.test.scripts.page.interface.RightToolBar import RightToolBar
+from src.test.scripts.testcase.BaseTest import BaseTest
+from utils.OsPathUtil import REPORT_DIR
 
 
 # file_path = DATA_DIR + r"/TestData.xlsx"

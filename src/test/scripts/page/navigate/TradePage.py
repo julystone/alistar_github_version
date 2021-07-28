@@ -1,13 +1,12 @@
 import allure
 
-from src.test.scripts.framework.Driver import Driver
+from _NavigateBasePage import NavigateBasePage
 from src.test.scripts.page.interface.Keyboard import LotsKeyBoard
 from src.test.scripts.page.interface.Keyboard import PriceKeyBoard
 
-from _NavigateBasePage import NavigateBasePage
-
 
 class TradePage(NavigateBasePage):
+    # TODO 交易界面需要大改
     # 顶部栏标题、点价、跳转K线
     dot_trade = ("resourceId", 'esunny.test:id/toolbar_left_first')
     go_quote = ("resourceId", 'esunny.test:id/toolbar_left_second')
@@ -30,11 +29,8 @@ class TradePage(NavigateBasePage):
     # 成交列表
     match_list = ("resourceId", 'esunny.test:id/recyclerview_trade_match')
 
-    @allure.step("进入交易界面")
-    def __init__(self):
-        super().__init__()
-        print(self.getCurTitle())
-        print(1)
+    def selfCheck(self):
+        pass
 
     @allure.step("选择合约")
     def setContract(self, contract):
@@ -68,10 +64,10 @@ class TradePage(NavigateBasePage):
     def checkMatchList(self):
         # 查看成交列表第一条是否有
         first_match_temp = self.find_elements(self.match_list)[1]
-        first_match = Driver.find_elements(first_match_temp)[1]
-        first_match_2 = Driver.find_elements(first_match)
+        first_match = self.find_elements(first_match_temp)[1]
+        first_match_2 = self.find_elements(first_match)
         for elem in first_match_2:
-            print(Driver.get_text(elem))
+            print(self.get_text(elem))
         # first_order = Driver.find_elements(self.order_list)[1][1]
         # Asserter.shouldElemExist(first_order, first_match)
 

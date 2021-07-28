@@ -1,14 +1,12 @@
 import allure
+from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
+from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 
-from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
-from src.test.scripts.page.interface.Keyboard import PriceKeyBoard
-from src.test.scripts.page.interface.Keyboard import LotsKeyBoard
+from src.test.scripts.page.BasePage.BasePage import BasePage
 from src.test.scripts.page.interface.TradeNtf import TradeNtf
 from src.test.scripts.page.setting.LoginPage import LoginPage
-from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
 
 """
 封装画线下单

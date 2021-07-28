@@ -13,7 +13,7 @@ class QuotePage(NavigateBasePage):
     scroll_bar = ("resourceId", "esunny.estarandroid:id/es_rv_quote_commodity_select")
 
     # 校验项
-    exchange_switch_btn = ("resourceId", "esunny.test:id/toolbar_left_first")
+    block_choose = '行情'
 
     def selfCheck(self):
         self.watcher_handle("行情授权弹框", self.auth_dialog, self.auth_cancel_btn)

@@ -6,9 +6,9 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from src.test.scripts.framework import ConfigUtil, BasePage
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
+from utils import ConfigUtil
+from utils.OsPathUtil import SCREENSHOT_DIR
 
 
 # TODO 启动Appium

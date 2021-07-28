@@ -5,7 +5,7 @@
 import configparser
 import re
 
-from src.test.scripts.framework.ConfigUtil import my_config
+from utils.ConfigUtil import my_config
 
 
 class ParmTemp:

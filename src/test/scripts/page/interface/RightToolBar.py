@@ -1,5 +1,5 @@
-from src.test.scripts.framework.BasePage import BasePage
 from src.test.scripts.framework.Driver_atx import Driver
+from src.test.scripts.page.BasePage.BasePage import BasePage
 from src.test.scripts.page.setting.AboutPage import AboutPage
 from src.test.scripts.page.setting.CloudServicePage import CloudServicePage
 from src.test.scripts.page.setting.CommonSetting import CommonSetting

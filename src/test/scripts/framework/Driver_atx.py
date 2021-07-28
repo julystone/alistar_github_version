@@ -5,9 +5,9 @@ import uiautomator2 as u2
 from assertpy import assertpy
 from uiautomator2 import UiObject
 
-from src.test.scripts.framework import ConfigUtil
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.framework.OsPathUtil import SCREENSHOT_DIR
+from utils import ConfigUtil
+from utils.OsPathUtil import SCREENSHOT_DIR
 
 # Driver：页面驱动程序，可实例化。
 # Connection： 手机配置、连接实例，单例即可
@@ -121,6 +121,8 @@ class Driver:
         return self.getDriver().screenshot(format='raw')
 
     def locAdaptor(self, loc):
+        if isinstance(loc, dict):
+            return loc
         if self.getPackageName() not in loc[1]:
             temp = loc[1]
             if 'esunny.test' in loc[1]:

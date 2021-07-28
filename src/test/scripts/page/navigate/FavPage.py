@@ -1,4 +1,4 @@
-from _NavigateBasePage import NavigateBasePage
+from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 
 
 class FavPage(NavigateBasePage):
@@ -15,7 +15,7 @@ class FavPage(NavigateBasePage):
     quote_list = ("resourceId", "esunny.test:id/tv_quote_contractName")
 
     # 校验项
-    title_text = "自选"
+    block_choose = "自选"
 
     def goToSingleQuotePage(self, pageName):
         loc = ('textContains', pageName.upper())

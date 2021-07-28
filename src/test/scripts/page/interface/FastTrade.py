@@ -1,13 +1,12 @@
-from src.test.scripts.framework.BasePage import BasePage
+import allure
+from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
+
 from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.setting.LoginPage import LoginPage
-from src.test.scripts.page.interface.ConfirmNtf import ConfirmNtf
-from src.test.scripts.page.interface.Keyboard import Keyboard
-import allure
-
+from src.test.scripts.page.BasePage.BasePage import BasePage
+from src.test.scripts.page.interface.Keyboard import BaseKeyboard
 from src.test.scripts.page.interface.TradeNtf import TradeNtf
-from src.test.scripts.page.singleQuote.TimeSharing import TimeSharing
+from src.test.scripts.page.setting.LoginPage import LoginPage
 
 """
 封装快买快卖
@@ -47,7 +46,7 @@ class FastTrade(BasePage):
         print(f"设置价格 {price}")
         my_log.info(f"设置价格 {price}")
         Driver.click(self.price_select)
-        Keyboard.price_input(price)
+        BaseKeyboard().price_input(price)
         return self
 
     @allure.step("点击 买")

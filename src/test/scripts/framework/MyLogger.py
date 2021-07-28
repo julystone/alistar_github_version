@@ -5,8 +5,8 @@
 import logging
 import time
 
-from src.test.scripts.framework.ConfigUtil import my_config
-from src.test.scripts.framework.OsPathUtil import LOG_DIR
+from utils.ConfigUtil import my_config
+from utils.OsPathUtil import LOG_DIR
 
 
 class Mylog:

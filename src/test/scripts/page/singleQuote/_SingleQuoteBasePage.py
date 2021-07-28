@@ -1,11 +1,7 @@
-import allure
-
-from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BasePage import BasePage
-from src.test.scripts.framework.Driver_atx import Driver
+from src.test.scripts.page.BasePage.BasePageWithBottom import BasePageWithBottom
 
 
-class SingleQuoteBasePage(BasePage, Driver):
+class SingleQuoteBasePage(BasePageWithBottom):
     # 合约名、主力标记及退出按钮
     quit_btn = ("resourceId", "esunny.estarandroid:id/es_kline_toolbar_left")
     quote_name = ("resourceId", "esunny.estarandroid:id/es_kline_toolbar_title")
@@ -38,29 +34,14 @@ class SingleQuoteBasePage(BasePage, Driver):
     min = ('text', '分时')
     kline = ('text', 'K线')
     trade = ('text', '交易')
+    annal_list = [news, panel, min, kline, trade]
 
     # 校验项
     block_choose = '测试'
 
-    def __init__(self):
-        Driver.__init__(self)
-        BasePage.__init__(self)
-
-    def selfCheck(self):
-        # self.force_sleep(2)
-        with allure.step("校验当前页面：" + self.block_choose):
-            # allure.attach(body=self.get_screenshot_as_png(), name='当前页面', attachment_type=allure.attachment_type.PNG)
-            Asserter.TextEqualText(self.getCurSelectedPage(), self.block_choose)
-
     def quitPage(self):
         self.click(self.quit_btn)
         return self
-
-    def getCurSelectedPage(self):
-        for loc in [self.min, self.kline, self.news, self.panel]:
-            if self.getCurItemStatus(loc):
-                break
-        return loc[1]
 
     def getCurQuote(self):
         return self.get_text(self.quote_name)

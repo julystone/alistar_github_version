@@ -3,7 +3,7 @@
 """
 import configparser
 
-from src.test.scripts.framework.OsPathUtil import CONF_DIR
+from utils.OsPathUtil import CONF_DIR
 
 config_path = CONF_DIR
 

@@ -4,8 +4,6 @@
 # TODO 发送邮件模块
 from abc import ABC, abstractmethod
 
-from src.test.scripts.framework.Driver_atx import Driver
-
 
 class BasePage(ABC):
     def __init__(self):

@@ -1,11 +1,11 @@
-# @File   :   R_r_sql.py
+# @File   :   SqlUtil.py
 # @Author :   July401
 # @Date   :   2019/6/15
 # @Email  :   july401@qq.com
 
 import pymysql
 
-from src.test.scripts.framework.ConfigUtil import my_config
+from utils.ConfigUtil import my_config
 
 """
 输入sql，返回一条或多条

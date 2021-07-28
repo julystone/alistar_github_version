@@ -1,11 +1,11 @@
-from _NavigateBasePage import NavigateBasePage
+from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 
 
 class NewsPage(NavigateBasePage):
     # 资讯列表
     news_list = ("resourceId", "esunny.test:id/es_news_item_tv_title")
     # 校验项
-    title_text = '资讯'
+    block_choose = '资讯'
 
     def getNewsList(self):
         news_list = []

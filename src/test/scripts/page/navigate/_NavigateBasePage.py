@@ -1,33 +1,25 @@
-import allure
-
-from src.test.scripts.framework.Asserter import Asserter
-from src.test.scripts.framework.BasePage import BasePage
-from src.test.scripts.framework.Driver_atx import Driver
+from src.test.scripts.page.BasePage.BasePageWithBottom import BasePageWithBottom
 
 
-class NavigateBasePage(BasePage, Driver):
+class NavigateBasePage(BasePageWithBottom):
     # 顶部栏
     title = ("resourceId", "esunny.test:id/toolbar_title")
     right_tool = ('xpath', '//*[@resource-id="esunny.test:id/toolbar_right_icons"]/android.widget.FrameLayout[1]')
 
     # 底部导航
-    switch2fav = ("resourceId", "esunny.test:id/nav_item_favorite")
-    switch2quote = ("resourceId", "esunny.test:id/nav_item_quote")
-    switch2trade = ("resourceId", "esunny.test:id/nav_item_trade")
-    switch2news = ("resourceId", "esunny.test:id/nav_item_news")
+    switch2fav = {"resourceId": "esunny.estarandroid:id/nav_tv_title", "text": "自选"}
+    switch2quote = {"resourceId": "esunny.estarandroid:id/nav_tv_title", "text": "行情"}
+    switch2trade = {"resourceId": "esunny.estarandroid:id/nav_tv_title", "text": "交易"}
+    switch2news = {"resourceId": "esunny.estarandroid:id/nav_tv_title", "text": "资讯"}
+    # switch2fav = ("text", "自选")
+    # switch2quote = ("text", "行情")
+    # switch2trade = ("text", "交易")
+    # switch2news = ("text", "资讯")
 
-    # 校验项
-    title_text = "导航栏测试标题"
-
-    def __init__(self):
-        Driver.__init__(self)
-        BasePage.__init__(self)
+    annal_list = [switch2fav, switch2quote, switch2trade, switch2news]
 
     def selfCheck(self):
-        self.force_sleep(2)
-        with allure.step("校验当前页面："+self.title_text):
-            allure.attach(body=self.get_screenshot_as_png(), name='当前页面', attachment_type=allure.attachment_type.PNG)
-            Asserter.TextEqualText(self.getCurTitle(), self.title_text)
+        super().selfCheck()
 
     def getCurTitle(self):
         return self.get_text(self.title)
@@ -40,16 +32,23 @@ class NavigateBasePage(BasePage, Driver):
 
     def goToFavPage(self):
         self.click(self.switch2fav)
+        from src.test.scripts.page.navigate.FavPage import FavPage
+        return FavPage()
 
     def goToQuotePage(self):
         self.click(self.switch2quote)
+        from src.test.scripts.page.navigate.QuotePage import QuotePage
+        return QuotePage()
 
     def goToTradePage(self):
         self.click(self.switch2trade)
-        return self
+        from src.test.scripts.page.navigate.TradePage import TradePage
+        return TradePage()
 
     def goToNewsPage(self):
         self.click(self.switch2news)
+        from src.test.scripts.page.navigate.NewsPage import NewsPage
+        return NewsPage()
 
 
 if __name__ == '__main__':
