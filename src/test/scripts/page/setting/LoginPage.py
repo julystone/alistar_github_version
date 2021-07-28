@@ -1,7 +1,9 @@
 from enum import Enum
 
+import allure
+
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
+from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
 
 
 class LoginPage(SettingBasePage):
@@ -48,6 +50,7 @@ class LoginPage(SettingBasePage):
         self.click(self.risk_book)
         return self.RiskBook()
 
+    @allure.step("切换  {company}  后台")
     def chooseCompany(self, company, local, informal):
         print(f"正在切换{company}后台")
         self.click(self.login_company)
@@ -57,12 +60,14 @@ class LoginPage(SettingBasePage):
         self.swipe_until_loc(locator).click(locator)
         return self
 
+    @allure.step("输入账号  {userNo}")
     def inputUserNo(self, userNo):
         print(f"正在输入userNo {userNo}")
         my_log.info(f"正在输入userNo {userNo}")
         self.set_text(self.login_userNo, userNo)
         return self
 
+    @allure.step("输入密码  {pwd}")
     def inputPassWord(self, pwd):
         print(f"正在输入passWord {pwd}")
         my_log.info(f"正在输入passWord {pwd}")

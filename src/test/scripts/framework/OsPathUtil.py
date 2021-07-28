@@ -26,6 +26,8 @@ CONF_DIR = OsRead.readPath('config')
 
 DATA_DIR = OsRead.readPath('task\\data')
 
+BAK_DIR = OsRead.readPath('task\\bak')
+
 LOG_DIR = OsRead.readPath('result\\log')
 
 REPORT_DIR = OsRead.readPath('result\\report', ifsymbol=False)

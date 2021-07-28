@@ -1,4 +1,4 @@
-from NavigateBasePage import NavigateBasePage
+from _NavigateBasePage import NavigateBasePage
 
 
 class FavPage(NavigateBasePage):
@@ -14,30 +14,23 @@ class FavPage(NavigateBasePage):
     # 行情列表
     quote_list = ("resourceId", "esunny.test:id/tv_quote_contractName")
 
-    def __init__(self):
-        super().__init__()
-        self.goToFavPage()
-        elem = self.findElemWithoutException(self.auth_dialog)
-        if elem is not None:
-            self.click(self.auth_cancel_btn)
-        assert self.getCurTitle() == '自选'
+    # 校验项
+    title_text = "自选"
 
     def goToSingleQuotePage(self, pageName):
         loc = ('textContains', pageName.upper())
         self.click(loc)
 
     def getQuoteList(self):
-        return self.findElement(self.quote_list)
+        quote_list = []
+        elem_list = self.find_elements(self.quote_list)
+        for elem in elem_list:
+            quote_list.append(elem.info['text'])
+        return quote_list
 
 
 if __name__ == '__main__':
     debugPage = FavPage()
     res = debugPage.getQuoteList()
-    temp_list = []
-    for _ in res:
-        temp_list.append(_.get_text())
-        # print(_.get_text())
-    print(temp_list)
-    print(res[1].get_text())
-    # Rt.click(Rt.menu_button)
-    # Rt.goToAbout()
+
+    print(res[0], res[1])

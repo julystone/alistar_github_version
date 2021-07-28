@@ -1,7 +1,7 @@
 from assertpy import assert_that
 
 from src.test.scripts.page.interface.Keyboard import LotsKeyBoard
-from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
+from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
 
 
 class QuoteSetting(SettingBasePage):

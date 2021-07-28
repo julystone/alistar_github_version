@@ -4,7 +4,7 @@ from src.test.scripts.framework.MyLogger import my_log
 import allure
 
 from src.test.scripts.page.navigate.TradePage import TradePage
-from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
+from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
 
 
 class DotTrade(SettingBasePage):

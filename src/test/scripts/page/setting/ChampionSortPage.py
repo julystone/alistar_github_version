@@ -1,4 +1,4 @@
-from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
+from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
 
 
 class ChampionSort(SettingBasePage):
@@ -28,9 +28,9 @@ class ChampionSort(SettingBasePage):
     def getCurChosenTitle(self):
         title1 = self.findElemWithoutException(self.match_title)
         title2 = self.findElemWithoutException(self.position_title)
-        if self.elemIfChosen(title1):
+        if self.getCurItemStatus(title1):
             return title1.get_text()
-        elif self.elemIfChosen(title2):
+        elif self.getCurItemStatus(title2):
             return title2.get_text()
 
     def getCurExchange(self):
@@ -74,7 +74,7 @@ class ChampionSort(SettingBasePage):
 
         def getCurTrend(self):
             for loc in [self.week_trend, self.month_trend, self.three_month_trend]:
-                if self.elemIfChosen(loc):
+                if self.getCurItemStatus(loc):
                     break
             return self.findElemWithoutException(loc).get_text()
 

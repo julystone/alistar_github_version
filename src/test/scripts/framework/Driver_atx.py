@@ -2,6 +2,7 @@ import time
 from typing import Union
 
 import uiautomator2 as u2
+from assertpy import assertpy
 from uiautomator2 import UiObject
 
 from src.test.scripts.framework import ConfigUtil
@@ -30,12 +31,16 @@ class Connection:
         # print(cls._count)
         return cls._single
 
+    def __del__(self):
+        self._d.watcher.stop()
+
     @classmethod
     def ConnectionInit(cls):
         global PACKAGE_NAME
         pre = cls.prepareForAndroidATX()
         cls._addr = pre['addr']
         cls._d = u2.connect(cls._addr)
+        cls.init_watcher()
 
         cls._implicitly_time = pre['implicitly_time']
         cls._d.settings['wait_timeout'] = (int(cls._implicitly_time))
@@ -58,6 +63,17 @@ class Connection:
     def getPackageName(cls):
         return cls._packageName
 
+    @classmethod
+    def init_watcher(cls):
+        cls.add_watcher('悬浮框权限', '未获取到权限', '取消')
+        cls.add_watcher('消息弹框', '上一条', '上一条')
+        cls._d.watcher.run()
+
+    @classmethod
+    def add_watcher(cls, watcher_name=None, text=None, btn=None):
+        cls.getDriver().watcher(watcher_name).when(text).when(btn).click()
+        cls.getDriver().watcher.start()
+
     @staticmethod
     def prepareForAndroidATX(configChoice=1):
         print("读取配置")
@@ -77,7 +93,8 @@ class Connection:
 
 class Driver:
     def __init__(self):
-        self._d = Connection().getDriver()
+        self._con = Connection()
+        self._d = self._con.getDriver()
         self._packageName = PACKAGE_NAME
 
     def getDriver(self) -> u2.Device:
@@ -88,8 +105,7 @@ class Driver:
 
     def appStart(self, stop=False):
         self.getDriver().app_start(package_name=self._packageName, wait=True, stop=stop)
-        self.dialog_handle(('text', '未获取到权限'), ('text', '取消'))
-        self.getDriver()(text="自选").wait(20)
+        self.getDriver()(text="自选").wait(50)
 
     def appRestart(self):
         self.appStart(stop=True)
@@ -102,12 +118,15 @@ class Driver:
     def get_screenshot_as_png(self):
         my_log.info("正在保存当前截图")
         # pass
-        return self.getDriver().screenshot(format='pillow')
+        return self.getDriver().screenshot(format='raw')
 
     def locAdaptor(self, loc):
-        # TODO 不同包号id会更改
         if self.getPackageName() not in loc[1]:
-            temp = loc[1].replace('esunny.test', PACKAGE_NAME)
+            temp = loc[1]
+            if 'esunny.test' in loc[1]:
+                temp = loc[1].replace('esunny.test', PACKAGE_NAME)
+            elif 'esunny.estarandroid' in loc[1]:
+                temp = loc[1].replace('esunny.estarandroid', PACKAGE_NAME)
             loc = (loc[0], temp)
         loc = list(loc)
         via = loc[0].lower()
@@ -145,6 +164,8 @@ class Driver:
         return elem
 
     def findElemViaText(self, text):
+        if text is None:
+            return None
         loc = ('text', text)
         return self.findElemWithoutException(loc)
 
@@ -154,7 +175,10 @@ class Driver:
 
     def check_element_exist(self, loc):
         elem = self.findElemWithoutException(loc)
-        return elem.exists
+        if elem is None:
+            return False
+        else:
+            return elem.exists
 
     def changeOneSwitch(self, switch, expect):
         # 开关按钮操作
@@ -260,9 +284,15 @@ class Driver:
         elem = self.findElemWithoutException(loc)
         elem.scroll.to(text=text)
 
-    def swipe_until_loc(self, loc):
+    def swipe_until_loc(self, loc, loc2swipe=None, direction='vert'):
         loc = self.locAdaptor(loc)
-        self.getDriver()(scrollable=True).scroll.to(**loc)
+        elem = self.getDriver()(scrollable=True)
+        if loc2swipe is not None:
+            elem = self.findElemWithoutException(loc2swipe)
+        if direction in ['vert', 'vertical']:
+            elem.scroll.to(**loc)
+        elif direction in ['horiz', 'horizon']:
+            elem.scroll.horiz.to(**loc)
         return self
 
     def set_text(self, loc, text):
@@ -284,9 +314,19 @@ class Driver:
             assert res is True
         return self
 
+    def watcher_handle(self, watcher_name, text, btn):
+        self._con.add_watcher(watcher_name=watcher_name, text=text, btn=btn)
+
 
 if __name__ == '__main__':
     d = Driver()
-    res = d.get_text(("resourceId", "esunny.test:id/es_activity_system_setting_tv_language"))
+    res = d.findElement(('part-text', '990202'))
+    assertpy.assert_that(res).is_not_none()
     print(res)
+    # d.appStart()
+    # res = d.watcher_handle("未获取到权限", "取消")
+    # print('happy')
+    # print('happy')
+    # print('happy')
+    # print(res)
     # d.swipe_zone('up', (0, 221, 359, 2040))

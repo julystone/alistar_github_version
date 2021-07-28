@@ -1,4 +1,4 @@
-from src.test.scripts.page.setting.SettingBasePage import SettingBasePage
+from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
 
 
 class AboutPage(SettingBasePage):
@@ -31,9 +31,11 @@ class AboutPage(SettingBasePage):
 
     def goToUploadPage(self):
         self.click(self.upload)
+        return self.UploadPage()
 
     def goToFeedbackPage(self):
         self.click(self.feedback)
+        return self.FeedbackPage()
 
     class UploadPage(SettingBasePage):
         title_text = '上传运行日志'

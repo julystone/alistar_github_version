@@ -4,7 +4,7 @@ from src.test.scripts.framework.Driver import Driver
 from src.test.scripts.page.interface.Keyboard import LotsKeyBoard
 from src.test.scripts.page.interface.Keyboard import PriceKeyBoard
 
-from NavigateBasePage import NavigateBasePage
+from _NavigateBasePage import NavigateBasePage
 
 
 class TradePage(NavigateBasePage):

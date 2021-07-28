@@ -16,10 +16,10 @@ def pytest_runtest_makereport(item):
 
     if report.when == 'call':
         if report.outcome == 'failed':
-            Driver().get_screenshot_as_file(extra=item.funcargs["case"].testNo)
+            # Driver().get_screenshot_as_file(extra=item.funcargs["case"].testNo)
             with allure.step("添加失败截图..."):
-                allure.attach(Driver().get_screenshot_as_png(), "失败截图", allure.attachment_type.BMP)
-
+                allure.attach(Driver().get_screenshot_as_png(), "失败截图", allure.attachment_type.PNG)
+                pass
 
 # @pytest.mark.hookwrapper
 # def pytest_runtest_makereport(item):
