@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @File   :   auto_dict.py
+# @File   :   autoDict.py
 # @Author :   julystone
 # @Date   :   2019/8/28 9:59
 # @Email  :   july401@qq.com

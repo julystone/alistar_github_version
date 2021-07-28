@@ -4,7 +4,7 @@
 # @Email  :   july401@qq.com
 
 import os
-from utils.get_root_path import getRootPath
+from utils.getRootPath import getRootPath
 
 
 class OsRead:

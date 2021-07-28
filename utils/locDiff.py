@@ -1,4 +1,4 @@
-from json_beautify import json_beautify
+from jsonBeautify import json_beautify
 import uiautomator2 as u2
 
 
