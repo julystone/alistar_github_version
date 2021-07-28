@@ -5,16 +5,10 @@ import allure
 from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
-from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
+from src.test.scripts.page.navigate.FavPage import FavPage
 from src.test.scripts.page.setting.CommonSetting import CommonSetting
 from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.OsPathUtil import REPORT_DIR
-
-
-# file_path = DATA_DIR + r"/TestData.xlsx"
-# sheet_name = 'Login'
-# wb = ReadExcel(file_path, sheet_name)
-# cases = wb.read_data_obj()
 
 
 # TODO feature、story、step 后续都能写到excel里，隔离开代码
@@ -25,7 +19,7 @@ from utils.OsPathUtil import REPORT_DIR
 class TestCommonSetting(BaseTest):
     def recover_steps(self):
         Driver().appRestart()
-        NavigateBasePage().goToRightToolBar()
+        FavPage().goToRightToolBar()
         RightToolBar().goToCommonSetting()
         self.testPage = CommonSetting()
 

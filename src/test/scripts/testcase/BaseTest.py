@@ -25,6 +25,14 @@ class BaseTest:
     def teardown(self):
         pass
 
+    @classmethod
+    def init_steps_class(cls):
+        pass
+
+    @classmethod
+    def setup_class(cls):
+        cls.init_steps_class()
+
     def meta_switchTest(self, switch):
         # 数据备份
         before = self.testPage.getCurSwitchStatus(switch)

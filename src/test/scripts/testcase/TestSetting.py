@@ -10,15 +10,9 @@ from src.test.scripts.page.setting.CommonSetting import CommonSetting
 from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.OsPathUtil import REPORT_DIR
 
-
-# file_path = DATA_DIR + r"/TestData.xlsx"
-# sheet_name = 'Login'
-# wb = ReadExcel(file_path, sheet_name)
-# cases = wb.read_data_obj()
-
-
-# TODO feature、story、step 后续都能写到excel里，隔离开代码
-# TODO 为啥我的feature story不写进allure 报告里  和last failed有关吗？
+"""
+测试系统设置
+"""
 
 
 @allure.feature("系统设置")

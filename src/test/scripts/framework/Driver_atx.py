@@ -66,7 +66,6 @@ class Connection:
     @classmethod
     def init_watcher(cls):
         cls.add_watcher('悬浮框权限', '未获取到权限', '取消')
-        cls.add_watcher('消息弹框', '上一条', '上一条')
         cls._d.watcher.run()
 
     @classmethod

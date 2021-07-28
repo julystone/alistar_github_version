@@ -280,7 +280,7 @@ class ReadExcel(object):
 
 
 if __name__ == '__main__':
-    r = ReadExcel('../TestCases/data/TestData.xlsx', 'Login')
+    r = ReadExcel('../TestCases/data/LoginTestData.xlsx', 'Login')
     # print('---------------------------------------------------')
     # data = r.r_data_from_colunm([1, 2, 3])
     # print(data)

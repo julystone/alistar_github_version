@@ -1,9 +1,5 @@
-from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
-# file_path = DATA_DIR + r"/TestData.xlsx"
-# sheet_name = 'Login'
-# wb = ReadExcel(file_path, sheet_name)
-# cases = wb.read_data_obj()
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
+from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 
 
 def click_circle():

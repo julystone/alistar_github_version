@@ -12,17 +12,7 @@ from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.DataUtil import ReadExcel
 from utils.OsPathUtil import REPORT_DIR, DATA_DIR
 
-# file_path = DATA_DIR + r"/TestData.xlsx"
-# sheet_name = 'Login'
-# wb = ReadExcel(file_path, sheet_name)
-# cases = wb.read_data_obj()
-
-
-# TODO feature、story、step 后续都能写到excel里，隔离开代码
-# TODO 登录页面没办法截屏
-
-
-file_path = DATA_DIR + r"/TestData.xlsx"
+file_path = DATA_DIR + r"/LoginTestData.xlsx"
 sheet_name = 'Login2'
 wb = ReadExcel(file_path, sheet_name)
 case_list = wb.read_data_obj()
@@ -30,6 +20,10 @@ case_list = wb.read_data_obj()
 
 @allure.feature("交易登录")
 class TestLogin(BaseTest):
+    @classmethod
+    def init_steps_class(cls):
+        Driver().watcher_handle('消息弹框', '上一条', '上一条')
+
     def recover_steps(self):
         Driver().appRestart()
         self.testPage = FavPage().goToRightToolBar().goToLoginPage()
