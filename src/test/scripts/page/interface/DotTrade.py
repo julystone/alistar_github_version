@@ -4,7 +4,7 @@ from src.test.scripts.framework import Asserter
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.navigate.TradePage import TradePage
-from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
 class DotTrade(SettingBasePage):

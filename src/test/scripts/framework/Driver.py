@@ -11,7 +11,6 @@ from utils import ConfigUtil
 from utils.OsPathUtil import SCREENSHOT_DIR
 
 
-# TODO 启动Appium
 class Driver:
     _driver = None
     
@@ -57,7 +56,6 @@ class Driver:
 
     @staticmethod
     def prepareForIOSAppium(configChoice):
-        # TODO iOS还没调试
         test_config = ConfigUtil.ConfigData(configChoice)
         desired_caps = {'platformName': test_config.get('test_phone', 'platformName'),
                         'platformVersion': test_config.get('test_phone', 'platformVersion'),

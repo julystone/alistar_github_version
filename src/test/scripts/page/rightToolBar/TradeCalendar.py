@@ -1,25 +1,17 @@
-from src.test.scripts.framework.Driver_atx import Driver
-from src.test.scripts.page.BasePage.BasePage import BasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
-class TradeCalendar(BasePage, Driver):
-    # title
-    title = ('text', '交易日历')
-
+class TradeCalendar(SettingBasePage):
     # 详细信息
-    month = ('text', 'MA')
-    year = ('text', 'EMA')
+    month = ('resourceId', "esunny.test:id/activity_es_trade_calendar_tv_month")
+    year = ('resourceId', "esunny.test:id/activity_es_trade_calendar_tv_year")
     calendar_month = ('resourceId', "esunny.test:id/vp_month")
     calendar_week = ('resourceId', "esunny.test:id/vp_week")
-
-    def selfCheck(self):
-        pass
+    # 校验项
+    title_text = "交易日历"
 
     def getCurMonth(self):
-        res = self.findElement(self.month)
-        print(res)
-        res1 = self.findElement(self.year)
-        print(res1)
+        return self.get_text(self.month)
 
     def getCurYear(self):
         return self.get_text(self.year)
@@ -36,4 +28,5 @@ if __name__ == '__main__':
     debugPage = TradeCalendar()
     res = debugPage.getCurMonth()
     print(res)
+    debugPage.swipeCalendar()
     # AP.goToUploadPage()

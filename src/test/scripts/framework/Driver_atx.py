@@ -2,7 +2,6 @@ import time
 from typing import Union
 
 import uiautomator2 as u2
-from assertpy import assertpy
 from uiautomator2 import UiObject
 
 from src.test.scripts.framework.MyLogger import my_log
@@ -11,7 +10,7 @@ from utils.OsPathUtil import SCREENSHOT_DIR
 
 # Driver：页面驱动程序，可实例化。
 # Connection： 手机配置、连接实例，单例即可
-# TODO 将Driver中可提出单例的，移到Connection中
+# TODO: 获取元素字体颜色
 
 PACKAGE_NAME = None
 
@@ -116,8 +115,11 @@ class Driver:
 
     def get_screenshot_as_png(self):
         my_log.info("正在保存当前截图")
-        # pass
-        return self.getDriver().screenshot(format='raw')
+        try:
+            return self.getDriver().screenshot(format='raw')
+        except Exception as E:
+            print(E)
+            return None
 
     def locAdaptor(self, loc):
         if isinstance(loc, dict):
@@ -315,14 +317,13 @@ class Driver:
             assert res is True
         return self
 
-    def watcher_handle(self, watcher_name, text, btn):
+    def add_watcher(self, watcher_name, text, btn):
         self._con.add_watcher(watcher_name=watcher_name, text=text, btn=btn)
 
 
 if __name__ == '__main__':
     d = Driver()
-    res = d.findElement(('part-text', '990202'))
-    assertpy.assert_that(res).is_not_none()
+    res = d.get_screenshot_as_png()
     print(res)
     # d.appStart()
     # res = d.watcher_handle("未获取到权限", "取消")

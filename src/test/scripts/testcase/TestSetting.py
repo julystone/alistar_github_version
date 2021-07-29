@@ -6,26 +6,24 @@ from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
 from src.test.scripts.page.navigate.FavPage import FavPage
-from src.test.scripts.page.setting.CommonSetting import CommonSetting
+from src.test.scripts.page.rightToolBar.Setting import Setting
 from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.OsPathUtil import REPORT_DIR
 
-"""
-测试系统设置
-"""
+
+# TODO feature、story、step 后续都能写到excel里，隔离开代码
 
 
 @allure.feature("系统设置")
-class TestCommonSetting(BaseTest):
-    def init_steps(self):
-        self.testPage = CommonSetting()
-
+class TestSetting(BaseTest):
     def recover_steps(self):
         Driver().appRestart()
         FavPage().goToRightToolBar()
         RightToolBar().goToCommonSetting()
-        self.testPage = CommonSetting()
-        self.testPage.getDriver().sleep(2)
+        self.testPage = Setting()
+
+    def init_steps(self):
+        self.testPage = Setting()
 
     @allure.title("进入后退出系统设置")
     def testcase_quitPage(self):
@@ -42,24 +40,11 @@ class TestCommonSetting(BaseTest):
         before = self.testPage.getCurLang()
 
         # 切换成English
-        tempPage = self.testPage.goToLangChoose()
-        tempPage.changeLang('繁体中文').quitPage()
-        after = self.testPage.getCurLang()
+        after = self.testPage.changeLang("繁体中文").getCurLang()
         Asserter.TextEqualText(after, "繁体中文")
 
         # 页面恢复
-        self.testPage.goToLangChoose().changeLang(before).quitPage()
-
-    def meta_switchTest(self, switch):
-        # 数据备份
-        before = self.testPage.getCurSwitchStatus(switch)
-
-        # 切换
-        self.testPage.click(switch)
-        after = self.testPage.getCurSwitchStatus(switch)
-        Asserter.BoolNotEqualBool(before, after)
-
-        self.testPage.click(switch)
+        self.testPage.changeLang(before)
 
     @allure.title("断线提示音开关测试")
     def testcase_switchDisconnectRing(self):
@@ -76,6 +61,18 @@ class TestCommonSetting(BaseTest):
     @allure.title("屏幕常亮开关测试")
     def testcase_switchScreenOnRing(self):
         self.meta_switchTest(switch=self.testPage.screen_on_switch)
+
+    @allure.title("点击清除自选，校验弹框")
+    def testcase_switchScreenOnRing(self):
+        self.testPage.clearFavorites()
+        Asserter.PageHasText(self.testPage, "提示")
+        self.testPage.clickText("取消")
+
+    @allure.title("点击清除账号，校验弹框")
+    def testcase_switchScreenOnRing(self):
+        self.testPage.clearAccount()
+        Asserter.PageHasText(self.testPage, "提示")
+        self.testPage.clickText("取消")
 
 
 if __name__ == '__main__':

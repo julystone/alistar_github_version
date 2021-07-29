@@ -242,6 +242,27 @@ class ReadExcel(object):
                 case_all.append(case_obj)
         return case_all
 
+    def w_data_origin(self, row, column, data):
+        self.sheet.cell(row, column, data)
+
+    def w_data(self, row, column, data):
+        self.open()
+        self.w_data_origin(row, column, data)
+        self.save()
+        self.close()
+
+    def insert_image(self, img, location):
+        self.sheet.add_image(img, location)
+
+    def set_column_width(self, column, width):
+        self.sheet.column_dimensions[column].width = width
+        self.save()
+
+    def set_font(self, row, column, font=Font(u'宋体', size=11, bold=True, color='000000')):
+        cell = chr(ord("A") + column - 1) + str(row)
+        self.sheet[cell].font = font
+        self.save()
+
     def open(self):
         self.wb = openpyxl.load_workbook(self.file_name)
         self.sheet = self.wb[self.sheet_name]
@@ -249,24 +270,6 @@ class ReadExcel(object):
 
     def close(self):
         self.wb.close()
-
-    def w_data(self, row, column, data):
-        self.open()
-        self.sheet.cell(row, column, data)
-        self.save()
-        self.close()
-
-    def set_column_width(self, column, width):
-        self.sheet.column_dimensions[column].width = width
-        self.save()
-
-    def set_font(self, row, column, Font=Font(u'宋体', size=11, bold=True, color='000000')):
-        cell = chr(ord("A") + column - 1) + str(row)
-        self.sheet[cell].font = Font
-        self.save()
-
-    def w_data_origin(self, row, column, data):
-        self.sheet.cell(row, column, data)
 
     def save(self):
         self.wb.save(self.file_name)

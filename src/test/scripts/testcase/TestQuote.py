@@ -21,11 +21,11 @@ wb = ReadExcel(file_path, sheet_name)
 case_list = wb.read_data_obj()
 
 
-@allure.feature("交易登录")
+@allure.feature("行情登陆")
 class TestQuote(BaseTest):
     @classmethod
     def init_steps_class(cls):
-        Driver().watcher_handle("行情授权提示", "提示", "取消")
+        Driver().add_watcher("行情授权提示", "提示", "取消")
 
     def recover_steps(self):
         Driver().appRestart()
@@ -34,7 +34,7 @@ class TestQuote(BaseTest):
     def init_steps(self):
         self.testPage = QuotePage()
 
-    @allure.title("进入不同合约")
+    @allure.title("{case.testName}")
     @pytest.mark.parametrize("case", case_list)
     def testcase_LoginMulti(self, case):
         if not case.ifDDT:
@@ -54,7 +54,7 @@ class TestQuote(BaseTest):
     # @allure.title("进入后退出交易登录")
     # def testcase_quitPage(self):
     #     self.testPage.quitPage()
-    #     tempPage = RightToolBar()
+    #     tempPage = rightToolBar()
     #     Asserter.PageHasText(tempPage, '关于')
     #
     #     # 页面恢复

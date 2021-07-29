@@ -1,14 +1,15 @@
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.BasePage.BasePage import BasePage
-from src.test.scripts.page.setting.AboutPage import AboutPage
-from src.test.scripts.page.setting.CloudServicePage import CloudServicePage
-from src.test.scripts.page.setting.CommonSetting import CommonSetting
-from src.test.scripts.page.setting.CondOrderPage import CondOrderPage
-from src.test.scripts.page.setting.LoginPage import LoginPage
-from src.test.scripts.page.setting.QuoteLoginPage import QuoteLoginPage
-from src.test.scripts.page.setting.QuoteSetting import QuoteSetting
-from src.test.scripts.page.setting.TradeCalendar import TradeCalendar
-from src.test.scripts.page.setting.TradeSetting import TradeSetting
+from src.test.scripts.page.rightToolBar.AboutPage import AboutPage
+from src.test.scripts.page.rightToolBar.ChampionSortPage import ChampionSortPage
+from src.test.scripts.page.rightToolBar.CloudServicePage import CloudServicePage
+from src.test.scripts.page.rightToolBar.CondOrderPage import CondOrderPage
+from src.test.scripts.page.rightToolBar.LoginPage import LoginPage
+from src.test.scripts.page.rightToolBar.QuoteLoginPage import QuoteLoginPage
+from src.test.scripts.page.rightToolBar.QuoteSetting import QuoteSetting
+from src.test.scripts.page.rightToolBar.Setting import Setting
+from src.test.scripts.page.rightToolBar.TradeCalendar import TradeCalendar
+from src.test.scripts.page.rightToolBar.TradeSetting import TradeSetting
 
 
 class RightToolBar(Driver, BasePage):
@@ -91,7 +92,7 @@ class RightToolBar(Driver, BasePage):
     def goToQuoteMall(self) -> BasePage:
         self.click(self.star_store)
 
-    def ChampionSort(self) -> BasePage:
+    def goToChampionSort(self) -> ChampionSortPage:
         self.click(self.champion_sort)
         return ChampionSortPage()
 
@@ -100,7 +101,7 @@ class RightToolBar(Driver, BasePage):
 
     def goToCommonSetting(self) -> BasePage:
         self.click(self.common_setting)
-        return CommonSetting()
+        return Setting()
 
     def goToAbout(self) -> BasePage:
         self.click(self.about)

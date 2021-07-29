@@ -3,7 +3,7 @@ from enum import Enum
 import allure
 
 from src.test.scripts.framework.MyLogger import my_log
-from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
 class LoginPage(SettingBasePage):
@@ -50,14 +50,15 @@ class LoginPage(SettingBasePage):
         self.click(self.risk_book)
         return self.RiskBook()
 
+    def goToCompanyChoose(self):
+        self.click(self.login_company)
+        return self.CompanyChoose()
+
     @allure.step("切换  {company}  后台")
     def chooseCompany(self, company, local, informal):
         print(f"正在切换{company}后台")
-        self.click(self.login_company)
-        self.click(self.local_enum[str(local)].value)
-        self.click(self.informal_enum[str(informal)].value)
-        locator = ('part-text', company)
-        self.swipe_until_loc(locator).click(locator)
+        self.goToCompanyChoose()\
+            .chooseCompany(company, local, informal)
         return self
 
     @allure.step("输入账号  {userNo}")
@@ -65,6 +66,7 @@ class LoginPage(SettingBasePage):
         print(f"正在输入userNo {userNo}")
         my_log.info(f"正在输入userNo {userNo}")
         self.set_text(self.login_userNo, userNo)
+        self.getDriver().press("back")
         return self
 
     @allure.step("输入密码  {pwd}")
@@ -75,24 +77,40 @@ class LoginPage(SettingBasePage):
         self.click(self.title)
         return self
 
+    @allure.step("点击提交")
+    def clickSubmit(self):
+        self.click(self.login_submit)
+        return self
+
     def login_common(self, company='启明星', userNo='Q1223871051', pwd='111111'):
         # 通用登录不提供页面跳转前置
         if not self.checkAccountSaved():
-            self.chooseCompany(company). \
-                inputUserNo(userNo). \
-                inputPassWord(pwd)
-        self.click(self.login_submit)
-        self.force_sleep(2)
+            self.chooseCompany(company)\
+                .inputUserNo(userNo)\
+                .inputPassWord(pwd)\
+                .clickSubmit()\
+                .force_sleep(2)
         return self
 
     class RiskBook(SettingBasePage):
         # 校验项
         title_text = '服务协议'
 
+    class CompanyChoose(SettingBasePage):
+        # 校验项
+        title_text = '选择公司'
+
+        def chooseCompany(self, company, local, informal):
+            self.click(LoginPage.local_enum[str(local)].value)
+            self.click(LoginPage.informal_enum[str(informal)].value)
+            locator = ('part-text', company)
+            self.swipe_until_loc(locator).click(locator)
+            return self
+
 
 if __name__ == '__main__':
     lg = LoginPage()
     # lg.login_common()
     # input("点击继续")
-    res = lg.local_enum['True'].value
-    print(res)
+    res = lg.inputUserNo("444")
+    res = lg.inputPassWord("444")

@@ -6,7 +6,7 @@ from src.test.scripts.framework.MyLogger import my_log
 from src.test.scripts.page.BasePage.BasePage import BasePage
 from src.test.scripts.page.interface.Keyboard import BaseKeyboard
 from src.test.scripts.page.interface.TradeNtf import TradeNtf
-from src.test.scripts.page.setting.LoginPage import LoginPage
+from src.test.scripts.page.rightToolBar.LoginPage import LoginPage
 
 """
 封装快买快卖

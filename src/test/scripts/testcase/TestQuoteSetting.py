@@ -6,25 +6,21 @@ from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
 from src.test.scripts.page.navigate.FavPage import FavPage
-from src.test.scripts.page.setting.CommonSetting import CommonSetting
+from src.test.scripts.page.rightToolBar.Setting import Setting
 from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.OsPathUtil import REPORT_DIR
 
 
-# TODO feature、story、step 后续都能写到excel里，隔离开代码
-# TODO 为啥我的feature story不写进allure 报告里  和last failed有关吗？
-
-
-@allure.feature("系统设置")
-class TestCommonSetting(BaseTest):
+@allure.feature("单双行设置测试")
+class TestSetting(BaseTest):
     def recover_steps(self):
         Driver().appRestart()
         FavPage().goToRightToolBar()
         RightToolBar().goToCommonSetting()
-        self.testPage = CommonSetting()
+        self.testPage = Setting()
 
     def init_steps(self):
-        self.testPage = CommonSetting()
+        self.testPage = Setting()
 
     @allure.title("进入后退出系统设置")
     def testcase_quitPage(self):

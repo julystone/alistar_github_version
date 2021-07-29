@@ -1,7 +1,7 @@
-from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
-class ChampionSort(SettingBasePage):
+class ChampionSortPage(SettingBasePage):
     # 成交持仓页面
     match_title = ("resourceId", "esunny.test:id/es_activity_champion_tv_match_position")
     exchange_choose = ("resourceId", "esunny.test:id/es_activity_champion_tv_exchange")
@@ -80,6 +80,6 @@ class ChampionSort(SettingBasePage):
 
 
 if __name__ == '__main__':
-    debugPage = ChampionSort()
+    debugPage = ChampionSortPage()
     res = debugPage.goToTrendPage().getCurTrend()
     print(res)

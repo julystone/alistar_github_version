@@ -29,8 +29,8 @@ class TradePage(NavigateBasePage):
     # 成交列表
     match_list = ("resourceId", 'esunny.test:id/recyclerview_trade_match')
 
-    def selfCheck(self):
-        pass
+    # 校验项
+    block_choose = "交易"
 
     @allure.step("选择合约")
     def setContract(self, contract):

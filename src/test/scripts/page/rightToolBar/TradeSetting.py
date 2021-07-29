@@ -1,6 +1,6 @@
 import time
 
-from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
 class TradeSetting(SettingBasePage):

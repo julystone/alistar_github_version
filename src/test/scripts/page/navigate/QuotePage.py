@@ -1,4 +1,5 @@
 from src.test.scripts.framework.Asserter import Asserter
+from src.test.scripts.page.navigate.OptionPage import OptionPage
 from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 
 
@@ -46,6 +47,7 @@ class QuotePage(NavigateBasePage):
 
     def goToOptionPage(self):
         self.changeExchange('OPTION')
+        return OptionPage()
 
     def goToMainSortPage(self):
         self.click(self.quote_main)

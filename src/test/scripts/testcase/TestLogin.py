@@ -7,7 +7,7 @@ from src.test.scripts.framework.Asserter import Asserter
 from src.test.scripts.framework.Driver_atx import Driver
 from src.test.scripts.page.interface.RightToolBar import RightToolBar
 from src.test.scripts.page.navigate.FavPage import FavPage
-from src.test.scripts.page.setting.LoginPage import LoginPage
+from src.test.scripts.page.rightToolBar.LoginPage import LoginPage
 from src.test.scripts.testcase.BaseTest import BaseTest
 from utils.DataUtil import ReadExcel
 from utils.OsPathUtil import REPORT_DIR, DATA_DIR
@@ -20,29 +20,29 @@ case_list = wb.read_data_obj()
 
 @allure.feature("交易登录")
 class TestLogin(BaseTest):
+    pytestmark = [pytest.mark.smoke]
     @classmethod
     def init_steps_class(cls):
-        Driver().watcher_handle('消息弹框', '上一条', '上一条')
+        Driver().add_watcher('消息弹框', '上一条', '上一条')
+
+    def init_steps(self):
+        self.testPage = LoginPage()
 
     def recover_steps(self):
         Driver().appRestart()
         self.testPage = FavPage().goToRightToolBar().goToLoginPage()
 
-    def init_steps(self):
-        self.testPage = LoginPage()
-
     @allure.title("{case.testName}")
     @pytest.mark.parametrize("case", case_list)
     def testcase_LoginMulti(self, case):
-        # TODO 在密码页面无法截图，需要规避
         max_await_time = 30
         if not case.ifDDT:
             pytest.skip("No need to DDT")
         self.testPage \
             .chooseCompany(case.com, case.local, case.informal) \
-            .inputUserNo(case.acc) \
             .inputPassWord(case.pwd) \
-            .click(self.testPage.login_submit)
+            .inputUserNo(case.acc) \
+            .clickSubmit()
         loading_circle = (
             'xpath', '//*[@resource-id="esunny.estarandroid:id/customer_toast_container"]/android.widget.ImageView[1]')
         self.testPage.wait_element_gone(loading_circle, max_await_time)
@@ -51,15 +51,17 @@ class TestLogin(BaseTest):
         except AssertionError:
             Asserter.PageHasText(self.testPage, case.checkpoint2)
 
-    # @allure.story("登录参数化测试")
+        # 页面恢复
+        try:
+            RightToolBar().goToLoginPage()
+        except AttributeError:
+            print("页面异常，无法自动恢复")
+
     @allure.title("进入后退出交易登录")
     def testcase_quitPage(self):
         self.testPage.quitPage()
-        tempPage = RightToolBar()
-        Asserter.PageHasText(tempPage, '关于')
-
         # 页面恢复
-        tempPage.goToLoginPage()
+        RightToolBar().goToLoginPage()
 
     @allure.title("记住密码勾选测试")
     def testcase_checkSavePwd(self):

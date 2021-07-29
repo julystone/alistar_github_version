@@ -1,7 +1,7 @@
-from src.test.scripts.page.setting._SettingBasePage import SettingBasePage
+from src.test.scripts.page.rightToolBar._SettingBasePage import SettingBasePage
 
 
-class CommonSetting(SettingBasePage):
+class Setting(SettingBasePage):
     # title
     title = ('text', '系统设置')
     quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")
@@ -138,11 +138,11 @@ class CommonSetting(SettingBasePage):
 
 
 if __name__ == '__main__':
-    debugPage = CommonSetting()
-    debugPage = CommonSetting()
-    debugPage = CommonSetting()
+    debugPage = Setting()
+    debugPage = Setting()
+    debugPage = Setting()
     print(debugPage)
-    debugPage = CommonSetting().changeBell("ring")
+    debugPage = Setting().changeBell("ring")
     print(debugPage)
     print(debugPage.getCurrentBell())
     # debugPage.switchDisconnectRing(False).switchNotifyRing(True).switchKeepScreenOn(False)
