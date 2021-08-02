@@ -8,4 +8,4 @@ class MinPage(SingleQuoteBasePage):
 
 if __name__ == '__main__':
     debugPage = MinPage()
-    debugPage.goToNewsPage().goToF10Page().quitPage()
+    debugPage.goToThudTradeMode().setLots(123)

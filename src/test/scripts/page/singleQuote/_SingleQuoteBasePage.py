@@ -1,4 +1,6 @@
 from src.test.scripts.page.BasePage.BasePageWithBottom import BasePageWithBottom
+from src.test.scripts.page.interface.DrawLineMode import DrawLineMode
+from src.test.scripts.page.interface.ThudTradeMode import ThudTradeMode
 
 
 class SingleQuoteBasePage(BasePageWithBottom):
@@ -15,18 +17,8 @@ class SingleQuoteBasePage(BasePageWithBottom):
 
     # 衍生物
     draw_line_bar = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_menu_bar")
-    draw_line_buy = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_buy_button")
-    draw_line_sell = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_sell_button")
-    draw_line_cover_long = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_long_button")
-    draw_line_cover_short = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_short_button")
-    draw_line_lots = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_lots_tv")
-    draw_line_confirm = ("resourceId", "esunny.estarandroid:id/es_kline_draw_line_confirm_button")
 
     thud_trade_lots = ("resourceId", "esunny.estarandroid:id/es_kline_qty_text")
-    thud_trade_price = ("resourceId", "esunny.estarandroid:id/es_kline_price_text")
-    thud_trade_buy = ("resourceId", "esunny.estarandroid:id/es_kline_buy_button")
-    thud_trade_sell = ("resourceId", "esunny.estarandroid:id/es_kline_sell_button")
-    thud_trade_cover = ("resourceId", "esunny.estarandroid:id/es_kline_cover_button")
 
     # 底部切换栏
     news = ('text', '资讯')
@@ -52,27 +44,22 @@ class SingleQuoteBasePage(BasePageWithBottom):
     def swipe_change_annal(self, direction):
         return self.swipe(direction)
 
-    def drawLineMode(self, into: bool):
-        if into:
-            if self.findElemWithoutException(self.draw_line_bar) is None:
-                self.click(self.draw_line)
-            else:
-                print("Now has been in DrawLineMode")
-        else:
-            if self.findElemWithoutException(self.draw_line_bar) is not None:
-                self.click(self.draw_line)
-        return self
+    def metaGoToMode(self, pageInit, page_enter):
+        try:
+            return pageInit()
+        except AssertionError:
+            self.click(page_enter)
+            if self.findElemViaText("交易登录") is not None:
+                from src.test.scripts.page.rightToolBar.LoginPage import LoginPage
+                LoginPage().login_common()
+                self.click(page_enter)
+            return pageInit()
 
-    def thudTradeMode(self, into: bool):
-        if into:
-            if self.findElemWithoutException(self.thud_trade_lots) is None:
-                self.click(self.thud_trade)
-            else:
-                print("Now has been in ThudTradeMode")
-        else:
-            if self.findElemWithoutException(self.thud_trade_lots) is not None:
-                self.click(self.thud_trade)
-        return self
+    def goToDrawLineMode(self):
+        return self.metaGoToMode(lambda: DrawLineMode(), self.draw_line)
+
+    def goToThudTradeMode(self):
+        return self.metaGoToMode(lambda: ThudTradeMode(), self.thud_trade)
 
     def openMoreMode(self, into: bool):
         if into:
@@ -122,4 +109,4 @@ class SingleQuoteBasePage(BasePageWithBottom):
 
 if __name__ == '__main__':
     debugPage = SingleQuoteBasePage()
-    debugPage.goToNewsPage().goToF10Page().quitPage()
+    debugPage.goToThudTradeMode().goToF10Page().quitPage()

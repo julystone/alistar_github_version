@@ -5,7 +5,7 @@ class FavPage(NavigateBasePage):
     # 顶部栏
     multi_quote_btn = ("resourceId", "esunny.test:id/toolbar_left_first")
     sort_btn = ("resourceId", "esunny.test:id/toolbar_left_second")
-    add_fav_btn = ("resourceId", "esunny.test:id/toolbar_right_second")
+    more_btn = ("resourceId", "esunny.test:id/toolbar_right_second")
 
     # 授权弹框
     auth_dialog = ('resourceId', "esunny.test:id/es_base_custom_dialog_title")
@@ -27,6 +27,11 @@ class FavPage(NavigateBasePage):
         for elem in elem_list:
             quote_list.append(elem.info['text'])
         return quote_list
+
+    def goToQuoteSearch(self):
+        self.click(self.more_btn).clickText("搜索添加")
+        from src.test.scripts.page.interface.QuoteSearch import QuoteSearch
+        return QuoteSearch()
 
 
 if __name__ == '__main__':

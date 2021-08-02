@@ -45,7 +45,6 @@ class PriceKeyBoard(BaseKeyboard):
         assert self.check_element_exist(self.key_down)
 
     def priceInput(self, price):
-        print(price)
         if price in ['市价', '对手价', '最新价', '排队价', '超价']:
             self.clickText(price)
         else:
@@ -69,8 +68,8 @@ class LotsKeyBoard(BaseKeyboard):
         assert self.check_element_exist(self.key_down)
 
     def lotsInput(self, lots):
-        print(lots)
         self.numInput(lots)
+        self.findElement(self.key_down)
 
 
 if __name__ == '__main__':

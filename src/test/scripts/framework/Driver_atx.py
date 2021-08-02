@@ -298,8 +298,10 @@ class Driver:
             elem.scroll.horiz.to(**loc)
         return self
 
-    def set_text(self, loc, text):
+    def set_text(self, loc, text, ifClean=False):
         elem = self.findElemWithoutException(loc)
+        if ifClean:
+            elem.set_text(None)
         elem.set_text(text)
 
     def get_text(self, loc):
@@ -319,6 +321,7 @@ class Driver:
 
     def add_watcher(self, watcher_name, text, btn):
         self._con.add_watcher(watcher_name=watcher_name, text=text, btn=btn)
+        self.force_sleep(2)
 
 
 if __name__ == '__main__':
