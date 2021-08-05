@@ -21,6 +21,7 @@ case_list = wb.read_data_obj()
 @allure.feature("交易登录")
 class TestLogin(BaseTest):
     pytestmark = [pytest.mark.smoke]
+
     @classmethod
     def init_steps_class(cls):
         Driver().add_watcher('消息弹框', '上一条', '上一条')

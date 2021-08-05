@@ -158,7 +158,7 @@ class Driver:
         """
         if isinstance(loc, UiObject):
             return loc
-        self.wait_element(loc, 1.5)
+        self.wait_element(loc, 4.5)
         elem = self.findElement(loc)
         if not elem.exists:
             elem = None

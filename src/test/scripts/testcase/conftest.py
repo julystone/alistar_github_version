@@ -4,9 +4,9 @@ import allure
 import pytest
 
 from src.test.scripts.framework.Driver_atx import Driver
-# conftest.py
-from utils import DataUtil
 
+
+# conftest.py
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item):
@@ -18,7 +18,7 @@ def pytest_runtest_makereport(item):
             # Driver().get_screenshot_as_file(extra=item.funcargs["case"].testNo)
             with allure.step("添加失败截图..."):
                 allure.attach(Driver().get_screenshot_as_png(), "失败截图", allure.attachment_type.PNG)
-            DataUtil
+
 
 # @pytest.mark.hookwrapper
 # def pytest_runtest_makereport(item):

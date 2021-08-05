@@ -20,7 +20,11 @@ class QuotePage(NavigateBasePage):
         Asserter.PageHasElem(self, self.quote_main)
 
     def getQuoteList(self):
-        return self.findElement(self.quote_list)
+        quote_list = []
+        elem_list = self.find_elements(self.quote_list)
+        for elem in elem_list:
+            quote_list.append(elem.info['text'])
+        return quote_list
 
     def goToSingleQuotePage(self, quoteName, exchangeName=None):
         if exchangeName is not None:

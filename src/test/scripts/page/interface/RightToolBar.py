@@ -48,7 +48,7 @@ class RightToolBar(Driver, BasePage):
             self.click(self.multi_login)
         return LoginPage()
 
-    def goToQuoteSetting(self) -> BasePage:
+    def goToQuoteSetting(self) -> QuoteSetting:
         self.click(self.quote_setting)
         return QuoteSetting()
 
@@ -82,6 +82,8 @@ class RightToolBar(Driver, BasePage):
         return QuoteLoginPage()
 
     def goToCloudServicePage(self) -> CloudServicePage:
+        if not self.findElemWithoutException(self.cloud_service):
+            self.goToQuoteLoginPage().quoteLoginCommon("july401", "1111qqqq@")
         self.click(self.cloud_service)
         return CloudServicePage()
 

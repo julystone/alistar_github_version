@@ -34,3 +34,4 @@ class PankouPage(PanelPage):
     def selfCheck(self):
         super().selfCheck()
         Asserter.BoolTrue(self.getCurItemStatus(self.pankou))
+

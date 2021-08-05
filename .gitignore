@@ -1,6 +1,6 @@
 result/
 .pytest_cache
-task/
+task/bak/
 .idea/
 __pycache__
 config/

@@ -159,38 +159,41 @@ class DrawLineSetting(SettingBasePage):
 class CommonPeriodSetting(SettingBasePage):
     title = ('text', '常用周期设置')
     quit_btn = ("resourceId", "esunny.test:id/es_activity_system_setting_iv_back")  # 返回图标
-    add_commonperiods = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_add")  # 添加常用周期
-    cancle_selection = ("resourceId", "esunny.test:id/es_period_picker_tv_cancel")  # 添加弹窗取消按钮
+    reset_button = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_reset")  # 重置按钮
+    add_period_btn = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_add")  # 添加常用周期
+
+    cancel_selection = ("resourceId", "esunny.test:id/es_period_picker_tv_cancel")  # 添加弹窗取消按钮
     confirm_selection = ("resourceId", "esunny.test:id/tv_es_period_keyboard_confirm")  # 添加弹窗确定按钮
-    cancle_check = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_cancel")  # 勾选取消按钮
+
+    one_minute_line = ("text", "1分钟")  # 1分钟线
+    cancel_check = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_cancel")  # 勾选取消按钮
     delete_check = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_delete")  # 删除勾选
-    resetting_button = ("resourceId", "esunny.test:id/es_activity_period_setting_tv_reset")  # 重置按钮
-    oneminite_line = ("text", "1分钟")  # 1分钟线
+
     # 校验项
     title_text = "常用周期设置"
 
-    def checkPeriod(self):
+    def checkPeriod(self, period):
         # 检测周期勾选状态
-        # elem_text = self.findElemWithoutException(self.oneminite_line).sibling().info['text']
-        elem_text = self.findElemWithoutException(self.oneminite_line)
-        if elem_text == '\ue617':
-            self.clickText('1分钟')
-        elif elem_text == '\ue61c':
-            self.clickText('1分钟')
+        elem = self.findElemViaText(period)
+        # elem = self.findElemWithoutException(self.one_minute_line)
+        return self.getCurCheckStatus(elem.sibling())
 
-    def deletePeriod(self):
+    def deletePeriod(self, period):
         # 删除常用周期
-        self.clickText('1分钟')
+        self.clickText(period)
         self.click(self.delete_check)
+        return self
 
     def addCommonPeriod(self):
         # 点击添加常用周期按钮
-        self.click(self.add_commonperiods)
+        self.click(self.add_period_btn)
         self.click(self.confirm_selection)
+        return self
 
     def resettingFunction(self):
         # 重置
-        self.click(self.resetting_button)
+        self.click(self.reset_button)
+        return self
 
 
 class ExchangeChoose(SettingBasePage):

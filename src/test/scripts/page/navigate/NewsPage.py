@@ -1,3 +1,4 @@
+from src.test.scripts.page.BasePage.BasePageNoBottom import BasePageNoBottom
 from src.test.scripts.page.navigate._NavigateBasePage import NavigateBasePage
 
 
@@ -9,13 +10,21 @@ class NewsPage(NavigateBasePage):
 
     def getNewsList(self):
         news_list = []
-        elem_list = self.find_elements(self.news_list)
+        elem_list = self.findElemWithoutException(self.news_list)
+        if elem_list is None:
+            return elem_list
         for elem in elem_list:
             news_list.append(elem.info['text'])
         return news_list
 
+    def getIntoOneNews(self):
+        self.click(self.news_list)
+        return self.OneNews()
+
+    class OneNews(BasePageNoBottom):
+        title_text = "详情"
+
 
 if __name__ == '__main__':
-    debugPage = NewsPage()
-    res = debugPage.getNewsList()
-    print(res)
+    debugPage = NewsPage.OneNews()
+    debugPage.quitPage()
